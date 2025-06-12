@@ -1,5 +1,7 @@
 <template>
-  <div>
-    <h3>Problems</h3>
-  </div>
+  <ProblemsAlerts />
 </template>
+
+<script setup>
+import ProblemsAlerts from '../management-problems/ProblemsAlerts.vue'
+</script>

@@ -41,3 +41,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Mzc2MzY3M
 ### Test Logout
 POST http://localhost:3000/api/logout
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Mzc2MzY3MmM0MjRkMWM5MzM2NmQwNiIsImlhdCI6MTc0ODQ2MTE4OCwiZXhwIjoxNzQ4NDY0Nzg4fQ.LT9OOfYkJ8coR4XNEZlPR-ziUGzsL_-Ye0_LiDX4n8o
+
+### 📥 Create problem
+POST http://localhost:3000/api/dumdb/vueapp/problems
+Content-Type: application/json
+
+{
+  "action": "create",
+  "data": {
+    "username": "javad",
+    "chat_id": "123",
+    "problem_msg": "eeeee",
+    "status": "open"
+  }
+}
+
+### 📤 Get problems
+POST http://localhost:3000/api/dumdb/vueapp/problems
+Content-Type: application/json
+
+{
+  "action": "get",
+  "filter": {
+    "username": "javad"
+  }
+}

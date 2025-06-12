@@ -1,14 +1,22 @@
 <template>
   <div class="profile">
     <h3>User Profile</h3>
-    <p><strong>Username:</strong> johndoe</p>
+    <p><strong>email:</strong> {{ email }}</p>
   </div>
 </template>
 
 <script>
+import { getUsernameFromServer } from "@/utils/auth";
 export default {
-  name: 'DashboardProfile'
-}
+  data() {
+    return {
+      email: "",
+    };
+  },
+  async created() {
+    this.email = await getUsernameFromServer();
+  },
+};
 </script>
 
 <style scoped>

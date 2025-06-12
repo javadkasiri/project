@@ -1,6 +1,6 @@
 const express = require("express"); //برای ساخت یک router جدا از اپ اصلی
 const router = express.Router();
-const auth = require("../middleware/authMiddleware"); //برای بررسی توکن JWT 
+const auth = require("../middleware/authMiddleware"); //برای بررسی توکن JWT
 const memcached = require("../cache/memcachedClient"); //برای logout کلاینت برای مدیریت کش
 
 //ایمپورت توابع کنترلر
@@ -24,6 +24,16 @@ router.get("/setting", auth, (req, res) => {
 });
 router.get("/home", auth, (req, res) => {
   res.send(`home: Welcome user ${req.user.id}`);
+});
+
+// اطلاعات کاربر لاگین‌شده را برمی‌گرداند
+router.get("/me", auth, (req, res) => {
+  // فرض بر این است که middleware احراز هویت، req.user را ست می‌کند
+  res.json({
+    username: req.user.username,
+    email: req.user.email, // اگر ایمیل دارید
+    id: req.user.id,
+  });
 });
 
 // مسیر logout با حذف توکن از memcached و پاک‌کردن کوکی
