@@ -50,8 +50,8 @@ Content-Type: application/json
   "action": "create",
   "data": {
     "username": "javad",
-    "chat_id": "123",
-    "problem_msg": "eeeee",
+    "chat_id": "5656777",
+    "problem_msg": "dsgfdfhggf",
     "status": "open"
   }
 }
@@ -66,3 +66,4 @@ Content-Type: application/json
     "username": "javad"
   }
 }
+
