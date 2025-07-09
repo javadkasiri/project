@@ -1,7 +1,7 @@
 <template>
   <div class="columns-container">
     <div v-for="item in problems" :key="item._id" class="column-box">
-      <span><strong>username:</strong> {{ item.username }}</span>
+      <span><strong>email:</strong> {{ item.email }}</span>
       <span><strong>Chat ID:</strong> {{ item.chat_id }}</span>
       <span><strong>Message:</strong> {{ item.problem_msg }}</span>
       <span><strong>Status:</strong> {{ item.status }}</span>

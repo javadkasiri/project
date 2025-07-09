@@ -3,12 +3,12 @@
     <h3>Update Account Settings</h3>
     <form @submit.prevent="saveSettings">
       <div class="form-group">
-        <label for="username">New Username</label>
+        <label for="email">New email</label>
         <input
           type="text"
-          id="username"
-          v-model="username"
-          placeholder="Enter new username"
+          id="email"
+          v-model="email"
+          placeholder="Enter new email"
         />
       </div>
 
@@ -32,19 +32,19 @@ export default {
   name: "DashboardSetting",
   data() {
     return {
-      username: "",
+      email: "",
       password: "",
     };
   },
   methods: {
     saveSettings() {
-      if (!this.username || !this.password) {
+      if (!this.email || !this.password) {
         alert("Please fill out both fields.");
         return;
       }
 
       // در مرحله بعد می‌تونی اینو به سرور بفرستی
-      alert(`Saved:\nUsername: ${this.username}\nPassword: ${this.password}`);
+      alert(`Saved:\nemail: ${this.email}\nPassword: ${this.password}`);
     },
   },
 };

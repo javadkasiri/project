@@ -1,10 +1,10 @@
 <template>
   <div class="chat-room">
-    <div class="chat-sidebar">
-      <ChatSidebar />
+    <div class="chat-list">
+      <ChatList @select="handleSelectUser" />
     </div>
     <div class="chat-window">
-      <ChatWindow />
+      <ChatWindow :userId="selectedUserId" />
     </div>
     <div class="chat-details">
       <ChatDetails />
@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import ChatSidebar from "./ChatSidebar.vue";
+import ChatList from "./ChatList.vue";
 import ChatWindow from "./ChatWindow.vue";
 import ChatDetails from "./ChatDetails.vue";
 
 export default {
   name: "ChatRoom",
   components: {
-    ChatSidebar,
+    ChatList,
     ChatWindow,
     ChatDetails,
   },
@@ -30,7 +30,7 @@ export default {
 <style scoped>
 .chat-room {
   display: flex;
-  height: calc(90%); /* حذف چسبندگی پایین */
+  height: calc(92%); /* حذف چسبندگی پایین */
   margin: 5px;
   background-color: #f0f2f5;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -39,12 +39,10 @@ export default {
   overflow: hidden;
 }
 /* Sidebar */
-.chat-sidebar {
+.chat-list {
   width: 20%;
   background: #ffffff;
-  padding: 20px;
-  border-right: 1px solid #ddd;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.03);
+  padding: 12px;
   overflow-y: auto;
 }
 
@@ -61,8 +59,5 @@ export default {
   width: 20%;
   background: #ffffff;
   padding: 20px;
-  border-left: 1px solid #ddd;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.03);
-  overflow-y: auto;
 }
 </style>

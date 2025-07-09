@@ -17,7 +17,7 @@ router.post("/change-password", auth, changePassword);
 
 // مسیرهای محافظت‌شده با middleware auth
 router.get("/profile", auth, (req, res) => {
-  res.send(`profile: Welcome ${req.user.username} ${req.user.id}`);
+  res.send(`profile: Welcome ${req.user.email} ${req.user.id}`);
 });
 router.get("/setting", auth, (req, res) => {
   res.send(`setting: Welcome user ${req.user.id}`);
@@ -30,8 +30,7 @@ router.get("/home", auth, (req, res) => {
 router.get("/me", auth, (req, res) => {
   // فرض بر این است که middleware احراز هویت، req.user را ست می‌کند
   res.json({
-    username: req.user.username,
-    email: req.user.email, // اگر ایمیل دارید
+    email: req.user.email,
     id: req.user.id,
   });
 });

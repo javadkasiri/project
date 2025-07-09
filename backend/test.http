@@ -3,11 +3,11 @@ POST http://localhost:3000/api/signup
 Content-Type: application/json
 
 {
-  "username": "testuser1",
-  "password": "testpassword"
+  "email": "example@example.com",
+  "password": "Ts_12345678"
 }
 
-#input 1.username 2.password
+#input 1.email 2.password
 #returen null
 #function send input to database 
 
@@ -17,32 +17,16 @@ POST http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-  "username": "testuser",
+  "email": "example@example.com",
   "password": "testpassword"
 }
 
-#input 1.username 2.password
+#input 1.email 2.password
 #returen token
 #function send token to memcached
 
 
-### Test Profile (requires token)
-GET http://localhost:3000/api/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Mzc2MzY3MmM0MjRkMWM5MzM2NmQwNiIsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJpYXQiOjE3NDg0NjMxMTIsImV4cCI6MTc0ODQ2NjcxMn0.9FXPvRvGYW8BlCJivMk1VICf7klJLL7nVO5vwgQ7ZDQ
-
-### Test Home (requires token)
-GET http://localhost:3000/api/home
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Mzc2MzY3MmM0MjRkMWM5MzM2NmQwNiIsImlhdCI6MTc0ODQ2MTE4OCwiZXhwIjoxNzQ4NDY0Nzg4fQ.LT9OOfYkJ8coR4XNEZlPR-ziUGzsL_-Ye0_LiDX4n8o
-
-### Test Setting (requires token)
-GET http://localhost:3000/api/setting
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Mzc2MzY3MmM0MjRkMWM5MzM2NmQwNiIsImlhdCI6MTc0ODQ2MTE4OCwiZXhwIjoxNzQ4NDY0Nzg4fQ.LT9OOfYkJ8coR4XNEZlPR-ziUGzsL_-Ye0_LiDX4n8o
-
-### Test Logout
-POST http://localhost:3000/api/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Mzc2MzY3MmM0MjRkMWM5MzM2NmQwNiIsImlhdCI6MTc0ODQ2MTE4OCwiZXhwIjoxNzQ4NDY0Nzg4fQ.LT9OOfYkJ8coR4XNEZlPR-ziUGzsL_-Ye0_LiDX4n8o
-
-### 📥 Create problem
+### Create problem
 POST http://localhost:3000/api/dumdb/vueapp/problems
 Content-Type: application/json
 
@@ -56,7 +40,7 @@ Content-Type: application/json
   }
 }
 
-### 📤 Get problems
+### Get problems
 POST http://localhost:3000/api/dumdb/vueapp/problems
 Content-Type: application/json
 
@@ -67,3 +51,68 @@ Content-Type: application/json
   }
 }
 
+
+### Create profile
+POST http://localhost:3000/api/dumdb/vueapp/profile
+Content-Type: application/json
+
+{
+  "action": "create",
+  "data": {
+    "email": "kasiri.javad@gmail.com",
+    "username": "123456789",
+    "name": "javad kasiri",
+    "phone": "+989123456789",
+    "role": "admin"
+  }
+}
+
+### Get profile
+POST http://localhost:3000/api/dumdb/vueapp/profile
+Content-Type: application/json
+
+{
+  "action": "get",
+  "filter": {
+    "username": "123456789"
+  }
+}
+
+### Create custumer chat message
+POST http://localhost:3000/api/dumdb/vueapp/chats
+Content-Type: application/json
+
+{
+  "action": "create",
+  "data": {
+    "senderId": "customer_001",
+    "sender": "John Doe",
+    "text": "This is a test message",
+    "time": "10:46 AM",
+    "side": "left"
+  }
+}
+
+### Create user chat message
+POST http://localhost:3000/api/dumdb/vueapp/chats
+Content-Type: application/json
+
+{
+  "action": "create",
+  "data": {
+    "senderId": "user_001",
+    "sender": "Beasley",
+    "text": "Let me check and update",
+    "time": "10:46 AM",
+    "side": "right"
+  }
+}
+
+### Get chat messages
+POST http://localhost:3000/api/dumdb/vueapp/chats
+Content-Type: application/json
+
+{
+  "action": "get",
+  "filter": {}
+}
