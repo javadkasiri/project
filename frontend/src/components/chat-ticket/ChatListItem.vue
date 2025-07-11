@@ -1,8 +1,6 @@
 <template>
   <div class="chat-list-item" @click="selectChat">
-    <div class="avatar">
-      <span class="material-symbols-outlined">person</span>
-    </div>
+    <div class="avatar"><span class="material-symbols-outlined">person</span></div>
     <div class="content">
       <div class="top-row">
         <span class="sender">{{ sender }}</span>
@@ -15,14 +13,18 @@
 
 <script>
 export default {
-  props: ['sender', 'senderId', 'text', 'time'],
+  props: ['sender','customerId','agentId','text','time'],
   methods: {
     selectChat() {
-      this.$emit('select', this.senderId);
+      this.$emit('select', {
+        customerId: this.customerId,
+        agentId: this.agentId
+      });
     }
   }
-};
+}
 </script>
+
 
 
 <style scoped>
