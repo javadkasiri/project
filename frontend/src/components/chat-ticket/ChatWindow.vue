@@ -1,25 +1,20 @@
 <template>
   <div class="chat-window">
-    <div class="messages-container">
-      <ChatMessages />
-    </div>
-    <div class="input-container">
-      <ChatInput />
-    </div>
+    <ChatMessages :customerId="customerId" :agentId="agentId" />
+    <ChatInput />
   </div>
 </template>
+
 <script>
 import ChatMessages from "./chat-window/ChatMessages.vue";
 import ChatInput from "./chat-window/ChatInput.vue";
 
 export default {
-  name: "ChatWindow",
-  components: {
-    ChatMessages,
-    ChatInput,
-  },
+  components: { ChatMessages, ChatInput },
+  props: ['customerId','agentId']
 };
 </script>
+
 
 <style scoped>
 .chat-window {
@@ -33,12 +28,11 @@ export default {
 
 .messages-container {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
   padding: 1rem;
-
   display: flex;
-  flex-direction: column; /* ✅ ترتیب درست نگه داشته میشه */
-  justify-content: flex-end; /* ✅ پیام‌ها به پایین چسبیده */
+  flex-direction: column; 
+  min-height: 0;       
 }
 
 .input-container {

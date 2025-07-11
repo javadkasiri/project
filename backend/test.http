@@ -85,10 +85,11 @@ Content-Type: application/json
 {
   "action": "create",
   "data": {
-    "senderId": "customer_001",
-    "sender": "John Doe",
-    "text": "This is a test message",
-    "time": "10:46 AM",
+    "senderId": "customer_004",
+    "receiverId": "user_004",
+    "sender": "Sarah Ahmed",
+    "text": "I can't access my account",
+    "time": "10:51 AM",
     "side": "left"
   }
 }
@@ -100,10 +101,11 @@ Content-Type: application/json
 {
   "action": "create",
   "data": {
-    "senderId": "user_001",
-    "sender": "Beasley",
-    "text": "Let me check and update",
-    "time": "10:46 AM",
+    "senderId": "user_004",
+     "receiverId": "customer_004",
+    "sender": "Lena",
+    "text": "I'll reset your password right away",
+    "time": "10:52 AM",
     "side": "right"
   }
 }

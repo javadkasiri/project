@@ -1,65 +1,63 @@
 <template>
   <div class="chat-list">
     <ChatListItem
-      v-for="chat in latestCustomerChats"
-      :key="chat.senderId"
-      :sender="chat.sender"
-      :senderId="chat.senderId"
-      :text="chat.text"
-      :time="chat.time"
+      v-for="item in latestCustomerChats"
+      :key="item.customerId"
+      :sender="item.sender"
+      :customerId="item.customerId"
+      :agentId="item.agentId"
+      :text="item.text"
+      :time="item.time"
       @select="handleSelect"
     />
   </div>
 </template>
 
 <script>
-import ChatListItem from './ChatListItem.vue';
+import ChatListItem from "./ChatListItem.vue";
 
 export default {
   components: { ChatListItem },
   data() {
-    return {
-      chats: []
-    };
+    return { chats: [] };
   },
   computed: {
     latestCustomerChats() {
-      const lastMessages = {};
-      this.chats.forEach(chat => {
-        if (chat.senderId?.startsWith('customer_')) {
-          lastMessages[chat.senderId] = chat;
+      const map = {};
+      this.chats.forEach(c => {
+        if (c.senderId.startsWith('customer_')) {
+          map[c.senderId] = {
+            sender: c.sender,
+            customerId: c.senderId,
+            agentId: c.receiverId,
+            text: c.text,
+            time: c.time
+          };
         }
       });
-      return Object.values(lastMessages);
+      return Object.values(map);
     }
   },
   methods: {
     async fetchChats() {
       try {
-        const response = await fetch('http://localhost:3000/api/dumdb/vueapp/chats', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'get',
-            filter: {}
-          })
+        console.log('[ChatList] fetching...');
+        const res = await fetch("http://localhost:3000/api/dumdb/vueapp/chats", {
+          method: "POST", headers: { 'Content-Type':'application/json' },
+          body: JSON.stringify({ action:'get', filter:{} })
         });
-
-        const result = await response.json();
-        this.chats = result.result;
-      } catch (error) {
-        console.error('[ChatList] Failed to fetch chats:', error);
-      }
+        const json = await res.json();
+        this.chats = json.result;
+      } catch(e) { console.error(e); }
     },
-    handleSelect(senderId) {
-      this.$emit('chat-selected', senderId);
+    handleSelect(payload) {
+      this.$emit("select", payload);
     }
   },
-  mounted() {
-    this.fetchChats();
-  }
+  mounted() { this.fetchChats(); }
 };
 </script>
+
 
 
 <style scoped>
