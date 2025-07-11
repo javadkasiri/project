@@ -80,7 +80,7 @@ export default {
           headers: { "Content-Type": "application/json" },
           credentials: "include", // مهم برای ارسال/دریافت کوکی
           body: JSON.stringify({
-            username: this.email,
+            email: this.email,
             password: this.password,
           }),
         });

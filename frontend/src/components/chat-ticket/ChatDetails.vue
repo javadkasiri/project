@@ -1,21 +1,48 @@
 <template>
-  <div class="section">
-    <h2>Chat Details</h2>
+  <div class="chat-details">
+    <div class="half-box">
+      <ChatUserInfo />
+    </div>
+    <div class="half-box">
+      <ChatUserMessages />
+    </div>
   </div>
 </template>
 
+<script>
+import ChatUserInfo from "./chat-details/ChatUserInfo.vue";
+import ChatUserMessages from "./chat-details/ChatUserMessages.vue";
+
+export default {
+  components: {
+    ChatUserInfo,
+    ChatUserMessages,
+  },
+};
+</script>
+
 <style scoped>
-.section {
-  padding: 20px;
+.chat-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* عمودی وسط */
+  align-items: center;     /* افقی وسط */
+  height: 100%;
+  gap: 15px;
+  padding: 30px;
+  box-sizing: border-box;
 }
 
-h2 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #2c3e50;
-  text-align: center;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+.half-box {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start; /* بچه بیاد سمت چپ */
+  padding-right: 30px;         /* فاصله از راست */
+}
+
+.half-box > * {
+  display: flex;
+  justify-content: center;
 }
 </style>
+

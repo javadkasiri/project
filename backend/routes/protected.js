@@ -4,7 +4,7 @@ const authMiddleware = require("../middleware/authMiddleware"); //برای بر�
 
 // تعریف مسیر GET برای داشبورد
 router.get("/dashboard", authMiddleware, (req, res) => {
-  res.json({ message: `Welcome ${req.user.username}` });
+  res.json({ message: `Welcome ${req.user.email}` });
 });
 
 module.exports = router;

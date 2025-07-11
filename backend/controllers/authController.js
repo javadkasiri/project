@@ -7,18 +7,21 @@ const SECRET = process.env.JWT_SECRET || "secret_key"; // اگر در .env مق�
 
 exports.signup = async (req, res) => {
   try {
-    const { username, password } = req.body; //ورودی
+    const { email, password } = req.body; //ورودی
+    console.log("Received signup:", { email, password });
 
     //بررسی وجود کاربر
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.warn("Email already exists:", email);
       return res.status(409).json({ error: "Email already exists" });
     }
     //هش کردن رمز عبور و ذخیره
     const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashed });
+    const user = new User({ email, password: hashed });
+    console.log("Saving user to DB...");
     await user.save();
-
+    console.log("User created");
     res.status(201).json({ message: "User created" }); // پاسخ موفق
   } catch (err) {
     console.error("Signup error:", err);
@@ -27,22 +30,22 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { username, password } = req.body; //گرفتن نام کاربری و رمز عبور
+  const { email, password } = req.body; //گرفتن نام کاربری و رمز عبور
 
   //یافتن کاربر و بررسی رمز عبور
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ email });
   if (!user) return res.status(400).send("Invalid credentials");
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(400).send("Invalid credentials");
 
   //تولید توکن JWT
-  const token = jwt.sign({ id: user._id, username: user.username }, SECRET, {
+  const token = jwt.sign({ id: user._id, email: user.email }, SECRET, {
     expiresIn: "12h",
   });
 
   //ذخیره توکن در Memcached
-  memcached.set(token, JSON.stringify({ userId: user._id }), 3600, (err) => {
+  memcached.set(token, JSON.stringify({ userId: user._id }), 43200, (err) => {
     if (err) console.error("Memcached error:", err);
   });
 
@@ -51,7 +54,7 @@ exports.login = async (req, res) => {
     httpOnly: true, // جلوگیری از دسترسی JS
     secure: false, // در حالت production بگذار true
     sameSite: "Lax", // یا "Strict" یا "None" بسته به نیاز
-    maxAge: 3600000, // 1 ساعت
+    maxAge: 43200000, // 1 ساعت
   });
 
   // پاسخ موفق

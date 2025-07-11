@@ -15,7 +15,7 @@
       <ManagementWall v-if="currentTab === 'Wall'" />
       <ManagementEvent v-if="currentTab === 'Event'" />
       <ManagementProblems v-if="currentTab === 'Problems'" />
-      <ManagementProject v-if="currentTab === 'Project'" />
+      <ManagementReports v-if="currentTab === 'Reports'" />
       <ManagementStaff v-if="currentTab === 'Staff'" />
     </div>
   </div>
@@ -27,7 +27,7 @@
 import ManagementWall from "@/components/management/ManagementWall.vue"
 import ManagementEvent from "@/components/management/ManagementEvent.vue"
 import ManagementProblems from "@/components/management/ManagementProblems.vue"
-import ManagementProject from "@/components/management/ManagementProject.vue"
+import ManagementReports from "@/components/management/ManagementReports.vue"
 import ManagementStaff from "@/components/management/ManagementStaff.vue"
 
 export default {
@@ -35,12 +35,12 @@ export default {
     ManagementWall,
     ManagementEvent,
     ManagementProblems,
-    ManagementProject,
+    ManagementReports,
     ManagementStaff
   },
   data() {
     return {
-      tabs: ['Wall', 'Event', 'Problems', 'Project', 'Staff'],
+      tabs: ['Wall', 'Event', 'Problems', 'Reports', 'Staff'],
       currentTab: 'Wall'
     };
   }

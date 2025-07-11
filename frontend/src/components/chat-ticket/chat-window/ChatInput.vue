@@ -32,13 +32,10 @@ export default {
   display: flex;
   align-items: center;
   padding: 10px 16px;
-  background-color: #fff;
+  background-color: #e4e5e8;
   gap: 12px;
   width: 100%;
   box-sizing: border-box;
-  border-top: 1px solid #ddd;
-
-  /* چسباندن به اطراف */
   margin: 0;
   border-radius: 0;
 }
@@ -48,7 +45,7 @@ export default {
   padding: 10px 12px;
   border: none;
   border-radius: 20px;
-  background-color: #f1f1f1;
+  background-color: #fff;
   outline: none;
   font-size: 14px;
   

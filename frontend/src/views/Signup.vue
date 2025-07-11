@@ -162,7 +162,7 @@ export default {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            username: this.email,
+            email: this.email,
             password: this.password,
           }),
         });

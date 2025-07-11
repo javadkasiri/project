@@ -9,8 +9,8 @@
   </div>
 </template>
 <script>
-import ChatMessages from "./chatwindow/ChatMessages.vue";
-import ChatInput from "./chatwindow/ChatInput.vue";
+import ChatMessages from "./chat-window/ChatMessages.vue";
+import ChatInput from "./chat-window/ChatInput.vue";
 
 export default {
   name: "ChatWindow",
@@ -25,7 +25,7 @@ export default {
 .chat-window {
   display: flex;
   flex-direction: column;
-  height: 100%; /* برای اینکه بتونه کل فضا رو بگیره */
+  height: 100%;
   overflow: hidden;
   padding: 0;
   margin: 0;
@@ -34,6 +34,11 @@ export default {
 .messages-container {
   flex: 1;
   overflow-y: auto;
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column; /* ✅ ترتیب درست نگه داشته میشه */
+  justify-content: flex-end; /* ✅ پیام‌ها به پایین چسبیده */
 }
 
 .input-container {
