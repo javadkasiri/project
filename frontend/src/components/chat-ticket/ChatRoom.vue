@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import ChatList from "./ChatList.vue";
-import ChatWindow from "./ChatWindow.vue";
-import ChatDetails from "./ChatDetails.vue";
+import ChatList from "./Chat-List/ChatList.vue";
+import ChatWindow from "./chat-window/ChatWindow.vue";
+import ChatDetails from "./chat-details/ChatDetails.vue";
 
 export default {
   components: { ChatList, ChatWindow, ChatDetails },
@@ -52,20 +52,23 @@ export default {
 <style scoped>
 .chat-room {
   display: flex;
-  height: calc(92%); /* حذف چسبندگی پایین */
-  margin: 5px;
+  height: calc(93%); /* حذف چسبندگی پایین */
+  margin: 0px;
   background-color: #f0f2f5;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   box-sizing: border-box;
-  border-radius: 12px;
   overflow: hidden;
 }
 /* Sidebar */
 .chat-list {
   width: 20%;
   background: #ffffff;
-  padding: 12px;
   overflow-y: auto;
+  padding-top: 8px;  
+  padding-right: 0;
+  padding-left: 0;
+  padding-bottom: 8px;
+
 }
 
 /* Chat content */
@@ -80,6 +83,8 @@ export default {
 .chat-details {
   width: 20%;
   background: #ffffff;
-  padding: 20px;
+  padding: 0;
+  margin: 0;
+
 }
 </style>

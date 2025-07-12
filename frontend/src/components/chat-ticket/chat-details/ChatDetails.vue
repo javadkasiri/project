@@ -1,22 +1,22 @@
 <template>
   <div class="chat-details">
     <div class="half-box">
-      <ChatUserInfo />
+      <UserInfo />
     </div>
     <div class="half-box">
-      <ChatUserMessages />
+      <UserMessages />
     </div>
   </div>
 </template>
 
 <script>
-import ChatUserInfo from "./chat-details/ChatUserInfo.vue";
-import ChatUserMessages from "./chat-details/ChatUserMessages.vue";
+import UserInfo from "./UserInfo.vue";
+import UserMessages from "./UserMessages.vue";
 
 export default {
   components: {
-    ChatUserInfo,
-    ChatUserMessages,
+    UserInfo,
+    UserMessages,
   },
 };
 </script>
@@ -36,8 +36,8 @@ export default {
 .half-box {
   width: 100%;
   display: flex;
-  justify-content: flex-start; /* بچه بیاد سمت چپ */
-  padding-right: 30px;         /* فاصله از راست */
+  justify-content: flex-start; 
+  padding-right: 30px;         
 }
 
 .half-box > * {

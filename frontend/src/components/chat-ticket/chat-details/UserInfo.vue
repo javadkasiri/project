@@ -1,5 +1,5 @@
 <template>
-  <div class="card-box">
+  <div class="user-info">
     <h4>User Info</h4>
     <p>This panel contains user-related information like name, email, etc.</p>
   </div>
@@ -7,12 +7,12 @@
 
 <script>
 export default {
-  name: "ChatUserInfo",
+  name: "UserInfo",
 };
 </script>
 
 <style scoped>
-.card-box {
+.user-info {
   width: 100%;
   min-width: 260px;   
   max-width: 350px;  

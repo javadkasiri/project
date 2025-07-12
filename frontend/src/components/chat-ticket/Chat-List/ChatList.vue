@@ -1,15 +1,19 @@
 <template>
-  <div class="chat-list">
-    <ChatListItem
-      v-for="item in latestCustomerChats"
-      :key="item.customerId"
-      :sender="item.sender"
-      :customerId="item.customerId"
-      :agentId="item.agentId"
-      :text="item.text"
-      :time="item.time"
-      @select="handleSelect"
-    />
+  <div class="chat-list-wrapper">
+    <div class="header">Chat List</div>
+    <div class="chat-list">
+<ChatListItem
+  v-for="item in latestCustomerChats"
+  :key="item.customerId"
+  :sender="item.sender"
+  :customerId="item.customerId"
+  :agentId="item.agentId"
+  :text="item.text"
+  :time="item.time"
+  :isActive="item.customerId === activeCustomerId"
+  @select="handleSelect"
+/>
+    </div>
   </div>
 </template>
 
@@ -18,9 +22,12 @@ import ChatListItem from "./ChatListItem.vue";
 
 export default {
   components: { ChatListItem },
-  data() {
-    return { chats: [] };
-  },
+data() {
+  return {
+    chats: [],
+    activeCustomerId: null, // ← آیتم انتخاب‌شده
+  };
+},
   computed: {
     latestCustomerChats() {
       const map = {};
@@ -51,8 +58,9 @@ export default {
       } catch(e) { console.error(e); }
     },
     handleSelect(payload) {
-      this.$emit("select", payload);
-    }
+  this.activeCustomerId = payload.customerId; // ← فعال‌سازی آیتم
+  this.$emit("select", payload);
+}
   },
   mounted() { this.fetchChats(); }
 };
@@ -61,11 +69,40 @@ export default {
 
 
 <style scoped>
+
+.chat-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+}
+.header {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px 16px 6px;
+  border-bottom: 2px solid #2196f3;
+  width: fit-content;
+  margin-left: 16px;
+  margin-bottom: 12px;
+
+}
 .chat-list {
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   box-sizing: border-box;
   max-height: 100%;
   min-width: 100%;
+
+}
+
+.chat-list::-webkit-scrollbar {
+  width: 4px;
+}
+.chat-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-list::-webkit-scrollbar-thumb {
+  background-color: #999;
+  border-radius: 4px;
 }
 </style>

@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import ChatMessages from "./chat-window/ChatMessages.vue";
-import ChatInput from "./chat-window/ChatInput.vue";
+import ChatMessages from "./ChatMessages.vue";
+import ChatInput from "./ChatInput.vue";
 
 export default {
   components: { ChatMessages, ChatInput },
