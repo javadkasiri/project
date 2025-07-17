@@ -4,13 +4,14 @@
     <div class="chat-list">
 <ChatListItem
   v-for="item in latestCustomerChats"
-  :key="item.customerId"
+  :key="item.conversationId"
   :sender="item.sender"
   :customerId="item.customerId"
   :agentId="item.agentId"
   :text="item.text"
   :time="item.time"
-  :isActive="item.customerId === activeCustomerId"
+  :conversationId="item.conversationId"
+  :isActive="item.conversationId === activeConversationId"
   @select="handleSelect"
 />
     </div>
@@ -22,54 +23,63 @@ import ChatListItem from "./ChatListItem.vue";
 
 export default {
   components: { ChatListItem },
-data() {
-  return {
-    chats: [],
-    activeCustomerId: null, // ← آیتم انتخاب‌شده
-  };
-},
+  data() {
+    return {
+      chats: [],
+      activeCustomerId: null, // ← آیتم انتخاب‌شده
+    };
+  },
   computed: {
     latestCustomerChats() {
       const map = {};
-      this.chats.forEach(c => {
-        if (c.senderId.startsWith('customer_')) {
-          map[c.senderId] = {
+      this.chats.forEach((c) => {
+        const key = c.conversationId;
+        if (!map[key] || new Date(c.time) > new Date(map[key].time)) {
+          map[key] = {
             sender: c.sender,
-            customerId: c.senderId,
-            agentId: c.receiverId,
+            customerId: c.senderId.startsWith("customer_")
+              ? c.senderId
+              : c.receiverId,
+            agentId: c.senderId.startsWith("user_") ? c.senderId : c.receiverId,
             text: c.text,
-            time: c.time
+            time: c.time,
+            conversationId: c.conversationId,
           };
         }
       });
       return Object.values(map);
-    }
+    },
   },
   methods: {
     async fetchChats() {
       try {
-        console.log('[ChatList] fetching...');
-        const res = await fetch("http://localhost:3000/api/dumdb/vueapp/chats", {
-          method: "POST", headers: { 'Content-Type':'application/json' },
-          body: JSON.stringify({ action:'get', filter:{} })
-        });
+        console.log("[ChatList] fetching...");
+        const res = await fetch(
+          "http://localhost:3000/api/dumdb/vueapp/chats",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "get", filter: {} }),
+          }
+        );
         const json = await res.json();
         this.chats = json.result;
-      } catch(e) { console.error(e); }
+      } catch (e) {
+        console.error(e);
+      }
     },
     handleSelect(payload) {
-  this.activeCustomerId = payload.customerId; // ← فعال‌سازی آیتم
-  this.$emit("select", payload);
-}
+      this.activeCustomerId = payload.customerId; // ← فعال‌سازی آیتم
+      this.$emit("select", payload);
+    },
   },
-  mounted() { this.fetchChats(); }
+  mounted() {
+    this.fetchChats();
+  },
 };
 </script>
 
-
-
 <style scoped>
-
 .chat-list-wrapper {
   display: flex;
   flex-direction: column;
@@ -84,7 +94,6 @@ data() {
   width: fit-content;
   margin-left: 16px;
   margin-bottom: 12px;
-
 }
 .chat-list {
   overflow-y: scroll;
@@ -92,7 +101,6 @@ data() {
   box-sizing: border-box;
   max-height: 100%;
   min-width: 100%;
-
 }
 
 .chat-list::-webkit-scrollbar {

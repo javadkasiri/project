@@ -1,5 +1,5 @@
 <template>
-  <div class="user-messages-wrapper">
+  <div class="user-messages-box">
     <div class="header">History</div>
     <div class="user-messages">
       <p v-if="userMessages.length === 0">No chat found</p>
@@ -20,44 +20,46 @@ import UserMessagesItem from "./UserMessagesItem.vue";
 export default {
   name: "UserMessages",
   components: { UserMessagesItem },
-  props: ['customerId'],
+  props: ["customerId"],
   data() {
     return {
-      userMessages: []
+      userMessages: [],
     };
   },
   watch: {
     customerId(newVal) {
-      console.log("[UserMessages] customerId changed:", newVal);
-      this.fetchUserMessages();
-    }
+      if (newVal) this.fetchUserMessages();
+    },
   },
   mounted() {
-    console.log("[UserMessages] mounted with customerId:", this.customerId);
-    this.fetchUserMessages();
+    if (this.customerId) this.fetchUserMessages();
   },
   methods: {
     async fetchUserMessages() {
-      if (!this.customerId) {
-        console.warn("[UserMessages] No customerId provided.");
-        return;
-      }
-
-      console.log("[UserMessages] Fetching messages for:", this.customerId);
       try {
         const res = await fetch("http://localhost:3000/api/dumdb/vueapp/chats", {
           method: "POST",
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             action: "get",
             filter: { senderId: this.customerId }
-          })
+          }),
         });
 
-        const data = await res.json();
-        console.log("[UserMessages] API response:", data);
+        const json = await res.json();
+        const chats = json.result || [];
 
-        this.userMessages = data.result || [];
+        // دسته‌بندی بر اساس conversationId
+        const map = {};
+        chats.forEach(chat => {
+          const cid = chat.conversationId;
+          if (!map[cid] || new Date(chat.time) > new Date(map[cid].time)) {
+            map[cid] = chat;
+          }
+        });
+
+        // فقط آخرین پیام هر مکالمه
+        this.userMessages = Object.values(map).sort((a, b) => new Date(b.time) - new Date(a.time));
       } catch (err) {
         console.error("[UserMessages] Error fetching messages:", err);
       }
@@ -68,13 +70,11 @@ export default {
 
 
 <style scoped>
-.user-messages-wrapper {
+.user-messages-box {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  min-width: 260px;
-  max-width: 400px;
-  background-color: #fff;
+  height: 100%;
+  background: #fff;
 }
 
 .header {
@@ -88,65 +88,27 @@ export default {
 }
 
 .user-messages {
-  overflow-y: auto;
-  padding: 0 16px;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  background-color: #ddd;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  margin-right: 12px;
-  flex-shrink: 0;
-}
-
-.content {
-  flex: 1;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  max-height: 375px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  overflow: hidden;
-  min-width: 0;
-}
-
-.top-row {
-  display: flex;
-  justify-content: space-between;
+  padding: 0 12px;
   width: 100%;
-  font-weight: bold;
-  font-size: 14px;
-  color: #2c3e50;
-  margin-bottom: 4px;
+  max-width: 100%;
+  
 }
 
-.sender {
-  font-weight: bold;
-  font-size: 14px;
-  color: #2c3e50;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 70%;
-}
 
-.time {
-  font-size: 12px;
-  color: #999;
-  white-space: nowrap;
-  margin-left: 8px;
+.user-messages::-webkit-scrollbar {
+  width: 4px;
 }
-
-.last-message {
-  font-size: 13px;
-  color: #666;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.user-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+.user-messages::-webkit-scrollbar-thumb {
+  background-color: #999;
+  border-radius: 4px;
 }
 </style>

@@ -18,17 +18,16 @@ import ChatBubble from "./ChatBubble.vue";
 
 export default {
   components: { ChatBubble },
-  props: ['customerId', 'agentId'],
+  props: ['customerId', 'agentId', 'conversationId'],
   data() {
     return { messages: [] };
   },
   watch: {
-    customerId: 'fetchMessages',
-    agentId: 'fetchMessages'
+    conversationId: 'fetchMessages'
   },
   methods: {
     async fetchMessages() {
-      if (!this.customerId || !this.agentId) return;
+      if (!this.conversationId) return;
       try {
         const res = await fetch("http://localhost:3000/api/dumdb/vueapp/chats", {
           method: "POST",
@@ -36,17 +35,14 @@ export default {
           body: JSON.stringify({
             action: "get",
             filter: {
-              $or: [
-                { senderId: this.customerId, receiverId: this.agentId },
-                { senderId: this.agentId, receiverId: this.customerId }
-              ]
+              conversationId: this.conversationId
             }
           })
         });
         const data = await res.json();
         this.messages = data.result || [];
       } catch (e) {
-        console.error(e);
+        console.error("[ChatMessages] fetch error:", e);
       }
     }
   },

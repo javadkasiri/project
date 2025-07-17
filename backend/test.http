@@ -85,12 +85,13 @@ Content-Type: application/json
 {
   "action": "create",
   "data": {
-    "senderId": "customer_004",
-    "receiverId": "user_004",
-    "sender": "Sarah Ahmed",
-    "text": "I can't access my account",
-    "time": "10:51 AM",
-    "side": "left"
+    "conversationId": "conv_026",
+    "senderId": "customer_009",
+    "receiverId": "user_009",
+    "sender": "Emma Stone",
+    "text": "Perfect. I’ll visit tomorrow morning.",
+    "time": "3:43 PM",
+      "side": "left"
   }
 }
 
@@ -101,11 +102,12 @@ Content-Type: application/json
 {
   "action": "create",
   "data": {
-    "senderId": "user_004",
-     "receiverId": "customer_004",
-    "sender": "Lena",
-    "text": "I'll reset your password right away",
-    "time": "10:52 AM",
+    "conversationId": "conv_026",
+    "senderId": "user_009",
+    "receiverId": "customer_009",
+    "sender": "Michael",
+    "text": "We’ll be ready to assist. Thanks for checking in!",
+    "time": "3:44 PM",
     "side": "right"
   }
 }

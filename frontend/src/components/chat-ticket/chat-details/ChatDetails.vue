@@ -1,10 +1,10 @@
 <template>
   <div class="chat-details">
     <div class="half-box">
-      <UserInfo />
+      <UserInfo :customerId="customerId" :sender="sender" />
     </div>
     <div class="half-box">
-      <UserMessages />
+<UserMessages :customerId="customerId" :conversationId="conversationId" />
     </div>
   </div>
 </template>
@@ -15,34 +15,30 @@ import UserMessages from "./UserMessages.vue";
 
 export default {
   components: {
-    UserInfo,
+    UserInfo, 
     UserMessages,
   },
+  props: {
+    customerId: String,
+    agentId: String,
+    sender: String,
+  conversationId: String
+  }
 };
 </script>
 
 <style scoped>
 .chat-details {
-  display: flex;
   flex-direction: column;
-  justify-content: center; /* عمودی وسط */
-  align-items: center;     /* افقی وسط */
-  height: 100%;
-  gap: 15px;
-  padding: 30px;
   box-sizing: border-box;
+
 }
 
 .half-box {
   width: 100%;
-  display: flex;
-  justify-content: flex-start; 
-  padding-right: 30px;         
+  display: flex; 
+ 
 }
 
-.half-box > * {
-  display: flex;
-  justify-content: center;
-}
 </style>
 

@@ -11,7 +11,7 @@
       <div class="text">{{ text }}</div>
     </div>
   </div>
-</template>
+</template> 
 
 <script>
 export default {
@@ -24,14 +24,21 @@ export default {
   display: flex;
   background-color: #f8f8f8;
   padding: 12px 16px;
-  margin: 0px 15px;
   margin-bottom: 8px;
   border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.2s;
+  box-sizing: border-box;
+  min-width: 251px;
+  max-width: 251px;
 }
+
 .message-item:hover {
   background-color: #eef1f5;
+}
+
+.message-item.active {
+  background-color: #e3f2fd;
 }
 
 .avatar {
@@ -86,7 +93,10 @@ export default {
 
 .text {
   font-size: 13px;
-  color: #444;
-  word-wrap: break-word;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
 }
 </style>

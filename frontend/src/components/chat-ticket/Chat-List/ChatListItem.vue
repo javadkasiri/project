@@ -10,19 +10,21 @@
         <span class="sender">{{ sender }}</span>
         <span class="time">{{ time }}</span>
       </div>
-      <div class="last-message">{{ text }}</div>
+      <div class="text">{{ text }}</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['sender','customerId','agentId','text','time', 'isActive'],
+  props: ['sender', 'customerId', 'agentId', 'text', 'time', 'isActive', 'conversationId'],
   methods: {
     selectChat() {
       this.$emit('select', {
         customerId: this.customerId,
-        agentId: this.agentId
+        agentId: this.agentId,
+        sender: this.sender,
+        conversationId: this.conversationId    
       });
     }
   }
@@ -41,6 +43,7 @@ export default {
   border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.2s;
+  
 }
 .chat-list-item:hover {
   background-color: #eef1f5;
@@ -95,20 +98,12 @@ export default {
   white-space: nowrap;
   margin-left: 8px;
 }
-.last-message {
+.text {
   font-size: 13px;
   color: #666;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24;
-  font-size: 24px;
-}
+
 </style>

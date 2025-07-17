@@ -3,16 +3,22 @@
     <div class="chat-list">
       <ChatList @select="handleSelectUser" />
     </div>
-    <div class="chat-window">
-      <ChatWindow
-        v-if="selectedCustomerId && selectedAgentId"
-        :customerId="selectedCustomerId"
-        :agentId="selectedAgentId"
-      />
-      <div v-else class="placeholder">No chat has been selected from the list</div>
-    </div>
+<div class="chat-window">
+  <ChatWindow
+    v-if="selectedConversationId"
+    :customerId="selectedCustomerId"
+    :agentId="selectedAgentId"
+    :conversationId="selectedConversationId"
+  />
+  <div v-else class="placeholder">No chat has been selected from the list</div>
+</div>
     <div class="chat-details">
-      <ChatDetails />
+  <ChatDetails
+  :customerId="selectedCustomerId"
+  :agentId="selectedAgentId"
+  :sender="selectedSender"
+  :conversationId="selectedConversationId"
+/>
     </div>
   </div>
 </template>
@@ -25,18 +31,21 @@ import ChatDetails from "./chat-details/ChatDetails.vue";
 export default {
   components: { ChatList, ChatWindow, ChatDetails },
   data() {
-    return {
-      selectedCustomerId: null,
-      selectedAgentId: null,
-    };
-  },
-  methods: {
-    handleSelectUser({ customerId, agentId }) {
-      this.selectedCustomerId = customerId;
-      this.selectedAgentId = agentId;
-      console.log('[ChatRoom] selected:', customerId, agentId);
-    },
-  },
+  return {
+    selectedCustomerId: null,
+    selectedAgentId: null,
+    selectedSender: "",
+    selectedConversationId: null
+  };
+},
+methods: {
+  handleSelectUser({ customerId, agentId, sender, conversationId }) {
+    this.selectedCustomerId = customerId;
+    this.selectedAgentId = agentId;
+    this.selectedSender = sender;
+    this.selectedConversationId = conversationId;
+  }
+},
 };
 </script>
 
