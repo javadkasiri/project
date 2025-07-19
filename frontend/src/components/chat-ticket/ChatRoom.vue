@@ -1,7 +1,10 @@
 <template>
   <div class="chat-room">
     <div class="chat-list">
-      <ChatList @select="handleSelectUser" />
+      <ChatList
+  :selectedConversationId="selectedConversationId"
+  @select="handleSelectUser"
+/>
     </div>
 <div class="chat-window">
   <ChatWindow
@@ -9,15 +12,18 @@
     :customerId="selectedCustomerId"
     :agentId="selectedAgentId"
     :conversationId="selectedConversationId"
+    
   />
   <div v-else class="placeholder">No chat has been selected from the list</div>
 </div>
     <div class="chat-details">
   <ChatDetails
+  v-if="selectedCustomerId"
   :customerId="selectedCustomerId"
   :agentId="selectedAgentId"
   :sender="selectedSender"
   :conversationId="selectedConversationId"
+  @select-conversation="selectedConversationId = $event"
 />
     </div>
   </div>

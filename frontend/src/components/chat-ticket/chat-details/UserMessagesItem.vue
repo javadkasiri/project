@@ -1,5 +1,6 @@
 <template>
-  <div class="message-item">
+  <div class="message-item" :class="{ active: isActive }" @click="selectItem">
+
     <div class="avatar">
       <span class="material-symbols-outlined">person</span>
     </div>
@@ -15,7 +16,14 @@
 
 <script>
 export default {
-  props: ['sender', 'text', 'time'],
+  props: ['sender', 'text', 'time', 'isActive', 'conversationId'],
+  methods: {
+    selectItem() {
+      this.$emit('select', {
+        conversationId: this.conversationId
+      });
+    }
+  }
 };
 </script>
 
@@ -31,6 +39,10 @@ export default {
   box-sizing: border-box;
   min-width: 251px;
   max-width: 251px;
+}
+
+.message-item.active {
+  background-color: #e3f2fd; /* هم‌رنگ ChatList */
 }
 
 .message-item:hover {

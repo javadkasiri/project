@@ -18,12 +18,12 @@
 
 <script>
 export default {
-  props: ['sender', 'text', 'time', 'side'],
+  props: ["sender", "text", "time", "side"],
   computed: {
     iconName() {
-      return this.side === 'right' ? 'headset_mic' : 'person';
-    }
-  }
+      return this.side === "right" ? "headset_mic" : "person";
+    },
+  },
 };
 </script>
 
@@ -42,9 +42,9 @@ export default {
 }
 
 .chat-bubble.right {
-  flex-direction: row-reverse;   
-  justify-content: flex-start; 
-  text-align: right; 
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  text-align: right;
 }
 .avatar-circle {
   background-color: #e5e7eb;
@@ -64,13 +64,13 @@ export default {
 
 .bubble-content {
   max-width: 70%;
-  padding: 10px 14px;;
+  padding: 10px 14px;
   border-radius: 16px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   word-wrap: break-word;
   display: flex;
   flex-direction: column;
-  min-width: 120px; 
+  min-width: 120px;
   word-break: break-word;
 }
 
@@ -96,7 +96,6 @@ export default {
 }
 
 .time {
-  font-style: italic;
   color: #bbb;
 }
 </style>

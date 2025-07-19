@@ -1,17 +1,17 @@
 <template>
   <div class="chat-list-wrapper">
     <div class="header">Chat List</div>
-    <div class="chat-list">
+    <div class="chat-list" ref="chatListContainer">
 <ChatListItem
   v-for="item in latestCustomerChats"
-  :key="item.conversationId"
+  :key="item.customerId + '_' + item.conversationId"
   :sender="item.sender"
   :customerId="item.customerId"
   :agentId="item.agentId"
+  :conversationId="item.conversationId"
   :text="item.text"
   :time="item.time"
-  :conversationId="item.conversationId"
-  :isActive="item.conversationId === activeConversationId"
+  :isActive="item.conversationId === selectedConversationId"
   @select="handleSelect"
 />
     </div>
@@ -23,10 +23,11 @@ import ChatListItem from "./ChatListItem.vue";
 
 export default {
   components: { ChatListItem },
+  props: ['selectedConversationId'],
   data() {
     return {
       chats: [],
-      activeCustomerId: null, // ← آیتم انتخاب‌شده
+      activeConversationId: null, 
     };
   },
   computed: {
@@ -54,24 +55,30 @@ export default {
     async fetchChats() {
       try {
         console.log("[ChatList] fetching...");
-        const res = await fetch(
-          "http://localhost:3000/api/dumdb/vueapp/chats",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ action: "get", filter: {} }),
-          }
-        );
+        const res = await fetch("http://localhost:3000/api/dumdb/vueapp/chats", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "get", filter: {} }),
+        });
         const json = await res.json();
         this.chats = json.result;
+        this.scrollToBottom(); // ✅ اسکرول به پایین
       } catch (e) {
         console.error(e);
       }
     },
     handleSelect(payload) {
-      this.activeCustomerId = payload.customerId; // ← فعال‌سازی آیتم
+      this.activeConversationId = payload.conversationId;
       this.$emit("select", payload);
     },
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const container = this.$refs.chatListContainer;
+        if (container) {
+          container.scrollTop = container.scrollHeight;
+        }
+      });
+    }
   },
   mounted() {
     this.fetchChats();
@@ -96,11 +103,8 @@ export default {
   margin-bottom: 12px;
 }
 .chat-list {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  box-sizing: border-box;
+  overflow-y: auto;
   max-height: 100%;
-  min-width: 100%;
 }
 
 .chat-list::-webkit-scrollbar {
