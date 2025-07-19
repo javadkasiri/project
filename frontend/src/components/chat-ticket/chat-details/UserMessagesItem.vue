@@ -1,45 +1,58 @@
 <template>
-  <div class="chat-list-item" @click="selectChat">
-    <div class="avatar"><span class="material-symbols-outlined">person</span></div>
+  <div class="message-item" :class="{ active: isActive }" @click="selectItem">
+
+    <div class="avatar">
+      <span class="material-symbols-outlined">person</span>
+    </div>
     <div class="content">
       <div class="top-row">
         <span class="sender">{{ sender }}</span>
         <span class="time">{{ time }}</span>
       </div>
-      <div class="last-message">{{ text }}</div>
+      <div class="text">{{ text }}</div>
     </div>
   </div>
-</template>
+</template> 
 
 <script>
 export default {
-  props: ['sender','customerId','agentId','text','time'],
+  props: ['sender', 'text', 'time', 'isActive', 'conversationId'],
   methods: {
-    selectChat() {
+    selectItem() {
       this.$emit('select', {
-        customerId: this.customerId,
-        agentId: this.agentId
+        conversationId: this.conversationId
       });
     }
   }
-}
+};
 </script>
 
-
-
 <style scoped>
-.chat-list-item {
+.message-item {
   display: flex;
   background-color: #f8f8f8;
   padding: 12px 16px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.2s;
+  box-sizing: border-box;
+  min-width: 251px;
+  max-width: 251px;
 }
-.chat-list-item:hover {
+
+.message-item.active {
+  background-color: #e3f2fd; /* هم‌رنگ ChatList */
+}
+
+.message-item:hover {
   background-color: #eef1f5;
 }
+
+.message-item.active {
+  background-color: #e3f2fd;
+}
+
 .avatar {
   width: 40px;
   height: 40px;
@@ -52,6 +65,7 @@ export default {
   margin-right: 12px;
   flex-shrink: 0;
 }
+
 .content {
   flex: 1;
   display: flex;
@@ -61,6 +75,7 @@ export default {
   overflow: hidden;
   min-width: 0;
 }
+
 .top-row {
   display: flex;
   justify-content: space-between;
@@ -70,6 +85,7 @@ export default {
   color: #2c3e50;
   margin-bottom: 4px;
 }
+
 .sender {
   font-weight: bold;
   font-size: 14px;
@@ -79,26 +95,20 @@ export default {
   text-overflow: ellipsis;
   max-width: 70%;
 }
+
 .time {
   font-size: 12px;
   color: #999;
   white-space: nowrap;
   margin-left: 8px;
 }
-.last-message {
+
+.text {
   font-size: 13px;
   color: #666;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24;
-  font-size: 24px;
+  
 }
 </style>

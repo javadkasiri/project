@@ -1,42 +1,57 @@
 <template>
   <div class="chat-room">
     <div class="chat-list">
-      <ChatList @select="handleSelectUser" />
+      <ChatList
+  :selectedConversationId="selectedConversationId"
+  @select="handleSelectUser"
+/>
     </div>
-    <div class="chat-window">
-      <ChatWindow
-        v-if="selectedCustomerId && selectedAgentId"
-        :customerId="selectedCustomerId"
-        :agentId="selectedAgentId"
-      />
-      <div v-else class="placeholder">No chat has been selected from the list</div>
-    </div>
+<div class="chat-window">
+  <ChatWindow
+    v-if="selectedConversationId"
+    :customerId="selectedCustomerId"
+    :agentId="selectedAgentId"
+    :conversationId="selectedConversationId"
+    
+  />
+  <div v-else class="placeholder">No chat has been selected from the list</div>
+</div>
     <div class="chat-details">
-      <ChatDetails />
+  <ChatDetails
+  v-if="selectedCustomerId"
+  :customerId="selectedCustomerId"
+  :agentId="selectedAgentId"
+  :sender="selectedSender"
+  :conversationId="selectedConversationId"
+  @select-conversation="selectedConversationId = $event"
+/>
     </div>
   </div>
 </template>
 
 <script>
-import ChatList from "./ChatList.vue";
-import ChatWindow from "./ChatWindow.vue";
-import ChatDetails from "./ChatDetails.vue";
+import ChatList from "./Chat-List/ChatList.vue";
+import ChatWindow from "./chat-window/ChatWindow.vue";
+import ChatDetails from "./chat-details/ChatDetails.vue";
 
 export default {
   components: { ChatList, ChatWindow, ChatDetails },
   data() {
-    return {
-      selectedCustomerId: null,
-      selectedAgentId: null,
-    };
-  },
-  methods: {
-    handleSelectUser({ customerId, agentId }) {
-      this.selectedCustomerId = customerId;
-      this.selectedAgentId = agentId;
-      console.log('[ChatRoom] selected:', customerId, agentId);
-    },
-  },
+  return {
+    selectedCustomerId: null,
+    selectedAgentId: null,
+    selectedSender: "",
+    selectedConversationId: null
+  };
+},
+methods: {
+  handleSelectUser({ customerId, agentId, sender, conversationId }) {
+    this.selectedCustomerId = customerId;
+    this.selectedAgentId = agentId;
+    this.selectedSender = sender;
+    this.selectedConversationId = conversationId;
+  }
+},
 };
 </script>
 
@@ -52,20 +67,23 @@ export default {
 <style scoped>
 .chat-room {
   display: flex;
-  height: calc(92%); /* حذف چسبندگی پایین */
-  margin: 5px;
+  height: calc(93%); /* حذف چسبندگی پایین */
+  margin: 0px;
   background-color: #f0f2f5;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   box-sizing: border-box;
-  border-radius: 12px;
   overflow: hidden;
 }
 /* Sidebar */
 .chat-list {
   width: 20%;
   background: #ffffff;
-  padding: 12px;
   overflow-y: auto;
+  padding-top: 8px;  
+  padding-right: 0;
+  padding-left: 0;
+  padding-bottom: 8px;
+
 }
 
 /* Chat content */
@@ -80,6 +98,8 @@ export default {
 .chat-details {
   width: 20%;
   background: #ffffff;
-  padding: 20px;
+  padding: 0;
+  margin: 0;
+
 }
 </style>

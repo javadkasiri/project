@@ -1,20 +1,24 @@
 <template>
   <div class="chat-window">
-    <ChatMessages :customerId="customerId" :agentId="agentId" />
+ <ChatMessages
+  :customerId="customerId"
+  :agentId="agentId"
+  :conversationId="conversationId"
+/>
     <ChatInput />
   </div>
 </template>
 
 <script>
-import ChatMessages from "./chat-window/ChatMessages.vue";
-import ChatInput from "./chat-window/ChatInput.vue";
+import ChatMessages from "./ChatMessages.vue";
+import ChatInput from "./ChatInput.vue";
 
 export default {
   components: { ChatMessages, ChatInput },
-  props: ['customerId','agentId']
+  props: ['customerId', 'agentId', 'conversationId']
+,
 };
 </script>
-
 
 <style scoped>
 .chat-window {
@@ -31,8 +35,8 @@ export default {
   overflow-y: scroll;
   padding: 1rem;
   display: flex;
-  flex-direction: column; 
-  min-height: 0;       
+  flex-direction: column;
+  min-height: 0;
 }
 
 .input-container {
