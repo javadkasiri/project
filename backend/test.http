@@ -7,10 +7,6 @@ Content-Type: application/json
   "password": "Ts_12345678"
 }
 
-#input 1.email 2.password
-#returen null
-#function send input to database 
-
 
 ### Test Login
 POST http://localhost:3000/api/login
@@ -19,36 +15,6 @@ Content-Type: application/json
 {
   "email": "example@example.com",
   "password": "testpassword"
-}
-
-#input 1.email 2.password
-#returen token
-#function send token to memcached
-
-
-### Create problem
-POST http://localhost:3000/api/dumdb/vueapp/problems
-Content-Type: application/json
-
-{
-  "action": "create",
-  "data": {
-    "username": "javad",
-    "chat_id": "5656777",
-    "problem_msg": "dsgfdfhggf",
-    "status": "open"
-  }
-}
-
-### Get problems
-POST http://localhost:3000/api/dumdb/vueapp/problems
-Content-Type: application/json
-
-{
-  "action": "get",
-  "filter": {
-    "username": "javad"
-  }
 }
 
 
@@ -119,4 +85,43 @@ Content-Type: application/json
 {
   "action": "get",
   "filter": {}
+}
+
+### Create a problem
+POST http://localhost:3000/api/dumdb/vueapp/problems
+Content-Type: application/json
+
+{
+  "action": "create",
+  "data": {
+    "customerId": "customer_002",
+    "title": "App crash on launch",
+    "description": "User reports the mobile app crashes immediately after opening.",
+    "status": "Resolved",
+    "createdAt": "2025-07-18T08:40:00Z",
+    "reviewedAt": "2025-07-18T09:10:00Z",
+    "createdBy": "user_002",
+    "reviewedBy": "user_003",
+    "note": "Crash logs indicate version mismatch. User advised to update app."
+  }
+}
+
+### Get problems
+POST http://localhost:3000/api/dumdb/vueapp/problems
+Content-Type: application/json
+
+{
+  "action": "get",
+  "filter": {}
+}
+
+### Get problems for a specific customer
+POST http://localhost:3000/api/dumdb/vueapp/problems
+Content-Type: application/json
+
+{
+  "action": "get",
+  "filter": {
+    "customerId": "customer_006"
+  }
 }

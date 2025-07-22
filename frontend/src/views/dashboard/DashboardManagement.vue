@@ -26,11 +26,11 @@
 <script>
 import ManagementWall from "@/components/management/ManagementWall.vue"
 import ManagementEvent from "@/components/management/ManagementEvent.vue"
-import ManagementProblems from "@/components/management/ManagementProblems.vue"
+import ManagementProblems from "@/components/management/management-problems/ManagementProblems.vue"
 import ManagementReports from "@/components/management/ManagementReports.vue"
 import ManagementStaff from "@/components/management/ManagementStaff.vue"
 
-export default {
+export default {  
   components: {
     ManagementWall,
     ManagementEvent,

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import SidebarMenu from "../components/SidebarMenu.vue";
+import SidebarMenu from "../../components/SidebarMenu.vue";
 
 export default {
   name: "DashboardLayout",

@@ -13,9 +13,9 @@
       <span class="material-symbols-outlined">call</span>
     </div>
 
-    <div class="links">
-      <div class="link" @click="handleClick('problems')">Problems</div>
-      <div class="link" @click="handleClick('add')">Add Problem</div>
+    <div class="buttons">
+      <a :href="problemsUrl" target="_blank" class="button">Problems</a>
+      <a :href="addProblemUrl" target="_blank" class="button">Add Problem</a>
     </div>
   </div>
 </template>
@@ -24,14 +24,17 @@
 export default {
   props: {
     customerId: String,
-    sender: String
+    sender: String,
   },
-  methods: {
-    handleClick(action) {
-      console.log("Clicked:", action);
-      // می‌تونی اینجا route بزنی یا modal باز کنی
-    }
+  computed: {
+  problemsUrl() {
+    return `/management/problems/${this.customerId}`;
+  },
+  addProblemUrl() {
+    return `/management/add-problem/${this.customerId}`;
   }
+}
+
 };
 </script>
 
@@ -40,10 +43,10 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 16px ;
+  padding: 20px 16px;
   background-color: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   margin: 10px 15px 15px;
   min-width: 210px;
   max-width: 210px;
@@ -88,14 +91,14 @@ export default {
   font-size: 30px; /* یا هر عدد دلخواه */
 }
 
-.links {
+.buttons {
   display: flex;
   flex-direction: column;
   gap: 12px;
   width: 100%;
 }
 
-.link {
+.button {
   text-align: center;
   background-color: #f2f6fc;
   padding: 10px;
@@ -104,9 +107,10 @@ export default {
   color: #2196f3;
   font-weight: 500;
   transition: background-color 0.2s;
+  text-decoration: none;
 }
 
-.link:hover {
+.button:hover {
   background-color: #e3f2fd;
 }
 </style>

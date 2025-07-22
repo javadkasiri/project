@@ -5,14 +5,14 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Signup from "../views/Signup.vue";
 import Login from "../views/Login.vue";
-import Dashboard from "../views/Dashboard.vue";
-import DashboardSetting from "../views/DashboardSetting.vue";
-import DashboardProfile from "../views/DashboardProfile.vue";
-import DashboardManagement from "../views/DashboardManagement.vue";
-import DashboardChatTicket from "../views/DashboardChatTicket.vue";
-import DashboardCallCenter from "../views/DashboardCallCenter.vue";
-import DashboardMarketing from "../views/DashboardMarketing.vue";
-import DashboardDataGrabber from "../views/DashboardDataGrabber.vue";
+import Dashboard from "../views/dashboard/Dashboard.vue";
+import DashboardSetting from "../views/dashboard/DashboardSetting.vue";
+import DashboardProfile from "../views/dashboard/DashboardProfile.vue";
+import DashboardManagement from "../views/dashboard/DashboardManagement.vue";
+import DashboardChatTicket from "../views/dashboard/DashboardChatTicket.vue";
+import DashboardCallCenter from "../views/dashboard/DashboardCallCenter.vue";
+import DashboardMarketing from "../views/dashboard/DashboardMarketing.vue";
+import DashboardDataGrabber from "../views/dashboard/DashboardDataGrabber.vue";
 
 //تعریف مسیرها
 const routes = [
@@ -33,6 +33,14 @@ const routes = [
     ],
     meta: { requiresAuth: true }, // برای فعال‌سازی گارد امنیتی استفاده می‌شود.
   },
+{
+  path: '/management/add-problem/:customerId',
+  component: () => import('@/views/problems/AddProblem.vue'),
+},
+{
+  path: '/management/customer-problems/:customerId',
+  component: () => import('@/views/problems/CustomerProblems.vue'),
+},
 ];
 
 //استفاده از تاریخچه‌ی مرورگر به جای hash mode.
