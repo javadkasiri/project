@@ -78,8 +78,9 @@ export default {
 }
 
 .tab-content {
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  background: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 </style>

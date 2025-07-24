@@ -95,14 +95,14 @@ Content-Type: application/json
   "action": "create",
   "data": {
     "customerId": "customer_002",
-    "title": "App crash on launch",
-    "description": "User reports the mobile app crashes immediately after opening.",
+    "title": "Wrong currency displayed",
+    "description": "Prices are shown in USD instead of AED for UAE users. All product thumbnails appear broken on category pages.",
     "status": "Resolved",
-    "createdAt": "2025-07-18T08:40:00Z",
-    "reviewedAt": "2025-07-18T09:10:00Z",
+    "createdAt": "2025-07-23T07:00:00Z",
+    "reviewedAt": "2025-07-23T07:45:00Z",
     "createdBy": "user_002",
     "reviewedBy": "user_003",
-    "note": "Crash logs indicate version mismatch. User advised to update app."
+    "note": "Likely a regional settings issue. Dev to check geolocation fallback."
   }
 }
 
@@ -115,13 +115,3 @@ Content-Type: application/json
   "filter": {}
 }
 
-### Get problems for a specific customer
-POST http://localhost:3000/api/dumdb/vueapp/problems
-Content-Type: application/json
-
-{
-  "action": "get",
-  "filter": {
-    "customerId": "customer_006"
-  }
-}

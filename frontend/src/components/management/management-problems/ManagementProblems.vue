@@ -1,6 +1,8 @@
 <template>
-  <div class="management-problems">
-    <ProblemList />
+  <div >
+    <div class="problems-wrapper">
+      <ProblemList />
+    </div>
   </div>
 </template>
 
@@ -16,5 +18,7 @@ export default {
 </script>
 
 <style scoped>
-/* استایل دلخواه */
+.problems-wrapper {
+  margin: 10px
+}
 </style>

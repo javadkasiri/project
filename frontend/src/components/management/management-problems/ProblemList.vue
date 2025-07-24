@@ -55,14 +55,28 @@ export default {
   width: 100%;
   background: #fff;
   border-radius: 10px;
-  padding: 20px;
+  padding: 0px;
 }
+
 .problem-header {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  font-weight: bold;
+ grid-template-columns:
+    1fr     /* Customer ID */
+    1fr     /* Title */
+    3fr     /* Description */
+    1fr     /* Created By */
+    1.2fr   /* Created At */
+    0.8fr   /* Status */
+    0.8fr   /* Actions */
+    0.8fr;  /* Response */  font-weight: bold;
   color: #666;
-  padding: 10px 0;
+  padding: 10px 10px 10px 5px;
   border-bottom: 2px solid #eee;
+  text-align: center;
+}
+
+.problem-header div {
+  padding: 10px 8px;
+  box-sizing: border-box;
 }
 </style>
