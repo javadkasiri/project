@@ -11,11 +11,14 @@
       <div>Response</div>
     </div>
 
-    <ProblemListItem
-      v-for="problem in problems"
-      :key="problem._id"
-      :problem="problem"
-    />
+    <!-- 👇 این بخش اسکرول‌پذیر میشه -->
+    <div class="problem-items">
+      <ProblemListItem
+        v-for="problem in problems"
+        :key="problem._id"
+        :problem="problem"
+      />
+    </div>
   </div>
 </template>
 
@@ -53,22 +56,26 @@ export default {
 <style scoped>
 .problem-list {
   width: 100%;
+  min-width: 1200px;
   background: #fff;
   border-radius: 10px;
-  padding: 0px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .problem-header {
   display: grid;
- grid-template-columns:
-    1fr     /* Customer ID */
-    1fr     /* Title */
-    3fr     /* Description */
-    1fr     /* Created By */
-    1.2fr   /* Created At */
-    0.8fr   /* Status */
-    0.8fr   /* Actions */
-    0.8fr;  /* Response */  font-weight: bold;
+  grid-template-columns:
+    1fr /* Customer ID */
+    1fr /* Title */
+    3fr /* Description */
+    1fr /* Created By */
+    1.2fr /* Created At */
+    0.8fr /* Status */
+    0.8fr /* Actions */
+    0.8fr; /* Response */
+  font-weight: bold;
   color: #666;
   padding: 10px 10px 10px 5px;
   border-bottom: 2px solid #eee;
@@ -78,5 +85,21 @@ export default {
 .problem-header div {
   padding: 10px 8px;
   box-sizing: border-box;
+}
+.problem-items {
+  max-height: 630px; /* ارتفاع دلخواه */
+  overflow-y: auto;
+}
+.problem-items::-webkit-scrollbar {
+  width: 4px;
+}
+
+.problem-items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.problem-items::-webkit-scrollbar-thumb {
+  background-color: #999;
+  border-radius: 4px;
 }
 </style>

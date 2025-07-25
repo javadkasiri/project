@@ -1,8 +1,20 @@
 <template>
   <div class="chat-input">
-    <span class="material-symbols-outlined icon">mood</span>
-    <input type="text" placeholder="Type a message" v-model="message" />
-    <span class="material-symbols-outlined icon">attach_file</span>
+    <div class="input-container">
+      <span class="material-symbols-outlined icon">mood</span>
+
+      <textarea
+        v-model="message"
+        class="chat-textarea"
+        ref="input"
+        rows="1"
+        @input="autoResize"
+        @keydown="handleKeydown"
+      ></textarea>
+
+      <span class="material-symbols-outlined icon">attach_file</span>
+    </div>
+
     <button class="send-btn" @click="sendMessage">
       <span class="material-symbols-outlined">send</span>
     </button>
@@ -21,8 +33,25 @@ export default {
       if (this.message.trim()) {
         console.log("Message sent:", this.message);
         this.message = "";
+        this.$nextTick(() => this.autoResize());
       }
     },
+    autoResize() {
+      const textarea = this.$refs.input;
+      if (textarea) {
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
+      }
+    },
+    handleKeydown(e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        this.sendMessage();
+      }
+    }
+  },
+  mounted() {
+    this.autoResize();
   },
 };
 </script>
@@ -30,41 +59,63 @@ export default {
 <style scoped>
 .chat-input {
   display: flex;
-  align-items: center;
-  padding: 10px 16px;
+  align-items: flex-end;
   background-color: #e4e5e8;
+  padding: 10px 16px;
   gap: 12px;
   width: 100%;
   box-sizing: border-box;
-  margin: 0;
-  border-radius: 0;
 }
 
-.chat-input input {
-  flex: 1;
-  padding: 10px 12px;
-  border: none;
-  border-radius: 20px;
+/* ✅ آیکن‌ها در پایین بمونند */
+.input-container {
+  display: flex;
+  align-items: flex-end; /* 👈 تغییر این خط */
   background-color: #fff;
+  border-radius: 20px;
+  flex: 1;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  gap: 8px;
+}
+
+/* ✅ حالت رشد textarea */
+.chat-textarea {
+  flex: 1;
+  border: none;
   outline: none;
   font-size: 14px;
-  
+  padding: 6px 0;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.4;
+  background-color: transparent;
+  box-sizing: border-box;
+  min-height: 20px;
+  max-height: 150px;
 }
 
+/* آیکون‌ها */
 .icon {
   font-size: 20px;
   color: #555;
   cursor: pointer;
+  display: flex;
+  align-items: flex-end; /* 👈 اطمینان از قرارگیری پایین */
+    padding: 6px 0;
+
+  
 }
 
+/* دکمه ارسال */
 .send-btn {
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 50%;
   padding: 10px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   font-size: 18px;
   display: flex;
   align-items: center;
@@ -75,12 +126,9 @@ export default {
 .send-btn:hover {
   background-color: #006ae1;
 }
+
 .material-symbols-outlined {
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   user-select: none;
 }
 </style>

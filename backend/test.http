@@ -94,15 +94,15 @@ Content-Type: application/json
 {
   "action": "create",
   "data": {
-    "customerId": "customer_002",
-    "title": "Wrong currency displayed",
-    "description": "Prices are shown in USD instead of AED for UAE users. All product thumbnails appear broken on category pages.",
+    "customerId": "customer_009",
+    "title": "Unable to change password",
+    "description": "Reset password page not accepting new input.",
     "status": "Resolved",
-    "createdAt": "2025-07-23T07:00:00Z",
-    "reviewedAt": "2025-07-23T07:45:00Z",
-    "createdBy": "user_002",
-    "reviewedBy": "user_003",
-    "note": "Likely a regional settings issue. Dev to check geolocation fallback."
+    "createdAt": "2025-07-21T16:00:00Z",
+    "reviewedAt": "2025-07-21T16:30:00Z",
+    "createdBy": "user_009",
+    "reviewedBy": "user_010",
+    "note": "Frontend validation fixed. User confirmed successful change."
   }
 }
 

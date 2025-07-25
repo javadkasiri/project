@@ -19,6 +19,6 @@ export default {
 
 <style scoped>
 .problems-wrapper {
-  margin: 10px
+  margin: 0px
 }
 </style>
