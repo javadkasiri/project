@@ -8,9 +8,9 @@
     <div class="customerId">{{ customerId }}</div>
 
     <div class="actions">
-      <span class="material-symbols-outlined">mail</span>
-      <span class="material-symbols-outlined">chat</span>
-      <span class="material-symbols-outlined">call</span>
+      <span class="material-symbols-outlined" title="Ticket">mail</span>
+      <span class="material-symbols-outlined" title="Chat">chat</span>
+      <span class="material-symbols-outlined" title="Call">call</span>
     </div>
 
     <div class="buttons">

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import LogoutButton from "@/components/LogoutButton.vue";
+import LogoutButton from "@/components/sidebar/LogoutButton.vue";
 
 export default {
   name: "SidebarMenu",

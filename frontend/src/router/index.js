@@ -6,8 +6,6 @@ import Home from "../views/Home.vue";
 import Signup from "../views/Signup.vue";
 import Login from "../views/Login.vue";
 import Dashboard from "../views/dashboard/Dashboard.vue";
-import DashboardSetting from "../views/dashboard/DashboardSetting.vue";
-import DashboardProfile from "../views/dashboard/DashboardProfile.vue";
 import DashboardManagement from "../views/dashboard/DashboardManagement.vue";
 import DashboardChatTicket from "../views/dashboard/DashboardChatTicket.vue";
 import DashboardCallCenter from "../views/dashboard/DashboardCallCenter.vue";
@@ -23,8 +21,6 @@ const routes = [
     path: "/dashboard", //مسیر /dashboard فقط برای کاربران لاگین شده است
     component: Dashboard,
     children: [
-      { path: "setting", component: DashboardSetting },
-      { path: "profile", component: DashboardProfile },
       { path: "management", component: DashboardManagement },
       { path: "chat-ticket", component: DashboardChatTicket },
       { path: "call-center", component: DashboardCallCenter },

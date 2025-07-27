@@ -6,18 +6,42 @@
       <div class="cell title">{{ problem.title }}</div>
 
       <div class="cell description" @mouseenter="checkTruncation">
-        <span ref="descRef" class="description-text">
-          {{ problem.description }}
-        </span>
-        <div
-          v-if="isTruncatable"
-          class="description-expand-toggle"
-          @click.stop="isExpanded = !isExpanded"
-        >
-          <span class="material-symbols-outlined">
-            {{ isExpanded ? "expand_less" : "expand_more" }}
+        <!-- حالت نمایش معمول -->
+        <template v-if="!isEditingDescription">
+          <span ref="descRef" class="description-text">
+            {{ editableDescription }}
           </span>
-        </div>
+          <div
+            v-if="isTruncatable"
+            class="description-expand-toggle"
+            @click.stop="isExpanded = !isExpanded"
+          >
+            <span class="material-symbols-outlined">
+              {{ isExpanded ? "expand_less" : "expand_more" }}
+            </span>
+          </div>
+        </template>
+
+        <!-- حالت ویرایش Description -->
+        <template v-else>
+          <div class="description-edit-wrapper">
+            <textarea
+              v-model="editableDescription"
+              class="description-input"
+              rows="2"
+              @input="autoResizeDesc"
+              ref="descTextarea"
+            ></textarea>
+
+            <!-- دکمه تأیید برای خروج از حالت ادیت -->
+            <button
+              class="confirm-button"
+              @click="isEditingDescription = false"
+            >
+              Confirm
+            </button>
+          </div>
+        </template>
       </div>
 
       <div class="cell created-by">{{ problem.createdBy }}</div>
@@ -30,19 +54,30 @@
       </div>
 
       <div class="cell icons">
-        <!-- آیکون عکس -->
-        <span class="material-symbols-outlined icon-button" title="View Image"
-        >image</span>
+        <span class="material-symbols-outlined icon-button" title="View Image">
+          image
+        </span>
 
-        <!-- آیکون ویرایش -->
-        <span class="material-symbols-outlined icon-button" title="Edit"
-          >edit</span
+        <!-- آیکون ویرایش برای Description -->
+        <span
+          v-if="!isEditingDescription"
+          class="material-symbols-outlined icon-button"
+          title="Edit"
+          @click="isEditingDescription = true"
         >
+          edit
+        </span>
+        <span
+          v-else
+          class="material-symbols-outlined icon-button"
+          title="Attach File"
+        >
+          attach_file
+        </span>
 
-        <!-- آیکون حذف -->
-        <span class="material-symbols-outlined icon-button" title="Delete"
-          >delete</span
-        >
+        <span class="material-symbols-outlined icon-button" title="Delete">
+          delete
+        </span>
       </div>
 
       <div class="cell response-toggle">
@@ -55,12 +90,12 @@
       </div>
     </div>
 
-    <!-- بخش پاسخ -->
+    <!-- پاسخ -->
     <div v-if="isOpen" class="response-box">
+      <!-- وضعیت Pending -->
       <template v-if="problem.status === 'Pending'">
-        <div class="note-row">
+        <div class="note-pending-box">
           <label class="note-label"><strong>Note:</strong></label>
-
           <textarea
             v-model="editableNote"
             class="note-input"
@@ -69,25 +104,83 @@
             rows="1"
           />
 
-          <!-- آیکون ضمیمه -->
-          <span class="material-symbols-outlined attach-icon">attach_file</span>
+          <span class="material-symbols-outlined attach-icon"
+          title="Attach File">
+            attach_file
+          </span>
 
-          <!-- دکمه‌ها -->
-          <div class="note-buttons">
-            <button class="btn-resolved">Resolved</button>
-            <button class="btn-reviewing">Reviewing</button>
+          <div class="pending-buttons">
+            <button class="btn-resolved" @click="markAsResolved">
+              Resolved
+            </button>
+
+            <button class="btn-reviewing" @click="markAsReviewing">
+              Reviewing
+            </button>
           </div>
         </div>
       </template>
 
+      <!-- وضعیت Reviewing و Resolved -->
       <template v-else>
-        <p class="note">
-          <strong>Reviewed By:</strong> {{ problem.reviewedBy }} &nbsp;&nbsp;
-          <strong>Reviewed At:</strong>
-          {{ formatDate(problem.reviewedAt) }} &nbsp;&nbsp;
-          <strong class="blue-note">Note:</strong> {{ problem.note }}
-        </p>
-      </template>
+  <div class="note-resolved-box">
+    <!-- حالت نمایش فقط متن -->
+    <div
+      v-if="!isEditingNote"
+      class="note-display"
+    >
+      {{ editableNote }}
+    </div>
+
+    <!-- حالت ویرایش Note -->
+    <textarea
+      v-else
+      v-model="editableNote"
+      class="note-display editable"
+      @input="autoResize"
+      ref="noteInput"
+      rows="1"
+    ></textarea>
+
+    <div class="note-bottom-row">
+      <div class="review-meta">
+        <span><strong>Reviewed By:</strong> {{ problem.reviewedBy }}</span>
+        <span><strong>Reviewed At:</strong> {{ formatDate(problem.reviewedAt) }}</span>
+      </div>
+
+      <!-- دکمه‌ها -->
+      <div class="resolved-buttons">
+        <span class="material-symbols-outlined icon-button" title="View Image">image</span>
+
+        <span
+          v-if="!isEditingNote"
+          class="material-symbols-outlined icon-button"
+          @click="startNoteEdit"
+          title="Edit"
+        >
+          edit
+        </span>
+
+        <span
+          v-else
+          class="material-symbols-outlined icon-button"
+          title="Attach File"
+        >
+          attach_file
+        </span>
+
+        <button class="btn-resolved" @click="markAsResolved">
+          Resolved
+        </button>
+
+        <button class="btn-reviewing" @click="markAsReviewing">
+          Reviewing
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
     </div>
   </div>
 </template>
@@ -102,6 +195,11 @@ export default {
       isOpen: false,
       isExpanded: false,
       isTruncatable: false,
+
+      isEditingDescription: false,
+      isEditingNote: false,
+
+      editableDescription: this.problem.description,
       editableNote: this.problem.note || "",
     };
   },
@@ -111,6 +209,7 @@ export default {
       this.autoResize();
     });
   },
+  
   methods: {
     toggleResponse() {
       this.isOpen = !this.isOpen;
@@ -129,7 +228,6 @@ export default {
       this.$nextTick(() => {
         const el = this.$refs.descRef;
         if (!el) return;
-
         if (!this.isExpanded) {
           this.isTruncatable = el.scrollHeight > el.offsetHeight;
         } else {
@@ -138,11 +236,44 @@ export default {
       });
     },
     autoResize() {
-      const textarea = this.$refs.noteInput;
-      if (textarea) {
-        textarea.style.height = "auto"; // ریست اولیه
-        textarea.style.height = textarea.scrollHeight + "px"; // ست کردن به اندازه محتوای داخلی
+      this.$nextTick(() => {
+        const textarea = this.$refs.noteInput;
+        if (textarea) {
+          textarea.style.height = "auto";
+          textarea.style.height = textarea.scrollHeight + "px";
+        }
+      });
+    },
+    autoResizeDesc() {
+      const el = this.$refs.descTextarea;
+      if (el) {
+        el.style.height = "auto";
+        el.style.height = el.scrollHeight + "px";
       }
+    },
+    startNoteEdit() {
+      this.isEditingNote = true;
+      this.$nextTick(() => this.autoResize());
+    },
+    markAsResolved() {
+      this.isEditingNote = false;
+      this.isOpen = false; // بستن پنل پاسخ
+      this.emitUpdatedProblem("Resolved"); // ارسال مقدار جدید به والد
+    },
+
+    markAsReviewing() {
+      this.isEditingNote = false;
+      this.isOpen = false;
+      this.emitUpdatedProblem("Reviewing");
+    },
+    emitUpdatedProblem(status) {
+      this.$emit("update-problem", {
+        ...this.problem,
+        description: this.editableDescription,
+        note: this.editableNote,
+        status: status || this.problem.status,
+        reviewedAt: new Date().toISOString(),
+      });
     },
   },
 };
@@ -203,6 +334,38 @@ export default {
   width: 100%;
   text-align: justify;
 }
+.description-edit-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  margin-top: 4px;
+  width: 100%;
+}
+.description-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  line-height: 1.4;
+  resize: none;
+  overflow: hidden;
+  font-family: "Vazirmatn", sans-serif;
+  background: #fff;
+  box-sizing: border-box;
+  min-height: 80px;
+}
+.confirm-button {
+  padding: 4px 8px;
+  font-weight: bold;
+  color: white;
+  background-color: #333;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .cell.icons {
   display: flex;
   justify-content: center;
@@ -216,9 +379,6 @@ export default {
   transition: color 0.2s ease;
 }
 
-.icon-button:hover {
-  color: #007bff;
-}
 /* حالت باز شده */
 .problem-row.expanded .description-text {
   -webkit-line-clamp: unset;
@@ -283,10 +443,8 @@ export default {
   box-sizing: border-box;
   gap: 12px; /* فاصله بین آیتم‌ها */
 }
-.response-box .note strong {
-  color: #42a5f5 !important;
-}
-.note-row {
+/* pending*/
+.note-pending-box {
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -324,6 +482,7 @@ export default {
   min-height: 32px;
   resize: none;
   line-height: 20px;
+  font-family: "Vazirmatn", sans-serif;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -335,12 +494,100 @@ export default {
   margin-left: -3px; /* نزدیک‌تر به دکمه‌ها */
   padding-top: 7px;
 }
-.note-buttons {
+.pending-buttons {
   display: flex;
   gap: 8px;
   margin-top: 4px;
   margin-left: auto;
 }
+
+/* resolved*/
+.note-resolved-box {
+  width: 100%;
+  background: #e5e5e5;
+  padding: 10px 0px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.note-display {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  background-color: #fff;
+  box-sizing: border-box;
+  line-height: 20px;
+  font-family: "Vazirmatn", sans-serif;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: left
+}
+
+/* در حالت فعال شدن ادیت */
+.note-display.editable {
+  border: 1px solid #aaa;
+  resize: none;
+  outline: none;
+  overflow: hidden;
+  cursor: text;
+}
+/* در فوکوس فقط در صورت فعال بودن ادیت */
+.note-display.editable:focus {
+  border: 2px solid #333;
+}
+
+/* اگر فوکوس گرفت ولی ادیت فعال نبود، دوباره سفید باشه */
+.note-display:not(.editable):focus {
+  border: 1px solid #fff;
+  outline: none;
+}
+
+.note-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.review-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: #333;
+  flex-wrap: wrap;
+}
+.review-meta span strong {
+  color: #000;
+}
+.resolved-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.review-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: #333;
+  flex-wrap: wrap;
+}
+.review-meta span strong {
+  color: #000;
+}
+
 .btn-reviewing,
 .btn-resolved {
   padding: 6px 12px;
