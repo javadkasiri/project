@@ -24,7 +24,6 @@
     <div v-if="showProfile" class="popup" @click.self="closeProfilePopup">
       <NavbarProfile @close="closeProfilePopup" />
     </div>
-
     <!-- پاپ‌آپ تنظیمات -->
     <div v-if="showSettings" class="popup" @click.self="closeSettingsPopup">
       <NavbarSetting @close="closeSettingsPopup" />
@@ -117,20 +116,11 @@ export default {
 }
 .popup {
   position: fixed;
-  inset: 0; /* معادل top: 0; right: 0; bottom: 0; left: 0 */
+  inset: 0;
+  display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
-  background: rgba(0, 0, 0, 0.4); /* 👈 بازگرداندن پس‌زمینه مشکی نیمه‌شفاف */
-}
-
-.popup-content {
-  background-color: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  max-width: 500px;
-  width: 90%;
-  position: relative;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.4);
 }
 </style>

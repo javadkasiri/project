@@ -52,4 +52,8 @@ router.post("/logout", (req, res) => {
   }
 });
 
+// بررسی وضعیت سشن/توکن برای فرانت
+router.get("/check-session", auth, (req, res) => {
+  res.status(200).json({ message: "Session valid", user: req.user });
+});
 module.exports = router;

@@ -29,14 +29,7 @@ const routes = [
     ],
     meta: { requiresAuth: true }, // برای فعال‌سازی گارد امنیتی استفاده می‌شود.
   },
-{
-  path: '/management/add-problem/:customerId',
-  component: () => import('@/views/problems/AddProblem.vue'),
-},
-{
-  path: '/management/customer-problems/:customerId',
-  component: () => import('@/views/problems/CustomerProblems.vue'),
-},
+
 ];
 
 //استفاده از تاریخچه‌ی مرورگر به جای hash mode.

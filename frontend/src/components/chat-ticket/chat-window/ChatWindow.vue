@@ -1,11 +1,11 @@
 <template>
   <div class="chat-window">
- <ChatMessages
-  :customerId="customerId"
-  :agentId="agentId"
-  :conversationId="conversationId"
-/>
-    <ChatInput />
+    <ChatMessages
+      :customerId="customerId"
+      :agentId="agentId"
+      :conversationId="conversationId"
+    />
+    <ChatInput :draft="draft" @update-draft="handleUpdateDraft" />
   </div>
 </template>
 
@@ -15,8 +15,23 @@ import ChatInput from "./ChatInput.vue";
 
 export default {
   components: { ChatMessages, ChatInput },
-  props: ['customerId', 'agentId', 'conversationId']
-,
+  props: {
+    customerId: String,
+    agentId: String,
+    conversationId: String,
+    draft: {
+      type: String,
+      default: "",
+    },
+  },
+  methods: {
+    handleUpdateDraft(message) {
+      this.$emit("update-draft", {
+        conversationId: this.conversationId,
+        message,
+      });
+    },
+  },
 };
 </script>
 

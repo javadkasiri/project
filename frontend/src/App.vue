@@ -7,11 +7,39 @@
 
 <script>
 import AppNavbar from './components/navbar/AppNavbar.vue'
+import { auth } from "@/utils/auth";
 
 export default {
   name: 'App',
   components: {
     AppNavbar
+  },
+  async mounted() {
+    const token = localStorage.getItem("token");
+    if (auth.isLoggedIn || token) {
+      try {
+        const res = await fetch("http://localhost:3000/api/check-session", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        });
+
+        if (!res.ok) {
+          // یعنی status 401 یا 403 یا هرچیز غیر از 2xx
+          throw new Error("Session invalid");
+        }
+
+      
+
+      } catch (err) {
+        console.warn("Session expired or failed:", err);
+        auth.isLoggedIn = false;
+        localStorage.removeItem("token");
+        this.$router.push("/");
+      }
+    }
   }
 }
 </script>

@@ -1,5 +1,4 @@
 <template>
-  <div class="setting-wrapper">
     <div class="setting-card">
       <button class="close-btn" @click="$emit('close')">✖</button>
       <h3>Update Account Settings</h3>
@@ -27,7 +26,6 @@
         <button class="submit-button" type="submit">Save</button>
       </form>
     </div>
-  </div>
 </template>
 
 <script>
@@ -54,21 +52,14 @@ export default {
 </script>
 
 <style scoped>
-.setting-wrapper {
-  position: relative; /* اضافه شود */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* برای وسط چین کردن بهتر */
-}
 .setting-card {
   position: relative; /* برای اینکه close-btn درست کار کنه */
   background: #fff;
   padding: 30px;
   border-radius: 12px;
+  min-width: 500px;
   max-width: 500px;
-  width: 100%;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 h3 {
@@ -117,7 +108,7 @@ input {
   right: 15px;
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 15px;
   color: #888;
   cursor: pointer;
 }

@@ -350,12 +350,18 @@ export default {
   border: 1px solid #ccc;
   line-height: 1.4;
   resize: none;
-  overflow: hidden;
   font-family: "Vazirmatn", sans-serif;
   background: #fff;
   box-sizing: border-box;
   min-height: 80px;
+   max-height: 150px; 
+   overflow-y: auto;
+  scrollbar-width: none;
 }
+.description-input::-webkit-scrollbar {
+  display: none;
+}
+
 .confirm-button {
   padding: 4px 8px;
   font-weight: bold;
@@ -480,12 +486,19 @@ export default {
   border-radius: 6px;
   border: 1px solid #aaa;
   min-height: 32px;
+  max-height: 150px; 
   resize: none;
   line-height: 20px;
   font-family: "Vazirmatn", sans-serif;
-  overflow: hidden;
+ overflow-y: auto;              /* 👈 فعال کردن اسکرول */
   box-sizing: border-box;
+  scrollbar-width: none;         /* Firefox */
 }
+.note-input::-webkit-scrollbar {
+  display: none;                 /* Chrome/Safari */
+}
+
+
 .attach-icon {
   font-size: 22px;
   color: #555;
@@ -532,9 +545,15 @@ export default {
   border: 1px solid #aaa;
   resize: none;
   outline: none;
-  overflow: hidden;
+  overflow-y: auto; 
   cursor: text;
+  max-height: 150px;             /* 👈 محدودیت رشد */
+  scrollbar-width: none;
 }
+.note-display.editable::-webkit-scrollbar {
+  display: none;
+}
+
 /* در فوکوس فقط در صورت فعال بودن ادیت */
 .note-display.editable:focus {
   border: 2px solid #333;

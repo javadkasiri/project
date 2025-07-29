@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-wrapper">
+  
     <div class="profile-card">
       <button class="close-btn" @click="$emit('close')">✖</button>
       <h3>User Profile</h3>
@@ -61,7 +61,6 @@
         </template>
       </p>
     </div>
-  </div>
 </template>
 
 <script>
@@ -150,23 +149,14 @@ export default {
 </script>
 
 <style scoped>
-.profile-wrapper {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  background: none; /* اگر نمی‌خوای پس‌زمینه تیره بشه */
-}
 .profile-card {
   position: relative;
   background: #fff;
-  padding: 30px 40px;
+  padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  min-width: 500px;
   max-width: 500px;
-  width: 90%;
   text-align: left;
 }
 h3 {
@@ -214,7 +204,7 @@ strong {
   right: 15px;
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 15px;
   color: #888;
   cursor: pointer;
 }

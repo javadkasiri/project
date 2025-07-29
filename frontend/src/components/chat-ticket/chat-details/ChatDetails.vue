@@ -1,7 +1,12 @@
 <template>
   <div class="chat-details">
     <div class="half-box">
-      <UserInfo :customerId="customerId" :sender="sender" />
+      <UserInfo
+        :key="customerId"
+        :customerId="customerId"
+        :sender="sender"
+        :resetFormTrigger="formResetKey"
+      />
     </div>
     <div class="half-box">
       <UserMessages
@@ -27,18 +32,19 @@ export default {
     agentId: String,
     sender: String,
     conversationId: String,
+    formResetKey: Number,
   },
   data() {
-  return {
-    activeConversationId: null
-  };
-},
-methods: {
-  handleConversationSelect(cid) {
-    this.activeConversationId = cid;
-    this.$emit("select-conversation", cid); // به ChatRoom منتقل میشه
-  }
-}
+    return {
+      activeConversationId: null,
+    };
+  },
+  methods: {
+    handleConversationSelect(cid) {
+      this.activeConversationId = cid;
+      this.$emit("select-conversation", cid);
+    },
+  },
 };
 </script>
 

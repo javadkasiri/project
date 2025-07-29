@@ -8,7 +8,7 @@
         class="chat-textarea"
         ref="input"
         rows="1"
-        @input="autoResize"
+        @input="handleInput"
         @keydown="handleKeydown"
       ></textarea>
 
@@ -23,17 +23,55 @@
 
 <script>
 export default {
+  props: {
+    draft: {
+      type: String,
+      default: "",
+    },
+    conversationId: String,
+    updateDraft: Function,
+  },
   data() {
     return {
-      message: "",
+      message: this.draft,
     };
+  },
+  watch: {
+    conversationId() {
+      this.message = this.draft || "";
+
+      // ✅ ریست ارتفاع
+      this.$nextTick(() => {
+        const textarea = this.$refs.input;
+        if (textarea) {
+          textarea.style.height = "auto"; // ریست کامل
+          this.autoResize(); // بعدش تنظیم جدید
+        }
+      });
+    },
+    draft(newVal) {
+      this.message = newVal;
+      this.$nextTick(() => this.autoResize());
+    },
+    message(newVal) {
+      if (this.updateDraft && this.conversationId) {
+        this.updateDraft(this.conversationId, newVal);
+      }
+    },
   },
   methods: {
     sendMessage() {
       if (this.message.trim()) {
         console.log("Message sent:", this.message);
         this.message = "";
-        this.$nextTick(() => this.autoResize());
+        this.emitDraft();
+
+        this.$nextTick(() => {
+          const textarea = this.$refs.input;
+          if (textarea) {
+            textarea.style.height = "auto";
+          }
+        });
       }
     },
     autoResize() {
@@ -48,7 +86,14 @@ export default {
         e.preventDefault();
         this.sendMessage();
       }
-    }
+    },
+    handleInput() {
+      this.autoResize();
+      this.emitDraft();
+    },
+    emitDraft() {
+      this.$emit("update-draft", this.message);
+    },
   },
   mounted() {
     this.autoResize();
@@ -65,6 +110,8 @@ export default {
   gap: 12px;
   width: 100%;
   box-sizing: border-box;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
 /* ✅ آیکن‌ها در پایین بمونند */
@@ -93,6 +140,12 @@ export default {
   box-sizing: border-box;
   min-height: 20px;
   max-height: 150px;
+  overflow-y: auto; /* 👈 اضافه شده */
+  scrollbar-width: none; /* 👈 برای Firefox */
+}
+/* 👇 برای Chrome و Safari */
+.chat-textarea::-webkit-scrollbar {
+  display: none;
 }
 
 /* آیکون‌ها */
@@ -102,9 +155,7 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: flex-end; /* 👈 اطمینان از قرارگیری پایین */
-    padding: 6px 0;
-
-  
+  padding: 6px 0;
 }
 
 /* دکمه ارسال */

@@ -1,5 +1,8 @@
 <template>
   <div class="problem-list">
+
+    <div v-if="isModal" class="modal-close" @click="$emit('close')">×</div>
+
     <div class="problem-header">
       <div>Customer ID</div>
       <div>Title</div>
@@ -11,7 +14,6 @@
       <div>Response</div>
     </div>
 
-    <!-- 👇 این بخش اسکرول‌پذیر میشه -->
     <div class="problem-items">
       <ProblemListItem
         v-for="problem in problems"
@@ -20,6 +22,8 @@
       />
     </div>
   </div>
+
+  
 </template>
 
 <script>
@@ -31,6 +35,10 @@ export default {
     customerId: {
       type: String,
       default: null,
+    },
+    isModal: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -57,13 +65,29 @@ export default {
 .problem-list {
   width: 100%;
   min-width: 1200px;
+  max-width: 100%;
   background: #fff;
   border-radius: 10px;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow-x: auto;
 }
-
+.modal-close {
+  position: absolute;
+  top: -10px;
+  right: 2px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  z-index: 10;
+  transition: 0.2s;
+}
+.modal-close:hover {
+  color: #e74c3c;
+}
 .problem-header {
   display: grid;
   grid-template-columns:
