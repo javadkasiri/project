@@ -11,7 +11,11 @@ const app = express(); //ایجاد اپلیکیشن
 //اجازه اتصال فرانت به بک
 app.use(
   cors({
-    origin: ["http://localhost:8081", "http://localhost:8082" , "http://localhost:8083" ], // آدرس فرانت‌اندت
+    origin: [
+      "http://localhost:8081",
+      "http://localhost:8082",
+      "http://localhost:8083",
+    ], // آدرس فرانت‌اندت
     credentials: true, // اجازه ارسال کوکی
   })
 );
@@ -21,7 +25,7 @@ app.use(cookieParser()); // برای خواندن کوکی‌ها
 
 // اتصال به دیتابیس MongoDB
 mongoose
-  .connect("mongodb://172.25.199.96:27017/vueapp")
+  .connect("mongodb://172.27.84.35:27017/vueapp")
   .then(() => console.log("MongoDB connected"));
 
 app.use("/api", authRoutes); // احراز هویت

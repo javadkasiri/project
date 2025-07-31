@@ -33,7 +33,7 @@ header {
 .main-content {
   flex: 1;
   padding: 30px;
-  background-color: #f5f5f5;
+  background-color: #f4f7fe;
 }
 h2 {
   flex-grow: 1;

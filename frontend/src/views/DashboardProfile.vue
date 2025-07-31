@@ -7,13 +7,13 @@
 
 <script>
 export default {
-  name: 'DashboardProfile'
-}
+  name: "DashboardProfile",
+};
 </script>
 
 <style scoped>
 .profile {
-  background: #f5f5f5;
+  background: #f4f7fe;
   padding: 20px;
   border-radius: 8px;
   max-width: 400px;
@@ -22,7 +22,7 @@ export default {
 }
 
 h3 {
-  color: #087944;
+  color: #1565c0;
   margin-bottom: 20px;
 }
 

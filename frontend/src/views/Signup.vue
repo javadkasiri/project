@@ -1,81 +1,113 @@
 <template>
-  <div class="signup-form">
-    <h2>Signup</h2>
-    <form @submit.prevent="handleSignup" novalidate>
-      <!-- فیلد ایمیل -->
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="text" id="email" v-model="email" required />
-        <!-- پیام خطای فرمت اشتباه ایمیل -->
-        <p v-if="emailError" class="error-message">
-          The email format is incorrect.
-        </p>
-        <!-- پیام خطای تکراری بودن ایمیل -->
-        <p v-if="duplicateError" class="error-message">
-          This email is already in use.
-        </p>
+  <div class="signup-wrapper">
+    <div class="image-side"></div>
+    <div class="form-side">
+      <div class="signup-form">
+        <h2>Signup</h2>
+        <form @submit.prevent="handleSignup" novalidate>
+          <!-- ایمیل -->
+          <div class="form-group">
+            <label for="email">Your email address</label>
+            <input type="text" id="email" v-model="email" required />
+            <p v-if="emailError" class="error-message">
+              The email format is incorrect.
+            </p>
+            <p v-if="duplicateError" class="error-message">
+              This email is already in use.
+            </p>
+          </div>
+
+          <!-- رمز عبور -->
+          <div class="form-group">
+            <label for="password">Enter password</label>
+            <div class="input-wrapper">
+              <input
+                :type="showPassword ? 'text' : 'password'"
+                id="password"
+                v-model="password"
+                required
+              />
+              <span
+                class="material-icons eye-icon"
+                @click="showPassword = !showPassword"
+              >
+                {{ showPassword ? "visibility_off" : "visibility" }}
+              </span>
+            </div>
+            <p v-if="passwordError" class="error-message">
+              The password must meet all the listed requirements.
+            </p>
+          </div>
+
+          <!-- تکرار رمز عبور -->
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-wrapper">
+              <input
+                :type="showConfirmPassword ? 'text' : 'password'"
+                id="confirmPassword"
+                v-model="confirmPassword"
+                required
+              />
+              <span
+                class="material-icons eye-icon"
+                @click="showConfirmPassword = !showConfirmPassword"
+              >
+                {{ showConfirmPassword ? "visibility_off" : "visibility" }}
+              </span>
+            </div>
+            <p v-if="confirmError" class="error-message">
+              Passwords do not match.
+            </p>
+          </div>
+
+          <!-- شرایط رمز -->
+          <ul class="password-rules">
+            <li :class="{ valid: passwordRules.minLength }">
+              At least 8 characters
+            </li>
+            <li :class="{ valid: passwordRules.uppercase }">
+              At least one uppercase letter
+            </li>
+            <li :class="{ valid: passwordRules.lowercase }">
+              At least one lowercase letter
+            </li>
+            <li :class="{ valid: passwordRules.number }">
+              At least one number
+            </li>
+            <li :class="{ valid: passwordRules.specialCharacter }">
+              At least one special character
+            </li>
+          </ul>
+
+          <!-- دکمه ثبت -->
+          <button type="submit">Register</button>
+
+          <!-- or -->
+          <div class="divider-with-text"><span>or</span></div>
+
+          <!-- گوگل -->
+          <button type="button" class="google-button">
+            <img
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              alt="Google"
+            />
+            Sign up with Google
+          </button>
+
+          <!-- لینک ورود -->
+          <p class="login-link">
+            Already have an account?
+            <router-link to="/Login">Log in now</router-link>
+          </p>
+
+          <!-- پیام موفقیت -->
+          <p v-if="successMessage" class="success-message">
+            Registration was successful
+          </p>
+        </form>
       </div>
-
-      <!-- فیلد رمز عبور -->
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input
-          :type="showPassword ? 'text' : 'password'" 
-          id="password"
-          v-model="password"
-          required
-        />
-        <!-- پیام خطای نامعتبر بودن رمز -->
-        <p v-if="passwordError" class="error-message">
-          The password must meet all the listed requirements.
-        </p>
-        <!-- تیک نمایش رمز -->
-        <div class="show-password">
-          <label for="showPassword">Show the password</label>
-          <input type="checkbox" id="showPassword" v-model="showPassword" />
-        </div>
-      </div>
-
-      <!-- فیلد تکرار رمز عبور -->
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password:</label>
-        <input
-          :type="showPassword ? 'text' : 'password'"
-          id="confirmPassword"
-          v-model="confirmPassword"
-          required
-        />
-        <!-- پیام خطای عدم تطابق رمز -->
-        <p v-if="confirmError" class="error-message">
-          Passwords do not match. Please make sure both passwords are identical.
-        </p>
-      </div>
-
-      <!-- شرایط لازم برای رمز عبور -->
-      <ul class="password-rules">
-        <li :class="{ valid: passwordRules.minLength }">
-          At least 8 characters
-        </li>
-        <li :class="{ valid: passwordRules.uppercase }">
-          At least one uppercase letter
-        </li>
-        <li :class="{ valid: passwordRules.lowercase }">
-          At least one lowercase letter
-        </li>
-        <li :class="{ valid: passwordRules.number }">At least one number</li>
-        <li :class="{ valid: passwordRules.specialCharacter }">
-          At least one special character
-        </li>
-      </ul>
-
-      <!-- دکمه ثبت‌نام -->
-      <button type="submit">Register</button>
-
-      <!-- پیام موفقیت‌آمیز بودن ثبت‌نام -->
-      <p v-if="successMessage" class="success-message">
-        Registration was successful
-      </p>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -84,20 +116,20 @@ export default {
   name: "SignupPage",
   data() {
     return {
-      email: "", // مقدار ایمیل وارد شده
-      password: "", // مقدار رمز وارد شده
-      confirmPassword: "", // مقدار تکرار رمز
-      emailError: false, // آیا ایمیل اشتباه است؟
-      passwordError: false, // آیا رمز ضعیف است؟
-      confirmError: false, // آیا تکرار رمز با رمز اصلی متفاوت است؟
-      duplicateError: false, // آیا ایمیل قبلاً استفاده شده؟
-      showPassword: false, // نمایش/مخفی کردن رمز
-      successMessage: false, // نمایش پیام موفقیت
-      submitted: false, // آیا کاربر روی ثبت‌نام کلیک کرده؟
+      email: "",
+      password: "",
+      confirmPassword: "",
+      showPassword: false,
+      showConfirmPassword: false,
+      emailError: false,
+      passwordError: false,
+      confirmError: false,
+      duplicateError: false,
+      successMessage: false,
+      submitted: false,
     };
   },
   computed: {
-    // بررسی قوانین امنیتی رمز عبور
     passwordRules() {
       return {
         minLength: this.password.length >= 8,
@@ -107,7 +139,6 @@ export default {
         specialCharacter: /[^a-zA-Z0-9]/.test(this.password),
       };
     },
-    // بررسی اینکه همه قوانین رعایت شده باشند
     isPasswordValid() {
       const r = this.passwordRules;
       return (
@@ -120,20 +151,17 @@ export default {
     },
   },
   watch: {
-    // وقتی ایمیل تغییر کند و قبلاً ثبت‌نام کلیک شده باشد
     email(value) {
       if (this.submitted) {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         this.emailError = !emailPattern.test(value);
       }
     },
-    // بررسی معتبر بودن رمز هنگام تایپ
     password() {
       if (this.submitted && this.isPasswordValid) {
         this.passwordError = false;
       }
     },
-    // بررسی تطابق رمز و تکرار رمز
     confirmPassword() {
       if (this.submitted && this.confirmPassword === this.password) {
         this.confirmError = false;
@@ -141,19 +169,14 @@ export default {
     },
   },
   methods: {
-    // تابع اصلی ثبت‌نام
     async handleSignup() {
-      this.submitted = true; // علامت اینکه دکمه ثبت‌نام کلیک شده
+      this.submitted = true;
 
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       this.emailError = !emailPattern.test(this.email);
       this.passwordError = !this.isPasswordValid;
       this.confirmError = this.password !== this.confirmPassword;
       this.duplicateError = false;
-
-      console.log("emailError:", this.emailError);
-      console.log("passwordError:", this.passwordError);
-      console.log("confirmError:", this.confirmError);
 
       if (this.emailError || this.passwordError || this.confirmError) return;
 
@@ -176,15 +199,12 @@ export default {
 
         if (res.ok) {
           this.successMessage = true;
-          console.log("Registration success! Redirecting in 2 seconds...");
-          setTimeout(() => {
-            this.$router.push("/Login");
-          }, 2000);
+          setTimeout(() => this.$router.push("/Login"), 2000);
         } else {
           console.error("Signup failed:", data.error || "Unknown error");
         }
       } catch (err) {
-        console.error("Network or server error:", err);
+        console.error("Network error:", err);
       }
     },
   },
@@ -192,18 +212,37 @@ export default {
 </script>
 
 <style scoped>
+.signup-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.image-side {
+  flex: 1;
+  background-color: #1565c0;
+}
+
+.form-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
 .signup-form {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 30px;
-  border: 1px solid #eee;
+  width: 100%;
+  max-width: 500px;
+  padding: 50px;
+  background: #fff;
   border-radius: 10px;
-  background-color: #fafafa;
 }
 
 h2 {
-  text-align: center;
-  color: #087944;
+  text-align: left;
+  font-size: 35px;
+  color: #2b3674;
+  font-weight: bold;
 }
 
 .form-group {
@@ -214,174 +253,158 @@ h2 {
 label {
   display: block;
   margin-bottom: 5px;
-  color: #2c3e50;
-  font-weight: bold;
+  color: #2b3674;
+  font-size: 14px;
 }
 
 input {
   width: 100%;
-  padding: 8px;
+  height: 48px;
+  padding: 0 12px;
+  font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #087944;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  font-weight: bold;
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  padding-right: 44px;
+}
+
+input:focus {
+  outline: none;
+  /*border-color: #869dff;*/
+  box-shadow: 0 0 0 1px #333; /* نازک‌تر از قبل */
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
   cursor: pointer;
+  color: #a3aed0;
+  font-size: 22px;
 }
 
-button:hover {
-  background-color: #087944;
-}
-
-.error-message {
-  color: red;
-  margin-top: 5px;
-  font-size: 13px;
-  text-align: left;
+.eye-icon:hover {
+  color: #0e3168;
 }
 
 .password-rules {
   list-style: none;
   padding-left: 0;
-  margin-top: -10px;
-  margin-bottom: 20px;
-  font-size: 14px;
+  margin-top: -5px;
+  margin-bottom: 15px;
+  font-size: 13px;
   text-align: left;
+  color: #a3aed0;
 }
 
 .password-rules li {
-  color: gray;
   margin: 4px 0;
 }
 
 .password-rules li.valid {
-  color: #333;
   font-weight: bold;
+  color: #0e3168;
 }
 
-.show-password {
-  margin-top: 8px;
-  font-size: 13px;
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 5px;
-  color: #333;
-  white-space: nowrap;
-}
-
-.show-password input[type="checkbox"] {
-  vertical-align: middle;
-  transform: translateX(-4px) translateY(-3px);
-}
-
-.success-message {
-  color: #087944;
-  text-align: center;
-  margin-top: 15px;
-  font-weight: bold;
-}
-.signup-form {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 30px;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  background-color: #fafafa;
-}
-
-h2 {
-  text-align: center;
-  color: #087944;
-}
-
-.form-group {
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  color: #2c3e50;
-  font-weight: bold;
-}
-
-input {
+button[type="submit"],
+.google-button {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #087944;
-  border: none;
-  border-radius: 5px;
-  color: white;
+  height: 48px;
+  font-size: 15px;
   font-weight: bold;
+  padding: 0 16px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #0a7141;
+button[type="submit"] {
+  background-color: #1565c0;
+  color: white;
+  border: none;
+}
+
+button[type="submit"]:hover {
+  background-color: #0d47a1;
+}
+
+.divider-with-text {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 25px 0;
+  color: #999;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.divider-with-text::before,
+.divider-with-text::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ccc;
+}
+
+.divider-with-text::before {
+  margin-right: 12px;
+}
+
+.divider-with-text::after {
+  margin-left: 12px;
+}
+
+.google-button {
+  display: flex;
+  background-color: #333;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.google-button:hover {
+  background-color: #111;
+}
+
+.google-button img {
+  width: 18px;
+  height: 18px;
+}
+
+.login-link {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 30px;
+  color: #0e3168;
+}
+
+.login-link a {
+  color: #409bff;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
 }
 
 .error-message {
   color: red;
+  font-size: 13px;
   margin-top: 5px;
-  font-size: 13px;
-  text-align: left;
-}
-
-.password-rules {
-  list-style: none;
-  padding-left: 0;
-  margin-top: -10px;
-  margin-bottom: 20px;
-  font-size: 14px;
-  text-align: left;
-}
-
-.password-rules li {
-  color: gray;
-  margin: 4px 0;
-}
-
-.password-rules li.valid {
-  color: #333;
-  font-weight: bold;
-}
-
-.show-password {
-  margin-top: 8px;
-  font-size: 13px;
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 5px;
-  color: #333;
-  white-space: nowrap;
-}
-
-.show-password input[type="checkbox"] {
-  vertical-align: middle;
-  transform: translateX(-4px) translateY(-3px);
 }
 
 .success-message {
-  color: #087944;
+  color: #1565c0;
   text-align: center;
   margin-top: 15px;
   font-weight: bold;

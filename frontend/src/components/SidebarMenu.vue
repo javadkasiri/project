@@ -15,13 +15,9 @@
 </template>
 
 <script>
-import LogoutButton from "@/components/LogoutButton.vue";
-
 export default {
   name: "SidebarMenu",
-  components: {
-    LogoutButton,
-  },
+  components: {},
 };
 </script>
 
@@ -29,7 +25,7 @@ export default {
 .sidebar {
   width: 220px;
   height: auto;
-  background-color: #087944;
+  background-color: #1565c0;
   padding: 50px 15px;
   display: flex;
   flex-direction: column;
@@ -58,9 +54,19 @@ export default {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
+.menu a.router-link-active {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-left: 4px solid white;
+  padding-left: 10px;
+}
+
+.menu a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 .logout-section button {
   background-color: yellow;
-  color: #087944;
+  color: #1565c0;
   font-weight: bold;
   border: 2px solid yellow;
   padding: 8px 20px;

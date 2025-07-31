@@ -21,14 +21,12 @@
   </div>
 </template>
 
-
-
 <script>
-import ManagementWall from "@/components/management/ManagementWall.vue"
-import ManagementEvent from "@/components/management/ManagementEvent.vue"
-import ManagementProblems from "@/components/management/ManagementProblems.vue"
-import ManagementProject from "@/components/management/ManagementProject.vue"
-import ManagementStaff from "@/components/management/ManagementStaff.vue"
+import ManagementWall from "@/components/management/ManagementWall.vue";
+import ManagementEvent from "@/components/management/ManagementEvent.vue";
+import ManagementProblems from "@/components/management/ManagementProblems.vue";
+import ManagementProject from "@/components/management/ManagementProject.vue";
+import ManagementStaff from "@/components/management/ManagementStaff.vue";
 
 export default {
   components: {
@@ -36,15 +34,15 @@ export default {
     ManagementEvent,
     ManagementProblems,
     ManagementProject,
-    ManagementStaff
+    ManagementStaff,
   },
   data() {
     return {
-      tabs: ['Wall', 'Event', 'Problems', 'Project', 'Staff'],
-      currentTab: 'Wall'
+      tabs: ["Wall", "Event", "Problems", "Project", "Staff"],
+      currentTab: "Wall",
     };
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -69,17 +67,17 @@ export default {
   color: #555;
   border-bottom: 2px solid transparent;
   transition: 0.3s;
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .tabs button.active {
   color: black;
-  border-color: #087944;
+  border-color: #1565c0;
 }
 
 .tab-content {
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #f4f7fe;
   border-radius: 8px;
 }
 </style>

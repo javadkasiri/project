@@ -6,19 +6,19 @@
 </template>
 
 <script>
-import AppNavbar from './components/AppNavbar.vue'
+import AppNavbar from "./components/AppNavbar.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    AppNavbar
-  }
-}
+    AppNavbar,
+  },
+};
 </script>
 
-
 <style>
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -30,7 +30,6 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 20px;
 }
 
 nav {
@@ -40,14 +39,13 @@ nav {
 }
 
 nav a {
-  font-weight: bold;
   color: #2c3e50;
-  margin: 0 10px;
+  margin: 0 5px;
   text-decoration: none;
 }
 
 .dashboard-layout {
   display: flex;
-  align-items: stretch; 
+  align-items: stretch;
 }
 </style>

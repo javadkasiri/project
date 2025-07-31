@@ -1,89 +1,69 @@
 <template>
   <nav class="navbar">
+    <!-- لوگو سمت چپ -->
     <div class="left">
       <a @click.prevent="goToDashboard" class="logo" style="cursor: pointer">
         <img src="@/assets/logo.png" alt="Logo" class="logo-img" />
       </a>
     </div>
 
-    <div class="right">
-      <!-- وقتی لاگین نیست -->
-      <template v-if="!isLoggedIn">
-        <router-link to="/signup">Signup</router-link>
-        <router-link to="/login">Login</router-link>
-      </template>
+    <!-- محتوای بالا فقط برای کاربر لاگین‌شده -->
+    <template v-if="isLoggedIn">
+      <UserTopbar />
+    </template>
 
-      <!-- وقتی لاگین هست -->
-      <template v-else>
-        <router-link to="/dashboard/profile">Profile</router-link>
-        <router-link to="/dashboard/setting">Settings</router-link>
-      </template>
-    </div>
+    <!-- دکمه‌های مهمان -->
+    <template v-else>
+      <div class="guest-buttons">
+        <router-link to="/signup" class="btn-signup">Signup</router-link>
+        <router-link to="/login" class="btn-login">Login</router-link>
+      </div>
+    </template>
   </nav>
 </template>
 
 <script>
 import { auth } from "../utils/auth";
+import UserTopbar from "@/components/UserTopbar.vue";
 
 export default {
   name: "AppNavbar",
+  components: {
+    UserTopbar,
+  },
   computed: {
     isLoggedIn() {
       return auth.isLoggedIn;
     },
   },
   methods: {
-    logout() {
-      fetch("http://localhost:3000/api/logout", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
-
-      localStorage.removeItem("token");
-      auth.isLoggedIn = false;
-      this.$router.push("/login");
-    },
     goToDashboard() {
-      if (localStorage.getItem("token")) {
-        this.$router.push("/dashboard");
-      } else {
-        this.$router.push("/");
-      }
+      const token = localStorage.getItem("token");
+      this.$router.push(token ? "/dashboard" : "/");
     },
   },
 };
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
 .navbar {
-  
   display: flex;
   justify-content: space-between;
+  height: 64px;
   align-items: center;
-  background-color: #f9f9f9;
-  padding: 15px 30px;
+  background-color: #f4f7fe;
+  padding: 10px 20px;
   position: sticky;
   top: 0;
   z-index: 1000;
-}
-
-
-.left a,
-.right a {
-  margin: 0 10px;
-  font-weight: bold;
-  color: #2c3e50;
-  text-decoration: none;
+  gap: 20px;
+  box-shadow: none !important;
+  border-bottom: none !important;
 }
 
 .left {
-  display: flex;
-  align-items: center;
-}
-
-.right {
   display: flex;
   align-items: center;
 }
@@ -93,5 +73,39 @@ export default {
   width: auto;
   display: block;
   margin-right: 10px;
+}
+
+.btn-signup,
+.btn-login {
+  padding: 8px 24px;
+  border: 1.5px solid #1565c0;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.btn-signup {
+  background-color: white;
+  color: #1565c0;
+}
+.btn-signup:hover {
+  background-color: #1565c0;
+  color: white;
+}
+
+.btn-login {
+  background-color: #1565c0;
+  color: white;
+}
+.btn-login:hover {
+  background-color: #0d47a1;
+  border-color: #0d47a1;
+}
+
+.guest-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 </style>
