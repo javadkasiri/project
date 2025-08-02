@@ -34,12 +34,12 @@
             ></textarea>
 
             <!-- دکمه تأیید برای خروج از حالت ادیت -->
-            <button
-              class="confirm-button"
+            <span
+              class="material-symbols-outlined confirm-icon"
               @click="isEditingDescription = false"
             >
-              Confirm
-            </button>
+              check
+            </span>
           </div>
         </template>
       </div>
@@ -54,7 +54,10 @@
       </div>
 
       <div class="cell icons">
-        <span class="material-symbols-outlined icon-button" title="View Image">
+        <span
+          class="material-symbols-outlined icon-button"
+          @click.stop="openImageModal(problem.problemImages)"
+        >
           image
         </span>
 
@@ -62,7 +65,6 @@
         <span
           v-if="!isEditingDescription"
           class="material-symbols-outlined icon-button"
-          title="Edit"
           @click="isEditingDescription = true"
         >
           edit
@@ -70,12 +72,11 @@
         <span
           v-else
           class="material-symbols-outlined icon-button"
-          title="Attach File"
         >
           attach_file
         </span>
 
-        <span class="material-symbols-outlined icon-button" title="Delete">
+        <span class="material-symbols-outlined icon-button">
           delete
         </span>
       </div>
@@ -104,8 +105,9 @@
             rows="1"
           />
 
-          <span class="material-symbols-outlined attach-icon"
-          title="Attach File">
+          <span
+            class="material-symbols-outlined attach-icon"
+          >
             attach_file
           </span>
 
@@ -123,66 +125,85 @@
 
       <!-- وضعیت Reviewing و Resolved -->
       <template v-else>
-  <div class="note-resolved-box">
-    <!-- حالت نمایش فقط متن -->
-    <div
-      v-if="!isEditingNote"
-      class="note-display"
-    >
-      {{ editableNote }}
-    </div>
+        <div class="note-resolved-box">
+          <!-- حالت نمایش فقط متن -->
+          <div v-if="!isEditingNote" class="note-display">
+            {{ editableNote }}
+          </div>
 
-    <!-- حالت ویرایش Note -->
-    <textarea
-      v-else
-      v-model="editableNote"
-      class="note-display editable"
-      @input="autoResize"
-      ref="noteInput"
-      rows="1"
-    ></textarea>
+          <!-- حالت ویرایش Note -->
+          <textarea
+            v-else
+            v-model="editableNote"
+            class="note-display editable"
+            @input="autoResize"
+            ref="noteInput"
+            rows="1"
+          ></textarea>
 
-    <div class="note-bottom-row">
-      <div class="review-meta">
-        <span><strong>Reviewed By:</strong> {{ problem.reviewedBy }}</span>
-        <span><strong>Reviewed At:</strong> {{ formatDate(problem.reviewedAt) }}</span>
-      </div>
+          <div class="note-bottom-row">
+            <div class="review-meta">
+              <span
+                ><strong>Reviewed By:</strong> {{ problem.reviewedBy }}</span
+              >
+              <span
+                ><strong>Reviewed At:</strong>
+                {{ formatDate(problem.reviewedAt) }}</span
+              >
+            </div>
 
-      <!-- دکمه‌ها -->
-      <div class="resolved-buttons">
-        <span class="material-symbols-outlined icon-button" title="View Image">image</span>
+            <!-- دکمه‌ها -->
+            <div class="resolved-buttons">
+              <span
+                class="material-symbols-outlined icon-button"
+                @click.stop="openImageModal(problem.noteImages)"
+              >
+                image
+              </span>
 
-        <span
-          v-if="!isEditingNote"
-          class="material-symbols-outlined icon-button"
-          @click="startNoteEdit"
-          title="Edit"
-        >
-          edit
-        </span>
+              <span
+                v-if="!isEditingNote"
+                class="material-symbols-outlined icon-button"
+                @click="startNoteEdit"
+              >
+                edit
+              </span>
 
-        <span
-          v-else
-          class="material-symbols-outlined icon-button"
-          title="Attach File"
-        >
-          attach_file
-        </span>
+              <span
+                v-else
+                class="material-symbols-outlined icon-button"
+              >
+                attach_file
+              </span>
 
-        <button class="btn-resolved" @click="markAsResolved">
-          Resolved
-        </button>
+              <button class="btn-resolved" @click="markAsResolved">
+                Resolved
+              </button>
 
-        <button class="btn-reviewing" @click="markAsReviewing">
-          Reviewing
-        </button>
-      </div>
+              <button class="btn-reviewing" @click="markAsReviewing">
+                Reviewing
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
     </div>
   </div>
-</template>
 
+  <div v-if="showImageModal" class="image-modal-overlay" @click.self="closeImageModal">
+  <div class="image-modal-content">
+    <span class="close-button" @click="closeImageModal">×</span>
+    <div class="image-list">
+      <img
+        v-for="(img, index) in currentImages"
+        :key="index"
+        :src="getImagePath(img)"
+        alt="Problem Image"
+      />
     </div>
   </div>
+</div>
+
 </template>
 
 <script>
@@ -201,6 +222,9 @@ export default {
 
       editableDescription: this.problem.description,
       editableNote: this.problem.note || "",
+
+      showImageModal: false,
+      currentImages: [],
     };
   },
   mounted() {
@@ -209,7 +233,7 @@ export default {
       this.autoResize();
     });
   },
-  
+
   methods: {
     toggleResponse() {
       this.isOpen = !this.isOpen;
@@ -258,23 +282,61 @@ export default {
     markAsResolved() {
       this.isEditingNote = false;
       this.isOpen = false; // بستن پنل پاسخ
-      this.emitUpdatedProblem("Resolved"); // ارسال مقدار جدید به والد
+      this.updateProblemStatus("Resolved");
     },
 
     markAsReviewing() {
       this.isEditingNote = false;
       this.isOpen = false;
-      this.emitUpdatedProblem("Reviewing");
+      this.updateProblemStatus("Reviewing");
     },
-    emitUpdatedProblem(status) {
-      this.$emit("update-problem", {
-        ...this.problem,
-        description: this.editableDescription,
+    async updateProblemStatus(status) {
+      const updatedProblem = {
+        _id: this.problem._id,
         note: this.editableNote,
-        status: status || this.problem.status,
+        status,
+        reviewedBy: "user",
         reviewedAt: new Date().toISOString(),
-      });
+      };
+
+      console.log("ارسال:", updatedProblem);
+
+      try {
+        const res = await fetch(
+          "http://localhost:3000/api/dumdb/vueapp/problems",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "update",
+              data: updatedProblem,
+            }),
+          }
+        );
+
+        const result = await res.json();
+        console.log("پاسخ:", result);
+        this.$emit("update-problem", result);
+      } catch (e) {
+        console.error("خطا:", e.message);
+      }
     },
+    openImageModal(images) {
+      this.currentImages = images || [];
+      this.showImageModal = true;
+    },
+    closeImageModal() {
+      this.showImageModal = false;
+      this.currentImages = [];
+    },
+    getImagePath(filename) {
+    try {
+      return require(`@/assets/problem-images/${filename}`);
+    } catch (err) {
+      console.warn("عکس پیدا نشد:", filename);
+      return "";
+    }
+  },
   },
 };
 </script>
@@ -341,10 +403,12 @@ export default {
   gap: 6px;
   margin-top: 4px;
   width: 100%;
+  position: relative;
 }
 .description-input {
   width: 100%;
   padding: 8px 12px;
+  padding-right: 30px;
   font-size: 16px;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -354,22 +418,24 @@ export default {
   background: #fff;
   box-sizing: border-box;
   min-height: 80px;
-   max-height: 150px; 
-   overflow-y: auto;
+  max-height: 150px;
+  overflow-y: auto;
   scrollbar-width: none;
 }
 .description-input::-webkit-scrollbar {
   display: none;
 }
 
-.confirm-button {
-  padding: 4px 8px;
-  font-weight: bold;
-  color: white;
-  background-color: #333;
-  border: none;
-  border-radius: 4px;
+.confirm-icon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background-color: transparent;
+  color: #007bff;
+  padding: 0px;
+  font-size: 24px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .cell.icons {
@@ -486,18 +552,17 @@ export default {
   border-radius: 6px;
   border: 1px solid #aaa;
   min-height: 32px;
-  max-height: 150px; 
+  max-height: 150px;
   resize: none;
   line-height: 20px;
   font-family: "Vazirmatn", sans-serif;
- overflow-y: auto;              /* 👈 فعال کردن اسکرول */
+  overflow-y: auto; /* 👈 فعال کردن اسکرول */
   box-sizing: border-box;
-  scrollbar-width: none;         /* Firefox */
+  scrollbar-width: none; /* Firefox */
 }
 .note-input::-webkit-scrollbar {
-  display: none;                 /* Chrome/Safari */
+  display: none; /* Chrome/Safari */
 }
-
 
 .attach-icon {
   font-size: 22px;
@@ -537,7 +602,7 @@ export default {
   font-family: "Vazirmatn", sans-serif;
   white-space: pre-wrap;
   word-break: break-word;
-  text-align: left
+  text-align: left;
 }
 
 /* در حالت فعال شدن ادیت */
@@ -545,9 +610,9 @@ export default {
   border: 1px solid #aaa;
   resize: none;
   outline: none;
-  overflow-y: auto; 
+  overflow-y: auto;
   cursor: text;
-  max-height: 150px;             /* 👈 محدودیت رشد */
+  max-height: 150px; /* 👈 محدودیت رشد */
   scrollbar-width: none;
 }
 .note-display.editable::-webkit-scrollbar {
@@ -623,4 +688,48 @@ export default {
 .btn-reviewing {
   background-color: #42a5f5;
 }
+
+.image-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.image-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 80vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+.image-list img {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: contain;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 24px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 </style>

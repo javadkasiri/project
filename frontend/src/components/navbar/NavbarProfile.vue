@@ -195,9 +195,6 @@ strong {
   transition: scale 0.2s ease;
 }
 
-.material-symbols-outlined.edit-icon:hover {
-  scale: 1.2;
-}
 .close-btn {
   position: absolute;
   top: 10px;

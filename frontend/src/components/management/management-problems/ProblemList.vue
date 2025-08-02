@@ -1,6 +1,5 @@
 <template>
   <div class="problem-list">
-
     <div v-if="isModal" class="modal-close" @click="$emit('close')">×</div>
 
     <div class="problem-header">
@@ -19,11 +18,10 @@
         v-for="problem in problems"
         :key="problem._id"
         :problem="problem"
+        @update-problem="handleUpdatedProblem"
       />
     </div>
   </div>
-
-  
 </template>
 
 <script>
@@ -58,6 +56,16 @@ export default {
     const json = await res.json();
     this.problems = json.result || [];
   },
+  methods: {
+  handleUpdatedProblem(updatedProblem) {
+    const index = this.problems.findIndex(p => p._id === updatedProblem._id);
+    if (index !== -1) {
+      // آپدیت اطلاعات در آرایه
+      this.problems[index] = updatedProblem;
+    }
+  }
+}
+
 };
 </script>
 
