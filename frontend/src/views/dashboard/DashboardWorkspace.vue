@@ -1,5 +1,5 @@
 <template>
-  <div class="management">
+  <div class="workspace">
     <div class="tabs">
       <button
         v-for="tab in tabs"
@@ -12,40 +12,32 @@
     </div>
 
     <div class="tab-content">
-      <ManagementProblems v-if="currentTab === 'Problems'" />
-      <ManagementReports v-if="currentTab === 'Reports'" />
-      <ManagementActivity v-if="currentTab === 'Activity'" />
-      <ManagementSchedule v-if="currentTab === 'Schedule'" />
+      <WorkspaceTrigger v-if="currentTab === 'Trigger'" />
+      <WorkspaceBanner v-if="currentTab === 'Banner'" />
     </div>
   </div>
 </template>
 
-
-
 <script>
-import ManagementProblems from "@/components/management/management-problems/ManagementProblems.vue"
-import ManagementReports from "@/components/management/ManagementReports.vue"
-import ManagementActivity from "@/components/management/ManagementActivity.vue"
-import ManagementSchedule from "@/components/management/ManagementSchedule.vue"
+import WorkspaceTrigger from "@/components/workspace/WorkspaceTrigger.vue";
+import WorkspaceBanner from "@/components/workspace/WorkspaceBanner.vue";
 
-export default {  
+export default {
   components: {
-    ManagementProblems,
-    ManagementReports,
-    ManagementActivity,
-    ManagementSchedule,
+    WorkspaceTrigger,
+    WorkspaceBanner,
   },
   data() {
     return {
-      tabs: ['Problems', 'Reports','Activity', 'Schedule'],
-      currentTab: 'Problems'
+      tabs: ["Trigger", "Banner"],
+      currentTab: "Trigger",
     };
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-.management {
+.workspace {
   padding: 20px;
 }
 
@@ -66,7 +58,7 @@ export default {
   color: #555;
   border-bottom: 2px solid transparent;
   transition: 0.3s;
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .tabs button.active {

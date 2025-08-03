@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h3>Staff</h3>
+    <h3>Activity</h3>
   </div>
 </template>

@@ -22,23 +22,23 @@
 
     <!-- پاپ‌آپ پروفایل -->
     <div v-if="showProfile" class="popup" @click.self="closeProfilePopup">
-      <NavbarProfile @close="closeProfilePopup" />
+      <UserProfile @close="closeProfilePopup" />
     </div>
     <!-- پاپ‌آپ تنظیمات -->
     <div v-if="showSettings" class="popup" @click.self="closeSettingsPopup">
-      <NavbarSetting @close="closeSettingsPopup" />
+      <UserSetting @close="closeSettingsPopup" />
     </div>
   </nav>
 </template>
 
 <script>
 import { auth } from "../../utils/auth";
-import NavbarProfile from "@/components/navbar/NavbarProfile.vue";
-import NavbarSetting from "@/components/navbar/NavbarSetting.vue";
+import UserProfile from "@/components/layout/UserProfile.vue";
+import UserSetting from "@/components/layout/UserSetting.vue";
 
 export default {
   name: "AppNavbar",
-  components: { NavbarProfile, NavbarSetting },
+  components: { UserProfile, UserSetting },
   data() {
     return {
       showProfile: false,

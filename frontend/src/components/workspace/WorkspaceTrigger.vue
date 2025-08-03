@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h3>Marketing</h3>
+    <h3>Trigger</h3>
   </div>
 </template>

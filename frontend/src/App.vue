@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import AppNavbar from './components/navbar/AppNavbar.vue'
+import AppNavbar from './components/layout/AppNavbar.vue'
 import { auth } from "@/utils/auth";
 
 export default {

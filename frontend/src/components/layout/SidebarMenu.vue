@@ -1,11 +1,33 @@
 <template>
   <aside class="sidebar">
     <nav class="menu">
-      <router-link to="/dashboard/management">Management</router-link>
-      <router-link to="/dashboard/chat-ticket">Chat / Ticket</router-link>
-      <router-link to="/dashboard/call-center">Call Center</router-link>
-      <router-link to="/dashboard/marketing">Marketing</router-link>
-      <router-link to="/dashboard/data-grabber">Data Grabber</router-link>
+      <router-link
+        to="/dashboard"
+        :class="{ active: $route.path === '/dashboard' }"
+      >
+        Dashboard
+      </router-link>
+
+      <router-link
+        to="/dashboard/management"
+        :class="{ active: $route.path === '/dashboard/management' }"
+        >Management</router-link
+      >
+      <router-link
+        to="/dashboard/support"
+        :class="{ active: $route.path === '/dashboard/support' }"
+        >Support</router-link
+      >
+      <router-link
+        to="/dashboard/workspace"
+        :class="{ active: $route.path === '/dashboard/workspace' }"
+        >Workspace
+      </router-link>
+      <router-link
+        to="/dashboard/integration"
+        :class="{ active: $route.path === '/dashboard/integration' }"
+        >Integration</router-link
+      >
     </nav>
 
     <div class="logout-section">
@@ -15,7 +37,7 @@
 </template>
 
 <script>
-import LogoutButton from "@/components/sidebar/LogoutButton.vue";
+import LogoutButton from "@/components/layout/LogoutButton.vue";
 
 export default {
   name: "SidebarMenu",
@@ -49,13 +71,11 @@ export default {
   border-radius: 4px;
   background-color: transparent;
   display: block;
-  cursor: pointer;
-  text-decoration: none !important;
-  outline: none;
-  border: none;
+  text-decoration: none;
 }
-.menu a.router-link-active {
-  background-color: rgba(255, 255, 255, 0.2);
+
+.menu a.active {
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
 .logout-section button {

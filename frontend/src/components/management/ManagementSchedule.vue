@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h3>Data Grabber</h3>
+    <h3>Schedule</h3>
   </div>
 </template>

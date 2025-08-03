@@ -188,26 +188,21 @@
         </div>
       </template>
     </div>
-  </div>
 
-  <div v-if="showImageModal" class="image-modal-overlay" @click.self="closeImageModal">
-  <div class="image-modal-content">
-    <span class="close-button" @click="closeImageModal">×</span>
-    <div class="image-list">
-      <img
-        v-for="(img, index) in currentImages"
-        :key="index"
-        :src="getImagePath(img)"
-        alt="Problem Image"
-      />
-    </div>
+    <ImageModal
+      :images="selectedImages"
+      :visible="showImageModal"
+      @close="showImageModal = false"
+    />
   </div>
-</div>
 
 </template>
 
 <script>
+import ImageModal from "./ImageModal.vue";
+
 export default {
+  components: { ImageModal },
   props: {
     problem: Object,
   },
@@ -321,22 +316,15 @@ export default {
         console.error("خطا:", e.message);
       }
     },
-    openImageModal(images) {
-      this.currentImages = images || [];
+     openImageModal(images) {
+      this.selectedImages = images || [];
       this.showImageModal = true;
     },
     closeImageModal() {
       this.showImageModal = false;
-      this.currentImages = [];
+      this.selectedImages = [];
     },
-    getImagePath(filename) {
-    try {
-      return require(`@/assets/problem-images/${filename}`);
-    } catch (err) {
-      console.warn("عکس پیدا نشد:", filename);
-      return "";
-    }
-  },
+   
   },
 };
 </script>
