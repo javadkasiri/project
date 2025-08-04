@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div :class="['problem-row', { expanded: isExpanded }]">
+    <div :class="['label-row', { expanded: isExpanded }]">
       <!-- سایر ستون‌ها -->
-      <div class="cell customer-id">{{ problem.customerId }}</div>
-      <div class="cell title">{{ problem.title }}</div>
+      <div class="cell customer-id">{{ label.customerId }}</div>
+      <div class="cell title">{{ label.title }}</div>
 
       <div class="cell description" @mouseenter="checkTruncation">
         <!-- حالت نمایش معمول -->
@@ -44,19 +44,19 @@
         </template>
       </div>
 
-      <div class="cell created-by">{{ problem.createdBy }}</div>
-      <div class="cell created-at">{{ formatDate(problem.createdAt) }}</div>
+      <div class="cell created-by">{{ label.createdBy }}</div>
+      <div class="cell created-at">{{ formatDate(label.createdAt) }}</div>
 
       <div class="cell status">
-        <span :class="['status-badge', problem.status]">
-          {{ problem.status }}
+        <span :class="['status-badge', label.status]">
+          {{ label.status }}
         </span>
       </div>
 
       <div class="cell icons">
         <span
           class="material-symbols-outlined icon-button"
-          @click.stop="openImageModal(problem.problemImages)"
+          @click.stop="openImageModal(label.labelImages)"
         >
           image
         </span>
@@ -94,7 +94,7 @@
     <!-- پاسخ -->
     <div v-if="isOpen" class="response-box">
       <!-- وضعیت Pending -->
-      <template v-if="problem.status === 'Pending'">
+      <template v-if="label.status === 'Pending'">
         <div class="note-pending-box">
           <label class="note-label"><strong>Note:</strong></label>
           <textarea
@@ -144,11 +144,11 @@
           <div class="note-bottom-row">
             <div class="review-meta">
               <span
-                ><strong>Reviewed By:</strong> {{ problem.reviewedBy }}</span
+                ><strong>Reviewed By:</strong> {{ label.reviewedBy }}</span
               >
               <span
                 ><strong>Reviewed At:</strong>
-                {{ formatDate(problem.reviewedAt) }}</span
+                {{ formatDate(label.reviewedAt) }}</span
               >
             </div>
 
@@ -156,7 +156,7 @@
             <div class="resolved-buttons">
               <span
                 class="material-symbols-outlined icon-button"
-                @click.stop="openImageModal(problem.noteImages)"
+                @click.stop="openImageModal(label.noteImages)"
               >
                 image
               </span>
@@ -204,7 +204,7 @@ import ImageModal from "./ImageModal.vue";
 export default {
   components: { ImageModal },
   props: {
-    problem: Object,
+    label: Object,
   },
   data() {
     return {
@@ -215,8 +215,8 @@ export default {
       isEditingDescription: false,
       isEditingNote: false,
 
-      editableDescription: this.problem.description,
-      editableNote: this.problem.note || "",
+      editableDescription: this.label.description,
+      editableNote: this.label.note || "",
 
       showImageModal: false,
       currentImages: [],
@@ -277,41 +277,41 @@ export default {
     markAsResolved() {
       this.isEditingNote = false;
       this.isOpen = false; // بستن پنل پاسخ
-      this.updateProblemStatus("Resolved");
+      this.updateLabelStatus("Resolved");
     },
 
     markAsReviewing() {
       this.isEditingNote = false;
       this.isOpen = false;
-      this.updateProblemStatus("Reviewing");
+      this.updateLabelStatus("Reviewing");
     },
-    async updateProblemStatus(status) {
-      const updatedProblem = {
-        _id: this.problem._id,
+    async updateLabelStatus(status) {
+      const updatedLabel = {
+        _id: this.label._id,
         note: this.editableNote,
         status,
         reviewedBy: "user",
         reviewedAt: new Date().toISOString(),
       };
 
-      console.log("ارسال:", updatedProblem);
+      console.log("ارسال:", updatedLabel);
 
       try {
         const res = await fetch(
-          "http://localhost:3000/api/dumdb/vueapp/problems",
+          "http://localhost:3000/api/dumdb/vueapp/labels",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               action: "update",
-              data: updatedProblem,
+              data: updatedLabel,
             }),
           }
         );
 
         const result = await res.json();
         console.log("پاسخ:", result);
-        this.$emit("update-problem", result);
+        this.$emit("update-label", result);
       } catch (e) {
         console.error("خطا:", e.message);
       }
@@ -330,7 +330,7 @@ export default {
 </script>
 
 <style scoped>
-.problem-row {
+.label-row {
   display: grid;
   grid-template-columns:
     1fr /* Customer ID */
@@ -440,7 +440,7 @@ export default {
 }
 
 /* حالت باز شده */
-.problem-row.expanded .description-text {
+.label-row.expanded .description-text {
   -webkit-line-clamp: unset;
   display: block;
 }

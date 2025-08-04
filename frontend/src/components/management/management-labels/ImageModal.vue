@@ -19,18 +19,19 @@ export default {
   props: {
     images: {
       type: Array,
-      required: true
+      required: true,
     },
     visible: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
-   methods: {
+  methods: {
     getImageUrl(name) {
       // مسیر صحیح برای resolve کردن عکس‌ها از داخل کامپوننت
       try {
-        return new URL(`../../../assets/problem-images/${name}`, import.meta.url).href;
+        return new URL(`../../../assets/label-images/${name}`, import.meta.url)
+          .href;
       } catch (e) {
         console.error(" آدرس عکس پیدا نشد:", name);
         return "";
@@ -87,4 +88,3 @@ export default {
   top: 20px;
 }
 </style>
-

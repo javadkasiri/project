@@ -1,8 +1,8 @@
 <template>
-  <div class="problem-list">
+  <div class="label-list">
     <div v-if="isModal" class="modal-close" @click="$emit('close')">×</div>
 
-    <div class="problem-header">
+    <div class="label-header">
       <div>Customer ID</div>
       <div>Title</div>
       <div>Description</div>
@@ -13,22 +13,22 @@
       <div>Response</div>
     </div>
 
-    <div class="problem-items">
-      <ProblemListItem
-        v-for="problem in problems"
-        :key="problem._id"
-        :problem="problem"
-        @update-problem="handleUpdatedProblem"
+    <div class="label-items">
+      <LabelListItem
+        v-for="label in labels"
+        :key="label._id"
+        :label="label"
+        @update-label="handleUpdatedLabel"
       />
     </div>
   </div>
 </template>
 
 <script>
-import ProblemListItem from "./ProblemListItem.vue";
+import LabelListItem from "./LabelListItem.vue";
 
 export default {
-  components: { ProblemListItem },
+  components: { LabelListItem },
   props: {
     customerId: {
       type: String,
@@ -41,27 +41,27 @@ export default {
   },
   data() {
     return {
-      problems: [],
+      labels: [],
     };
   },
   async mounted() {
     const filter = this.customerId ? { customerId: this.customerId } : {};
 
-    const res = await fetch("http://localhost:3000/api/dumdb/vueapp/problems", {
+    const res = await fetch("http://localhost:3000/api/dumdb/vueapp/labels", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "get", filter }),
     });
 
     const json = await res.json();
-    this.problems = json.result || [];
+    this.labels = json.result || [];
   },
   methods: {
-  handleUpdatedProblem(updatedProblem) {
-    const index = this.problems.findIndex(p => p._id === updatedProblem._id);
+  handleUpdatedLabel(updatedLabel) {
+    const index = this.labels.findIndex(p => p._id === updatedLabel._id);
     if (index !== -1) {
       // آپدیت اطلاعات در آرایه
-      this.problems[index] = updatedProblem;
+      this.labels[index] = updatedLabel;
     }
   }
 }
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style scoped>
-.problem-list {
+.label-list {
   width: 100%;
   min-width: 1200px;
   max-width: 100%;
@@ -96,7 +96,7 @@ export default {
 .modal-close:hover {
   color: #e74c3c;
 }
-.problem-header {
+.label-header {
   display: grid;
   grid-template-columns:
     1fr /* Customer ID */
@@ -114,23 +114,23 @@ export default {
   text-align: center;
 }
 
-.problem-header div {
+.label-header div {
   padding: 10px 8px;
   box-sizing: border-box;
 }
-.problem-items {
+.label-items {
   max-height: 630px; /* ارتفاع دلخواه */
   overflow-y: auto;
 }
-.problem-items::-webkit-scrollbar {
+.label-items::-webkit-scrollbar {
   width: 4px;
 }
 
-.problem-items::-webkit-scrollbar-track {
+.label-items::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.problem-items::-webkit-scrollbar-thumb {
+.label-items::-webkit-scrollbar-thumb {
   background-color: #999;
   border-radius: 4px;
 }

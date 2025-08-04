@@ -12,7 +12,7 @@
     </div>
 
     <div class="tab-content">
-      <ManagementProblems v-if="currentTab === 'Problems'" />
+      <ManagementLabels v-if="currentTab === 'Labels'" />
       <ManagementReports v-if="currentTab === 'Reports'" />
       <ManagementActivities v-if="currentTab === 'Activities'" />
       <ManagementSchedules v-if="currentTab === 'Schedules'" />
@@ -20,28 +20,26 @@
   </div>
 </template>
 
-
-
 <script>
-import ManagementProblems from "@/components/management/management-problems/ManagementProblems.vue"
-import ManagementReports from "@/components/management/ManagementReports.vue"
-import ManagementActivities from "@/components/management/ManagementActivities.vue"
-import ManagementSchedules from "@/components/management/ManagementSchedules.vue"
+import ManagementLabels from "@/components/management/management-labels/ManagementLabels.vue";
+import ManagementReports from "@/components/management/ManagementReports.vue";
+import ManagementActivities from "@/components/management/ManagementActivities.vue";
+import ManagementSchedules from "@/components/management/ManagementSchedules.vue";
 
-export default {  
+export default {
   components: {
-    ManagementProblems,
+    ManagementLabels,
     ManagementReports,
     ManagementActivities,
     ManagementSchedules,
   },
   data() {
     return {
-      tabs: ['Problems', 'Reports','Activities', 'Schedules'],
-      currentTab: 'Problems'
+      tabs: ["Labels", "Reports", "Activities", "Schedules"],
+      currentTab: "Labels",
     };
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -66,7 +64,7 @@ export default {
   color: #555;
   border-bottom: 2px solid transparent;
   transition: 0.3s;
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .tabs button.active {

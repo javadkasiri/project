@@ -95,8 +95,8 @@ Content-Type: application/json
   "filter": {}
 }
 
-### Create a problem
-POST http://localhost:3000/api/dumdb/vueapp/problems
+### Create a label
+POST http://localhost:3000/api/dumdb/vueapp/labels
 Content-Type: application/json
 
 {
@@ -111,7 +111,7 @@ Content-Type: application/json
     "reviewedBy": "user",
     "reviewedAt": "2025-07-23T13:00:00Z",
     "note": "Awaiting loyalty service team response.",
-    "problemImages": [
+    "labelImages": [
     "004.jpg","006.jpg","007.jpg"
     ],
     "noteImages": [
@@ -120,8 +120,8 @@ Content-Type: application/json
   }
 }
 
-### Get problems
-POST http://localhost:3000/api/dumdb/vueapp/problems
+### Get labels
+POST http://localhost:3000/api/dumdb/vueapp/labels
 Content-Type: application/json
 
 {

@@ -14,34 +14,34 @@
     </div>
 
     <div class="buttons">
-      <button class="button" @click="showProblemsModal = true">
-        Problems <span v-if="problemCount">({{ problemCount }})</span>
+      <button class="button" @click="showLabelsModal = true">
+        Labels <span v-if="labelCount">({{ labelCount }})</span>
       </button>
 
-      <button class="button" @click="showForm = !showForm">Add Problem</button>
+      <button class="button" @click="showForm = !showForm">Add Label</button>
     </div>
 
-    <div v-if="showForm" class="add-problem-form">
+    <div v-if="showForm" class="add-label-form">
       <input
         type="text"
-        v-model="newProblem.title"
+        v-model="newLabel.title"
         placeholder="Title"
         class="form-input"
       />
       <textarea
-        v-model="newProblem.description"
+        v-model="newLabel.description"
         placeholder="Description"
         class="form-textarea"
       ></textarea>
-      <button class="submit-button" @click="submitProblem">Submit</button>
+      <button class="submit-button" @click="submitLabel">Submit</button>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </div>
   </div>
 
-  <!-- پاپ‌آپ ProblemList -->
-  <div v-if="showProblemsModal" class="modal-overlay" @click.self="closeModal">
+  <!-- پاپ‌آپ LabelList -->
+  <div v-if="showLabelsModal" class="modal-overlay" @click.self="closeModal">
     <div class="modal-content">
-      <ProblemList
+      <LabelList
         :customerId="customerId"
         :isModal="true"
         @close="closeModal"
@@ -51,22 +51,22 @@
 </template>
 
 <script>
-import ProblemList from "@/components/management/management-problems/ProblemList.vue";
+import LabelList from "@/components/management/management-labels/LabelList.vue";
 
 export default {
   components: {
-    ProblemList,
+    LabelList,
   },
   data() {
     return {
       showForm: false,
-      newProblem: {
+      newLabel: {
         title: "",
         description: "",
       },
       errorMessage: "",
-      showProblemsModal: false,
-      problemCount: 0,
+      showLabelsModal: false,
+      labelCount: 0,
     };
   },
   props: {
@@ -77,23 +77,23 @@ export default {
   watch: {
     resetFormTrigger() {
       this.showForm = false;
-      this.newProblem.title = "";
-      this.newProblem.description = "";
+      this.newLabel.title = "";
+      this.newLabel.description = "";
       this.errorMessage = "";
     },
   },
   mounted() {
-    this.fetchProblemCount();
+    this.fetchLabelCount();
   },
   methods: {
     closeModal() {
-      this.showProblemsModal = false;
+      this.showLabelsModal = false;
     },
-    async fetchProblemCount() {
+    async fetchLabelCount() {
       if (!this.customerId) return;
       try {
         const res = await fetch(
-          "http://localhost:3000/api/dumdb/vueapp/problems",
+          "http://localhost:3000/api/dumdb/vueapp/labels",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -104,22 +104,22 @@ export default {
           }
         );
         const json = await res.json();
-        this.problemCount = json.result?.length || 0;
+        this.labelCount = json.result?.length || 0;
       } catch (err) {
-        console.error("Error fetching problem count:", err);
+        console.error("Error fetching label count:", err);
       }
     },
-    async submitProblem() {
-      if (!this.newProblem.title || !this.newProblem.description) {
+    async submitLabel() {
+      if (!this.newLabel.title || !this.newLabel.description) {
         this.errorMessage =
-          "Please enter the title and description of the problem";
+          "Please enter the title and description of the label";
         return;
       }
 
       this.errorMessage = "";
 
       const res = await fetch(
-        "http://localhost:3000/api/dumdb/vueapp/problems",
+        "http://localhost:3000/api/dumdb/vueapp/labels",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -127,8 +127,8 @@ export default {
             action: "create",
             data: {
               customerId: this.customerId,
-              title: this.newProblem.title,
-              description: this.newProblem.description,
+              title: this.newLabel.title,
+              description: this.newLabel.description,
               status: "Pending",
               createdAt: new Date().toISOString(),
               createdBy: "Customer Support",
@@ -138,10 +138,10 @@ export default {
       );
 
       if (res.ok) {
-        this.newProblem.title = "";
-        this.newProblem.description = "";
+        this.newLabel.title = "";
+        this.newLabel.description = "";
         this.showForm = false;
-        this.fetchProblemCount(); // ✅ به‌روزرسانی تعداد بعد از ارسال
+        this.fetchLabelCount(); // ✅ به‌روزرسانی تعداد بعد از ارسال
       }
     },
   },
@@ -229,7 +229,7 @@ export default {
   background-color: #e3f2fd;
 }
 
-.add-problem-form {
+.add-label-form {
   margin-top: 16px;
   min-width: 210px;
   max-width: 210px;
