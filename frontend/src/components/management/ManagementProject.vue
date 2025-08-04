@@ -1,7 +1,5 @@
 <template>
-  <MindMap />
+  <div>
+    <h3>Reports</h3>
+  </div>
 </template>
-
-<script setup>
-import MindMap from '../management-project/MindMap.vue'
-</script>

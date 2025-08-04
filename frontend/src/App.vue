@@ -1,17 +1,24 @@
 <template>
   <div id="app">
-    <AppNavbar />
+    <!-- فقط وقتی لاگین نیست navbar نمایش داده بشه -->
+    <AppNavbar v-if="!isLoggedIn" />
     <router-view />
   </div>
 </template>
 
 <script>
 import AppNavbar from "./components/AppNavbar.vue";
+import { auth } from "./utils/auth"; // مطمئن شو مسیر درسته
 
 export default {
   name: "App",
   components: {
     AppNavbar,
+  },
+  computed: {
+    isLoggedIn() {
+      return auth.isLoggedIn;
+    },
   },
 };
 </script>

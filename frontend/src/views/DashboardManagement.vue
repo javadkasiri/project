@@ -72,7 +72,7 @@ export default {
 
 .tabs button.active {
   color: black;
-  border-color: #1565c0;
+  border-color: #2d53da;
 }
 
 .tab-content {

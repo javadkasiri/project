@@ -1,42 +1,68 @@
 <template>
   <div class="dashboard-layout">
     <SidebarMenu />
-    <main class="main-content">
-      <h2 v-if="$route.path === '/dashboard'">Welcome to your Dashboard</h2>
-      <router-view />
-    </main>
+    <div class="main-content">
+      <!-- topbar گوشه راست بالا -->
+      <div class="user-topbar-wrapper">
+        <UserTopbar />
+      </div>
+
+      <!-- محتوا -->
+      <div class="page-content">
+        <h2 v-if="$route.path === '/dashboard'">Welcome to your Dashboard</h2>
+        <router-view />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import SidebarMenu from "../components/SidebarMenu.vue";
+import UserTopbar from "@/components/UserTopbar.vue";
 
 export default {
   name: "DashboardLayout",
-  components: { SidebarMenu },
+  components: {
+    SidebarMenu,
+    UserTopbar,
+  },
 };
 </script>
 
 <style scoped>
 .dashboard-layout {
-  padding: 0;
-  margin: 0;
   display: flex;
-  height: 100vh;
+  background-color: #f4f7fe; /* یا رنگ دلخواه پس‌زمینه کلی */
+  min-height: 100vh;
 }
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0px;
-}
+
 .main-content {
   flex: 1;
-  padding: 30px;
-  background-color: #f4f7fe;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent; /* این مهم است */
 }
+
+/* فقط topbar گوشه راست بالا */
+.user-topbar-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 30px;
+  background-color: #f4f7fe;
+  /*border-bottom: 1px solid #e0e0e0;*/
+}
+.user-topbar-wrapper > * {
+  max-width: fit-content;
+}
+
+/* صفحه محتوای پایین topbar */
+.page-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
 h2 {
-  flex-grow: 1;
   text-align: center;
   margin: 0;
   color: #2c3e50;

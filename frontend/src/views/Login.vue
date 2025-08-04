@@ -151,7 +151,7 @@ export default {
 
 .image-side {
   flex: 1;
-  background-color: #1565c0;
+  background-color: #2d53da;
 }
 
 .login-container {
@@ -249,7 +249,7 @@ button,
 button {
   width: 100%;
   padding: 10px;
-  background-color: #1565c0;
+  background-color: #2d53da;
   border: none;
   border-radius: 5px;
   color: white;
@@ -258,7 +258,7 @@ button {
 }
 
 button:hover {
-  background-color: #0d47a1;
+  background-color: #2544b3;
 }
 
 .error-message {
@@ -351,7 +351,7 @@ button,
 .keep-logged-in input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #1565c0;
+  accent-color: #2d53da;
   margin: 0;
 }
 

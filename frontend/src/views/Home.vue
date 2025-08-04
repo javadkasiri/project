@@ -7,8 +7,8 @@
 
 <script>
 export default {
-  name: 'HomePage'
-}
+  name: "HomePage",
+};
 </script>
 
 <style scoped>
@@ -17,6 +17,6 @@ export default {
   margin-top: 50px;
 }
 .home h1 {
-  color: #087944;
+  color: #2d53da;
 }
 </style>

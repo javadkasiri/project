@@ -78,13 +78,15 @@ export default {
 
 <style scoped>
 .topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   background-color: white;
   padding: 8px 16px;
   border-radius: 40px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: fit-content;
+  max-width: 100%;
 }
 
 .search-container {
@@ -93,7 +95,8 @@ export default {
   background-color: #f4f7fe;
   padding: 6px 12px;
   border-radius: 30px;
-  flex: 1;
+  flex: none;
+  width: 220px;
   max-width: 300px;
 }
 
@@ -119,16 +122,17 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
 }
 
 .icon-button .material-icons {
   font-size: 22px;
-  color: #1565c0;
+  color: #2d53da;
   transition: color 0.2s ease;
 }
 
 .icon-button:hover .material-icons {
-  color: #0d47a1;
+  color: #2544b3;
 }
 
 .notification-wrapper {
@@ -153,7 +157,7 @@ export default {
 }
 
 .logout-button .material-icons {
-  color: #1565c0;
+  color: #2d53da;
   transition: color 0.2s ease;
 }
 

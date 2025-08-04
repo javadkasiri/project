@@ -1,36 +1,26 @@
 <template>
-  <nav class="navbar">
-    <!-- لوگو سمت چپ -->
+  <nav class="navbar" v-if="!isLoggedIn">
+    <!-- فقط برای مهمان‌ها نمایش داده شود -->
     <div class="left">
       <a @click.prevent="goToDashboard" class="logo" style="cursor: pointer">
-        <img src="@/assets/logo.png" alt="Logo" class="logo-img" />
+        <img src="@/assets/logo-01.png" alt="Logo" class="logo-img" />
+        <span class="logo-text">CNP ONE</span>
       </a>
     </div>
 
-    <!-- محتوای بالا فقط برای کاربر لاگین‌شده -->
-    <template v-if="isLoggedIn">
-      <UserTopbar />
-    </template>
-
-    <!-- دکمه‌های مهمان -->
-    <template v-else>
-      <div class="guest-buttons">
-        <router-link to="/signup" class="btn-signup">Signup</router-link>
-        <router-link to="/login" class="btn-login">Login</router-link>
-      </div>
-    </template>
+    <div class="guest-buttons">
+      <router-link to="/signup" class="btn-signup">Signup</router-link>
+      <router-link to="/login" class="btn-login">Login</router-link>
+    </div>
   </nav>
 </template>
 
 <script>
 import { auth } from "../utils/auth";
-import UserTopbar from "@/components/UserTopbar.vue";
 
 export default {
   name: "AppNavbar",
-  components: {
-    UserTopbar,
-  },
+
   computed: {
     isLoggedIn() {
       return auth.isLoggedIn;
@@ -51,14 +41,13 @@ export default {
 .navbar {
   display: flex;
   justify-content: space-between;
-  height: 64px;
+  height: 42px;
   align-items: center;
   background-color: #f4f7fe;
   padding: 10px 20px;
   position: sticky;
   top: 0;
   z-index: 1000;
-  gap: 20px;
   box-shadow: none !important;
   border-bottom: none !important;
 }
@@ -68,6 +57,13 @@ export default {
   align-items: center;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0px; /* فاصله بین لوگو و متن */
+  text-decoration: none;
+}
+
 .logo-img {
   height: 32px;
   width: auto;
@@ -75,10 +71,17 @@ export default {
   margin-right: 10px;
 }
 
+.logo-text {
+  font-size: 25px;
+  font-weight: bold;
+  color: #2b3674;
+  margin-right: 10px;
+}
+
 .btn-signup,
 .btn-login {
   padding: 8px 24px;
-  border: 1.5px solid #1565c0;
+  border: 1.5px solid #2d53da;
   border-radius: 20px;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -87,20 +90,20 @@ export default {
 
 .btn-signup {
   background-color: white;
-  color: #1565c0;
+  color: #2d53da;
 }
 .btn-signup:hover {
-  background-color: #1565c0;
+  background-color: #2d53da;
   color: white;
 }
 
 .btn-login {
-  background-color: #1565c0;
+  background-color: #2d53da;
   color: white;
 }
 .btn-login:hover {
-  background-color: #0d47a1;
-  border-color: #0d47a1;
+  background-color: #2544b3;
+  border-color: #2544b3;
 }
 
 .guest-buttons {

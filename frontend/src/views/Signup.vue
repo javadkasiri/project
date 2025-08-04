@@ -219,7 +219,7 @@ export default {
 
 .image-side {
   flex: 1;
-  background-color: #1565c0;
+  background-color: #2d53da;
 }
 
 .form-side {
@@ -326,13 +326,13 @@ button[type="submit"],
 }
 
 button[type="submit"] {
-  background-color: #1565c0;
+  background-color: #2d53da;
   color: white;
   border: none;
 }
 
 button[type="submit"]:hover {
-  background-color: #0d47a1;
+  background-color: #2544b3;
 }
 
 .divider-with-text {
@@ -404,7 +404,7 @@ button[type="submit"]:hover {
 }
 
 .success-message {
-  color: #1565c0;
+  color: #2d53da;
   text-align: center;
   margin-top: 15px;
   font-weight: bold;
