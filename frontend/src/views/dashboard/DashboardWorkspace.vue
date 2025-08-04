@@ -13,23 +13,29 @@
 
     <div class="tab-content">
       <WorkspaceTrigger v-if="currentTab === 'Trigger'" />
-      <WorkspaceBanner v-if="currentTab === 'Banner'" />
+      <WorkspaceProject v-if="currentTab === 'Project'" />
+      <WorkspaceAdvertising v-if="currentTab === 'Advertising'" />
+
     </div>
   </div>
 </template>
 
 <script>
 import WorkspaceTrigger from "@/components/workspace/WorkspaceTrigger.vue";
-import WorkspaceBanner from "@/components/workspace/WorkspaceBanner.vue";
+import WorkspaceProject from "@/components/workspace/WorkspaceProject.vue";
+import WorkspaceAdvertising from "@/components/workspace/WorkspaceAdvertising.vue";
+
 
 export default {
   components: {
     WorkspaceTrigger,
-    WorkspaceBanner,
+    WorkspaceProject,
+    WorkspaceAdvertising,
+
   },
   data() {
     return {
-      tabs: ["Trigger", "Banner"],
+      tabs: ["Trigger", "Project" , "Advertising"],
       currentTab: "Trigger",
     };
   },

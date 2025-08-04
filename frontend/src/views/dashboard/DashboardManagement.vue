@@ -14,8 +14,8 @@
     <div class="tab-content">
       <ManagementProblems v-if="currentTab === 'Problems'" />
       <ManagementReports v-if="currentTab === 'Reports'" />
-      <ManagementActivity v-if="currentTab === 'Activity'" />
-      <ManagementSchedule v-if="currentTab === 'Schedule'" />
+      <ManagementActivities v-if="currentTab === 'Activities'" />
+      <ManagementSchedules v-if="currentTab === 'Schedules'" />
     </div>
   </div>
 </template>
@@ -25,19 +25,19 @@
 <script>
 import ManagementProblems from "@/components/management/management-problems/ManagementProblems.vue"
 import ManagementReports from "@/components/management/ManagementReports.vue"
-import ManagementActivity from "@/components/management/ManagementActivity.vue"
-import ManagementSchedule from "@/components/management/ManagementSchedule.vue"
+import ManagementActivities from "@/components/management/ManagementActivities.vue"
+import ManagementSchedules from "@/components/management/ManagementSchedules.vue"
 
 export default {  
   components: {
     ManagementProblems,
     ManagementReports,
-    ManagementActivity,
-    ManagementSchedule,
+    ManagementActivities,
+    ManagementSchedules,
   },
   data() {
     return {
-      tabs: ['Problems', 'Reports','Activity', 'Schedule'],
+      tabs: ['Problems', 'Reports','Activities', 'Schedules'],
       currentTab: 'Problems'
     };
   }
