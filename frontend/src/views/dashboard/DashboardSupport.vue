@@ -1,10 +1,10 @@
 <template>
-  <ChatRoom />
+  <SupportDesk />
 </template>
 
 <script>
-import ChatRoom from "@/components/chat-ticket/ChatRoom.vue";
+import SupportDesk from "@/components/support/SupportDesk.vue";
 export default {
-  components: { ChatRoom },
+  components: { SupportDesk },
 };
 </script>

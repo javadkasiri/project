@@ -1,7 +1,7 @@
 <template>
   <div class="messages" ref="messagesContainer">
     <div class="inner-messages">
-      <ChatBubble
+      <MessageCard
         v-for="msg in messages"
         :key="msg._id"
         :sender="msg.sender"
@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import ChatBubble from "./ChatBubble.vue";
+import MessageCard from "./MessageCard.vue";
 
 export default {
-  components: { ChatBubble },
+  components: { MessageCard },
   props: ['customerId', 'agentId', 'conversationId'],
   data() {
     return { messages: [] };
@@ -42,7 +42,7 @@ export default {
         const data = await res.json();
         this.messages = data.result || [];
       } catch (e) {
-        console.error("[ChatMessages] fetch error:", e);
+        console.error("[MessageList] fetch error:", e);
       }
     }
   },

@@ -1,7 +1,7 @@
 <template>
-  <div class="chat-details">
+  <div class="contact-panel">
     <div class="half-box">
-      <UserInfo
+      <ContactInfo
         :key="customerId"
         :customerId="customerId"
         :sender="sender"
@@ -9,7 +9,7 @@
       />
     </div>
     <div class="half-box">
-      <UserMessages
+      <HistoryList
         :customerId="customerId"
         :selectedConversationId="conversationId"
         @select-conversation="handleConversationSelect"
@@ -19,13 +19,13 @@
 </template>
 
 <script>
-import UserInfo from "./UserInfo.vue";
-import UserMessages from "./UserMessages.vue";
+import ContactInfo from "./ContactInfo.vue";
+import HistoryList from "./HistoryList.vue";
 
 export default {
   components: {
-    UserInfo,
-    UserMessages,
+    ContactInfo,
+    HistoryList,
   },
   props: {
     customerId: String,
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style scoped>
-.chat-details {
+.contact-panel {
   flex-direction: column;
   box-sizing: border-box;
 }

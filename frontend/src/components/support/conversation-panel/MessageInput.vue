@@ -1,11 +1,11 @@
 <template>
-  <div class="chat-input">
+  <div class="message-input">
     <div class="input-container">
       <span class="material-symbols-outlined icon">mood</span>
 
       <textarea
         v-model="message"
-        class="chat-textarea"
+        class="message-textarea"
         ref="input"
         rows="1"
         @input="handleInput"
@@ -40,12 +40,11 @@ export default {
     conversationId() {
       this.message = this.draft || "";
 
-      // ✅ ریست ارتفاع
       this.$nextTick(() => {
         const textarea = this.$refs.input;
         if (textarea) {
-          textarea.style.height = "auto"; // ریست کامل
-          this.autoResize(); // بعدش تنظیم جدید
+          textarea.style.height = "auto"; 
+          this.autoResize(); 
         }
       });
     },
@@ -102,7 +101,7 @@ export default {
 </script>
 
 <style scoped>
-.chat-input {
+.message-input {
   display: flex;
   align-items: flex-end;
   background-color: #e4e5e8;
@@ -114,10 +113,9 @@ export default {
   scrollbar-width: none;
 }
 
-/* ✅ آیکن‌ها در پایین بمونند */
 .input-container {
   display: flex;
-  align-items: flex-end; /* 👈 تغییر این خط */
+  align-items: flex-end; 
   background-color: #fff;
   border-radius: 20px;
   flex: 1;
@@ -126,8 +124,7 @@ export default {
   gap: 8px;
 }
 
-/* ✅ حالت رشد textarea */
-.chat-textarea {
+.message-textarea {
   flex: 1;
   border: none;
   outline: none;
@@ -140,25 +137,23 @@ export default {
   box-sizing: border-box;
   min-height: 20px;
   max-height: 150px;
-  overflow-y: auto; /* 👈 اضافه شده */
-  scrollbar-width: none; /* 👈 برای Firefox */
+  overflow-y: auto; 
+  scrollbar-width: none; /* برای Firefox */
 }
-/* 👇 برای Chrome و Safari */
+/* برای Chrome و Safari */
 .chat-textarea::-webkit-scrollbar {
   display: none;
 }
 
-/* آیکون‌ها */
 .icon {
   font-size: 20px;
   color: #555;
   cursor: pointer;
   display: flex;
-  align-items: flex-end; /* 👈 اطمینان از قرارگیری پایین */
+  align-items: flex-end; 
   padding: 6px 0;
 }
 
-/* دکمه ارسال */
 .send-btn {
   background-color: #007bff;
   color: white;

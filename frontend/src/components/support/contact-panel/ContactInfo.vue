@@ -1,5 +1,5 @@
 <template>
-  <div class="user-info">
+  <div class="contact-info">
     <div class="avatar">
       <span class="material-symbols-outlined">person</span>
     </div>
@@ -99,7 +99,7 @@ export default {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               action: "get",
-              filter: { customerId: this.customerId }, // حتماً از فیلتر استفاده کن
+              filter: { customerId: this.customerId },
             }),
           }
         );
@@ -141,7 +141,7 @@ export default {
         this.newLabel.title = "";
         this.newLabel.description = "";
         this.showForm = false;
-        this.fetchLabelCount(); // ✅ به‌روزرسانی تعداد بعد از ارسال
+        this.fetchLabelCount();
       }
     },
   },
@@ -149,7 +149,7 @@ export default {
 </script>
 
 <style scoped>
-.user-info {
+.contact-info {
   display: flex;
   flex-direction: column;
   align-items: center;

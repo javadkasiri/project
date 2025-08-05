@@ -1,12 +1,12 @@
 <template>
-  <div :class="['chat-bubble', side]">
+  <div :class="['message-card', side]">
     <div class="avatar-circle">
       <span class="material-symbols-outlined avatar-icon">
         {{ iconName }}
       </span>
     </div>
 
-    <div :class="['bubble-content', side]">
+    <div :class="['card-content', side]">
       <div class="sender-time">
         <span class="sender">{{ sender }}</span>
         <span class="time">{{ time }}</span>
@@ -28,20 +28,20 @@ export default {
 </script>
 
 <style scoped>
-.chat-bubble {
+.message-card {
   display: flex;
   align-items: flex-end;
   margin: 8px 0;
   width: 100%;
 }
 
-.chat-bubble.left {
+.message-card.left {
   justify-content: flex-start;
   flex-direction: row;
   text-align: left;
 }
 
-.chat-bubble.right {
+.message-card.right {
   flex-direction: row-reverse;
   justify-content: flex-start;
   text-align: right;
@@ -62,7 +62,7 @@ export default {
   color: #333;
 }
 
-.bubble-content {
+.card-content {
   max-width: 70%;
   padding: 10px 14px;
   border-radius: 16px;
@@ -74,12 +74,12 @@ export default {
   word-break: break-word;
 }
 
-.bubble-content.left {
+.card-content.left {
   background-color: #3b82f6;
   color: white;
 }
 
-.bubble-content.right {
+.card-content.right {
   background-color: #f1f1f1;
   color: #333;
 }

@@ -1,9 +1,9 @@
 <template>
-  <div class="chat-list-wrapper">
-    <div class="header">Chat List</div>
-    <div class="chat-list" ref="chatListContainer">
-<ChatListItem
-  v-for="item in latestCustomerChats"
+  <div class="recent-list-wrapper">
+    <div class="header">Recent</div>
+    <div class="recent-list" ref="recentListContainer">
+<RecentListItem
+  v-for="item in latestCustomerMessages"
   :key="item.customerId + '_' + item.conversationId"
   :sender="item.sender"
   :customerId="item.customerId"
@@ -15,14 +15,14 @@
   @select="handleSelect"
 />
     </div>
-  </div>
+  </div>  
 </template>
 
 <script>
-import ChatListItem from "./ChatListItem.vue";
+import RecentListItem from "./RecentListItem.vue";
 
 export default {
-  components: { ChatListItem },
+  components: { RecentListItem },
   props: ['selectedConversationId'],
   data() {
     return {
@@ -31,7 +31,7 @@ export default {
     };
   },
   computed: {
-    latestCustomerChats() {
+    latestCustomerMessages() {
       const map = {};
       this.chats.forEach((c) => {
         const key = c.conversationId;
@@ -73,7 +73,7 @@ export default {
     },
     scrollToBottom() {
       this.$nextTick(() => {
-        const container = this.$refs.chatListContainer;
+        const container = this.$refs.recentListContainer;
         if (container) {
           container.scrollTop = container.scrollHeight;
         }
@@ -87,7 +87,7 @@ export default {
 </script>
 
 <style scoped>
-.chat-list-wrapper {
+.recent-list-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -102,18 +102,18 @@ export default {
   margin-left: 16px;
   margin-bottom: 12px;
 }
-.chat-list {
+.recent-list {
   overflow-y: auto;
   max-height: 100%;
 }
 
-.chat-list::-webkit-scrollbar {
+.recent-list::-webkit-scrollbar {
   width: 4px;
 }
-.chat-list::-webkit-scrollbar-track {
+.recent-list::-webkit-scrollbar-track {
   background: transparent;
 }
-.chat-list::-webkit-scrollbar-thumb {
+.recent-list::-webkit-scrollbar-thumb {
   background-color: #999;
   border-radius: 4px;
 }

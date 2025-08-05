@@ -1,10 +1,10 @@
 <template>
-  <div class="user-messages-box">
+  <div class="history-list-wrapper">
     <div class="header">History</div>
-    <div class="user-messages" ref="messagesContainer">
-      <p v-if="userMessages.length === 0">No chat found</p>
-  <UserMessagesItem
-  v-for="msg in userMessages"
+    <div class="history-list" ref="historyListContainer">
+      <p v-if="contactMessages.length === 0">No history was found</p>
+  <HistoryListItem
+  v-for="msg in contactMessages"
   :key="msg._id"
   :sender="msg.sender"
   :text="msg.text"
@@ -18,28 +18,28 @@
 </template>
 
 <script>
-import UserMessagesItem from "./UserMessagesItem.vue";
+import HistoryListItem from "./HistoryListItem.vue";
 
 export default {
-  name: "UserMessages",
-  components: { UserMessagesItem },
+  name: "ContactMessages",
+  components: { HistoryListItem },
   props: ["customerId", "selectedConversationId"],
   data() {
     return {
-      userMessages: [],
+      contactMessages: [],
       activeConversationId: null
     };
   },
   watch: {
     customerId(newVal) {
-      if (newVal) this.fetchUserMessages();
+      if (newVal) this.fetchContactMessages();
     },
   },
   mounted() {
-    if (this.customerId) this.fetchUserMessages();
+    if (this.customerId) this.fetchContactMessages();
   },
   methods: {
-  async fetchUserMessages() {
+  async fetchContactMessages() {
     try {
       const res = await fetch("http://localhost:3000/api/dumdb/vueapp/chats", {
         method: "POST",
@@ -61,16 +61,16 @@ export default {
         }
       });
 
-      this.userMessages = Object.values(map).sort((a, b) => new Date(b.time) - new Date(a.time));
-      this.scrollToBottom(); // 👈 اضافه شد
+      this.contactMessages = Object.values(map).sort((a, b) => new Date(b.time) - new Date(a.time));
+      this.scrollToBottom();
     } catch (err) {
-      console.error("[UserMessages] Error fetching messages:", err);
+      console.error("[ContactMessages] Error fetching messages:", err);
     }
   },
 
   scrollToBottom() {
     this.$nextTick(() => {
-      const container = this.$refs.messagesContainer;
+      const container = this.$refs.historyListContainer;
       if (container) {
         container.scrollTop = container.scrollHeight;
       }
@@ -89,7 +89,7 @@ export default {
 
 
 <style scoped>
-.user-messages-box {
+.history-list-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -106,7 +106,7 @@ export default {
   margin-bottom: 12px;
 }
 
-.user-messages {
+.history-list {
   overflow-y: scroll;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -119,14 +119,13 @@ export default {
   
 }
 
-
-.user-messages::-webkit-scrollbar {
+.history-list::-webkit-scrollbar {
   width: 4px;
 }
-.user-messages::-webkit-scrollbar-track {
+.history-list::-webkit-scrollbar-track {
   background: transparent;
 }
-.user-messages::-webkit-scrollbar-thumb {
+.history-list::-webkit-scrollbar-thumb {
   background-color: #999;
   border-radius: 4px;
 }

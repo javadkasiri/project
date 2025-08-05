@@ -1,20 +1,20 @@
 <template>
-  <div class="chat-window">
-    <ChatMessages
+  <div class="conversation-panel">
+    <MessageList
       :customerId="customerId"
       :agentId="agentId"
       :conversationId="conversationId"
     />
-    <ChatInput :draft="draft" @update-draft="handleUpdateDraft" />
+    <MessageInput :draft="draft" @update-draft="handleUpdateDraft" />
   </div>
 </template>
 
 <script>
-import ChatMessages from "./ChatMessages.vue";
-import ChatInput from "./ChatInput.vue";
+import MessageList from "./MessageList.vue";
+import MessageInput from "./MessageInput.vue";
 
 export default {
-  components: { ChatMessages, ChatInput },
+  components: { MessageList, MessageInput },
   props: {
     customerId: String,
     agentId: String,
@@ -36,25 +36,12 @@ export default {
 </script>
 
 <style scoped>
-.chat-window {
+.conversation-panel {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
   padding: 0;
   margin: 0;
-}
-
-.messages-container {
-  flex: 1;
-  overflow-y: scroll;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.input-container {
-  flex-shrink: 0;
 }
 </style>

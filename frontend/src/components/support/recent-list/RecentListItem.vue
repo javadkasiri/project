@@ -1,6 +1,9 @@
 <template>
-  <div class="message-item" :class="{ active: isActive }" @click="selectItem">
-
+  <div
+  class="recent-list-item"
+  :class="{ active: isActive }"
+  @click="selectItem"
+>
     <div class="avatar">
       <span class="material-symbols-outlined">person</span>
     </div>
@@ -12,45 +15,44 @@
       <div class="text">{{ text }}</div>
     </div>
   </div>
-</template> 
+</template>
 
 <script>
 export default {
-  props: ['sender', 'text', 'time', 'isActive', 'conversationId'],
+  props: ['sender', 'customerId', 'agentId', 'text', 'time', 'isActive', 'conversationId'],
   methods: {
     selectItem() {
       this.$emit('select', {
-        conversationId: this.conversationId
+        customerId: this.customerId,
+        agentId: this.agentId,
+        sender: this.sender,
+        conversationId: this.conversationId    
       });
     }
   }
-};
+}
 </script>
 
+
+
 <style scoped>
-.message-item {
+.recent-list-item {
   display: flex;
   background-color: #f8f8f8;
   padding: 12px 16px;
+  margin: 0px 15px;
   margin-bottom: 8px;
   border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.2s;
-  box-sizing: border-box;
-  min-width: 251px;
-  max-width: 251px;
+  
 }
-
-.message-item.active {
-  background-color: #e3f2fd; /* هم‌رنگ ChatList */
-}
-
-.message-item:hover {
+.recent-list-item:hover {
   background-color: #eef1f5;
+  
 }
-
-.message-item.active {
-  background-color: #e3f2fd;
+.recent-list-item.active {
+  background-color: #e3f2fd; /* آبی روشن */
 }
 
 .avatar {
@@ -65,7 +67,6 @@ export default {
   margin-right: 12px;
   flex-shrink: 0;
 }
-
 .content {
   flex: 1;
   display: flex;
@@ -75,7 +76,6 @@ export default {
   overflow: hidden;
   min-width: 0;
 }
-
 .top-row {
   display: flex;
   justify-content: space-between;
@@ -85,7 +85,6 @@ export default {
   color: #2c3e50;
   margin-bottom: 4px;
 }
-
 .sender {
   font-weight: bold;
   font-size: 14px;
@@ -95,20 +94,18 @@ export default {
   text-overflow: ellipsis;
   max-width: 70%;
 }
-
 .time {
   font-size: 12px;
   color: #999;
   white-space: nowrap;
   margin-left: 8px;
 }
-
 .text {
   font-size: 13px;
   color: #666;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  
 }
+
 </style>

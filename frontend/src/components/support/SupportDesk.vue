@@ -1,13 +1,13 @@
 <template>
-  <div class="chat-room">
-    <div class="chat-list">
-      <ChatList
+  <div class="support-desk">
+    <div class="recent-list">
+      <RecentList
         :selectedConversationId="selectedConversationId"
         @select="handleSelectUser"
       />
     </div>
-    <div class="chat-window">
-      <ChatWindow
+    <div class="conversation-panel">
+      <ConversationPanel
         v-if="selectedConversationId"
         :customerId="selectedCustomerId"
         :agentId="selectedAgentId"
@@ -16,11 +16,11 @@
         @update-draft="handleUpdateDraft"
       />
       <div v-else class="placeholder">
-        No chat has been selected from the list
+        No conversation is selected from the list
       </div>
     </div>
-    <div class="chat-details">
-      <ChatDetails
+    <div class="contact-panel">
+      <ContactPanel
         v-if="selectedCustomerId"
         :customerId="selectedCustomerId"
         :agentId="selectedAgentId"
@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import ChatList from "./Chat-List/ChatList.vue";
-import ChatWindow from "./chat-window/ChatWindow.vue";
-import ChatDetails from "./chat-details/ChatDetails.vue";
+import RecentList from "./recent-list/RecentList.vue";
+import ConversationPanel from "./conversation-panel/ConversationPanel.vue";
+import ContactPanel from "./contact-panel/ContactPanel.vue";
 
 export default {
-  components: { ChatList, ChatWindow, ChatDetails },
+  components: { RecentList, ConversationPanel, ContactPanel },
   data() {
     return {
       selectedCustomerId: null,
@@ -66,37 +66,7 @@ this.draftMessages[conversationId] = message;
 </script>
 
 <style scoped>
-.chat-room {
-  display: flex;
-  height: 92%;
-  margin: 5px;
-  overflow: hidden;
-}
-.chat-list {
-  width: 20%;
-  background: #fff;
-  padding: 12px;
-  overflow-y: auto;
-}
-.chat-window {
-  flex: 1;
-  background: #f0f2f5;
-  position: relative;
-}
-.placeholder {
-  color: #999;
-  text-align: center;
-  margin-top: 50px;
-}
-.chat-details {
-  width: 20%;
-  background: #fff;
-  padding: 20px;
-}
-</style>
-
-<style scoped>
-.chat-room {
+.support-desk{
   display: flex;
   height: calc(93%); /* حذف چسبندگی پایین */
   margin: 0px;
@@ -105,8 +75,8 @@ this.draftMessages[conversationId] = message;
   box-sizing: border-box;
   overflow: hidden;
 }
-/* Sidebar */
-.chat-list {
+
+.recent-list {
   width: 20%;
   background: #ffffff;
   overflow-y: auto;
@@ -116,16 +86,15 @@ this.draftMessages[conversationId] = message;
   padding-bottom: 8px;
 }
 
-/* Chat content */
-.chat-window {
+
+.conversation-panel {
   flex: 1;
   height: 100%;
   padding: 0;
   margin: 0;
 }
 
-/* Details panel */
-.chat-details {
+.contact-panel {
   width: 20%;
   background: #ffffff;
   padding: 0;
