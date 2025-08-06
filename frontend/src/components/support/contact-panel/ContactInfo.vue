@@ -28,11 +28,19 @@
         placeholder="Title"
         class="form-input"
       />
-      <textarea
-        v-model="newLabel.description"
-        placeholder="Description"
-        class="form-textarea"
-      ></textarea>
+      <div class="textarea-wrapper">
+        <textarea
+          v-model="newLabel.description"
+          placeholder="Description"
+          class="form-textarea"
+        ></textarea>
+
+        <!-- آیکون attach بالا سمت راست -->
+        <label class="attach-icon">
+          <span class="material-symbols-outlined">attach_file</span>
+          <input type="file" hidden @change="handleFileUpload" />
+        </label>
+      </div>
       <button class="submit-button" @click="submitLabel">Submit</button>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </div>
@@ -41,11 +49,7 @@
   <!-- پاپ‌آپ LabelList -->
   <div v-if="showLabelsModal" class="modal-overlay" @click.self="closeModal">
     <div class="modal-content">
-      <LabelList
-        :customerId="customerId"
-        :isModal="true"
-        @close="closeModal"
-      />
+      <LabelList :customerId="customerId" :isModal="true" @close="closeModal" />
     </div>
   </div>
 </template>
@@ -109,6 +113,13 @@ export default {
         console.error("Error fetching label count:", err);
       }
     },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        console.log("فایل انتخاب‌شده:", file.name);
+        // می‌تونی بعداً با FormData به submitLabel اضافه‌اش کنی
+      }
+    },
     async submitLabel() {
       if (!this.newLabel.title || !this.newLabel.description) {
         this.errorMessage =
@@ -118,24 +129,21 @@ export default {
 
       this.errorMessage = "";
 
-      const res = await fetch(
-        "http://localhost:3000/api/dumdb/vueapp/labels",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: "create",
-            data: {
-              customerId: this.customerId,
-              title: this.newLabel.title,
-              description: this.newLabel.description,
-              status: "Pending",
-              createdAt: new Date().toISOString(),
-              createdBy: "Customer Support",
-            },
-          }),
-        }
-      );
+      const res = await fetch("http://localhost:3000/api/dumdb/vueapp/labels", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "create",
+          data: {
+            customerId: this.customerId,
+            title: this.newLabel.title,
+            description: this.newLabel.description,
+            status: "Pending",
+            createdAt: new Date().toISOString(),
+            createdBy: "Customer Support",
+          },
+        }),
+      });
 
       if (res.ok) {
         this.newLabel.title = "";
@@ -247,6 +255,7 @@ export default {
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
+  position: relative;
 }
 
 .form-textarea {
@@ -256,7 +265,29 @@ export default {
   overflow-y: auto;
   scrollbar-width: none;
 }
+.textarea-wrapper {
+  position: relative;
+  width: 100%;
+}
 
+.attach-icon {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  padding-left: 4px;
+  cursor: pointer;
+  color: #555;
+  background-color: white;
+  z-index: 2;
+}
+.attach-icon .material-symbols-outlined {
+  font-size: 15px;
+  pointer-events: none;
+}
+
+.attach-icon input[type="file"] {
+  display: none;
+}
 .submit-button {
   background-color: #2196f3;
   color: white;

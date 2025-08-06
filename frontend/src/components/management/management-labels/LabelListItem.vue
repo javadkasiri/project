@@ -54,12 +54,22 @@
       </div>
 
       <div class="cell icons">
-        <span
-          class="material-symbols-outlined icon-button"
-          @click.stop="openImageModal(label.labelImages)"
-        >
-          image
-        </span>
+        <div class="image-icon-wrapper">
+          <span
+            class="material-symbols-outlined icon-button"
+            @click.stop="openImageModal(label.labelImages)"
+          >
+            image
+          </span>
+
+          <!-- اگر عکس داشت، تعداد را نمایش بده -->
+          <span
+            v-if="label.labelImages && label.labelImages.length > 0"
+            class="image-count-badge"
+          >
+            {{ label.labelImages.length }}
+          </span>
+        </div>
 
         <!-- آیکون ویرایش برای Description -->
         <span
@@ -69,16 +79,11 @@
         >
           edit
         </span>
-        <span
-          v-else
-          class="material-symbols-outlined icon-button"
-        >
+        <span v-else class="material-symbols-outlined icon-button">
           attach_file
         </span>
 
-        <span class="material-symbols-outlined icon-button">
-          delete
-        </span>
+        <span class="material-symbols-outlined icon-button"> delete </span>
       </div>
 
       <div class="cell response-toggle">
@@ -105,9 +110,7 @@
             rows="1"
           />
 
-          <span
-            class="material-symbols-outlined attach-icon"
-          >
+          <span class="material-symbols-outlined attach-icon">
             attach_file
           </span>
 
@@ -143,9 +146,7 @@
 
           <div class="note-bottom-row">
             <div class="review-meta">
-              <span
-                ><strong>Reviewed By:</strong> {{ label.reviewedBy }}</span
-              >
+              <span><strong>Reviewed By:</strong> {{ label.reviewedBy }}</span>
               <span
                 ><strong>Reviewed At:</strong>
                 {{ formatDate(label.reviewedAt) }}</span
@@ -154,12 +155,22 @@
 
             <!-- دکمه‌ها -->
             <div class="resolved-buttons">
-              <span
-                class="material-symbols-outlined icon-button"
-                @click.stop="openImageModal(label.noteImages)"
-              >
-                image
-              </span>
+              <div class="image-icon-wrapper">
+                <span
+                  class="material-symbols-outlined icon-button"
+                  @click.stop="openImageModal(label.noteImages)"
+                >
+                  image
+                </span>
+
+                <!-- اگر عکس داشت، تعداد را نمایش بده -->
+                <span
+                  v-if="label.labelImages && label.noteImages.length > 0"
+                  class="image-count-badge"
+                >
+                  {{ label.labelImages.length }}
+                </span>
+              </div>
 
               <span
                 v-if="!isEditingNote"
@@ -169,10 +180,7 @@
                 edit
               </span>
 
-              <span
-                v-else
-                class="material-symbols-outlined icon-button"
-              >
+              <span v-else class="material-symbols-outlined icon-button">
                 attach_file
               </span>
 
@@ -195,11 +203,10 @@
       @close="showImageModal = false"
     />
   </div>
-
 </template>
 
 <script>
-import ImageModal from "./ImageModal.vue";
+import ImageModal from "../../layout/ImageModal.vue";
 
 export default {
   components: { ImageModal },
@@ -219,7 +226,7 @@ export default {
       editableNote: this.label.note || "",
 
       showImageModal: false,
-      currentImages: [],
+      selectedImages: [],
     };
   },
   mounted() {
@@ -276,7 +283,7 @@ export default {
     },
     markAsResolved() {
       this.isEditingNote = false;
-      this.isOpen = false; // بستن پنل پاسخ
+      this.isOpen = false;
       this.updateLabelStatus("Resolved");
     },
 
@@ -316,15 +323,17 @@ export default {
         console.error("خطا:", e.message);
       }
     },
-     openImageModal(images) {
-      this.selectedImages = images || [];
+    openImageModal(images) {
+      if (!images || images.length === 0) {
+        return;
+      }
+      this.selectedImages = images;
       this.showImageModal = true;
     },
     closeImageModal() {
       this.showImageModal = false;
       this.selectedImages = [];
     },
-   
   },
 };
 </script>
@@ -711,13 +720,28 @@ export default {
   border: 1px solid #ccc;
   border-radius: 6px;
 }
-.close-button {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  font-size: 24px;
-  cursor: pointer;
-  font-weight: bold;
+
+.image-icon-wrapper {
+  position: relative;
+  display: inline-block;
 }
+
+.image-count-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #888; /* خاکستری */
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
 
 </style>

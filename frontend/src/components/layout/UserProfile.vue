@@ -154,7 +154,7 @@ export default {
   background: #fff;
   padding: 30px;
   border-radius: 12px;
-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   min-width: 500px;
   max-width: 500px;
   text-align: left;

@@ -89,7 +89,7 @@ export default {
   font-size: 24px;
   font-weight: bold;
   color: #888;
-  cursor: pointer;
+  cursor: pointer;    
   z-index: 10;
   transition: 0.2s;
 }
