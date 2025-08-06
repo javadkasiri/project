@@ -75,12 +75,54 @@ export default {
   name: "SidebarMenu",
   data() {
     return {
-      isCollapsed: false,
+      isCollapsed: false, // وضعیت فعلی سایدبار (باز یا بسته)
+      userToggled: false, // آیا کاربر دستی تغییر داده؟
     };
+  },
+  mounted() {
+    // مقدار ذخیره‌شده را از localStorage بخوان
+    const storedCollapsed = localStorage.getItem("sidebar-collapsed");
+    const storedUserToggle = localStorage.getItem("sidebar-user-toggle");
+
+    this.userToggled = storedUserToggle === "true";
+
+    if (this.userToggled && storedCollapsed !== null) {
+      // اگر کاربر دستی تنظیم کرده، از همون استفاده کن
+      this.isCollapsed = storedCollapsed === "true";
+    } else {
+      // اگر دستی نبود، خودکار بر اساس اندازه صفحه تنظیم کن
+      this.isCollapsed = window.innerWidth <= 768;
+    }
+
+    // گوش دادن به تغییر اندازه صفحه
+    window.addEventListener("resize", this.handleResize);
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.handleResize);
   },
   methods: {
     toggleSidebar() {
       this.isCollapsed = !this.isCollapsed;
+      this.userToggled = true;
+
+      // ذخیره وضعیت جدید در localStorage
+      localStorage.setItem("sidebar-collapsed", this.isCollapsed);
+      localStorage.setItem("sidebar-user-toggle", "true");
+    },
+    handleResize() {
+      // فقط زمانی سایدبار بر اساس سایز جمع/باز شود که کاربر دستی تغییر نداده باشد
+      if (!this.userToggled) {
+        this.isCollapsed = window.innerWidth <= 768;
+      }
+    },
+    resetToAuto() {
+      // پاک‌سازی حالت دستی کاربر (مثلاً بعد از logout)
+      this.userToggled = false;
+      localStorage.removeItem("sidebar-collapsed");
+      localStorage.removeItem("sidebar-user-toggle");
+
+      // بازتنظیم خودکار سایدبار بر اساس اندازه صفحه
+      this.isCollapsed = window.innerWidth <= 768;
     },
   },
 };
@@ -113,7 +155,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   /*gap: 10px;*/
-  margin-left: 10px;
+  margin-left: 9px;
   margin-bottom: 50px;
   position: relative;
   overflow: visible;
@@ -134,6 +176,7 @@ export default {
 }
 
 .logo-text {
+  padding-left: 11px;
   font-size: 20px;
   font-weight: bold;
   color: white;
@@ -161,8 +204,7 @@ export default {
 
 /* حالت hover: دایره سفید، فلش مشکی */
 .toggle-btn:hover {
-  background-color: white;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  background-color: #e5e5e5;
 }
 
 .menu {
@@ -177,15 +219,16 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-right: 11px;
   width: 100%;
   height: 60px;
   padding: 0 20px;
-  gap: 15px;
+  gap: 28px;
   box-sizing: border-box;
   color: white;
   background-color: transparent;
   font-size: 16px;
-  border-radius: 12px;
+  border-radius: 8px;
   position: relative;
   text-decoration: none;
 }
@@ -231,13 +274,14 @@ export default {
 }
 
 .menu-item.router-link-active {
+  margin-right: 11px;
   background-color: white;
   color: #0e3168;
   font-weight: bold;
   height: 60px; /* 👈 دقیقاً هم‌ارتفاع با .menu-item */
   padding: 0 20px;
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -284,5 +328,11 @@ export default {
 /* فقط زمانی که سایدبار جمع شده و موس روی menu-item هست */
 .sidebar.collapsed .menu-item:hover .tooltip-text {
   opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .toggle-btn {
+    right: -40px;
+  }
 }
 </style>

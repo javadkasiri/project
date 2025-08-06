@@ -1,10 +1,10 @@
 <template>
   <div class="dashboard-layout">
-    <SidebarMenu />
+    <SidebarMenu ref="sidebarRef" />
     <div class="main-content">
       <!-- topbar گوشه راست بالا -->
       <div class="user-topbar-wrapper">
-        <UserTopbar />
+        <UserTopbar @logout="handleLogout" />
       </div>
 
       <!-- محتوا -->
@@ -25,6 +25,12 @@ export default {
   components: {
     SidebarMenu,
     UserTopbar,
+  },
+  methods: {
+    handleLogout() {
+      // اگر ref موجود بود و متد resetToAuto داشت، آن را اجرا کن
+      this.$refs.sidebarRef?.resetToAuto?.();
+    },
   },
 };
 </script>

@@ -167,8 +167,6 @@ export default {
   max-width: 500px;
   padding: 50px;
   background-color: #fff;
-  border-radius: 10px;
-  /*box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);*/
 }
 
 h2 {
@@ -195,7 +193,6 @@ input {
   width: 100%;
   padding: 16px;
   border: 1px solid #b9c1d6;
-  border-radius: 5px;
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
@@ -216,7 +213,6 @@ input:focus {
   padding: 16px;
   /*padding-right: 5px;*/ /* فضای کافی برای آیکون */
   border: 1px solid #b9c1d6;
-  border-radius: 5px;
 }
 
 input,
@@ -224,7 +220,6 @@ button,
 .input-with-icon input {
   height: 14px;
   font-size: 15px;
-  border-radius: 5px;
   box-sizing: border-box;
 }
 
@@ -251,7 +246,6 @@ button {
   padding: 10px;
   background-color: #2d53da;
   border: none;
-  border-radius: 5px;
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -295,7 +289,6 @@ button:hover {
   display: flex;
   background-color: #333;
   border: none;
-  border-radius: 5px;
   color: white;
   font-weight: bold;
   align-items: center;
@@ -418,7 +411,7 @@ button,
 .btn-google {
   height: 48px;
   font-size: 15px;
-  border-radius: 5px;
+  border-radius: 8px;
   box-sizing: border-box;
 }
 </style>

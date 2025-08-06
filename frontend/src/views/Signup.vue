@@ -235,7 +235,7 @@ export default {
   max-width: 500px;
   padding: 50px;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 h2 {
@@ -263,7 +263,7 @@ input {
   padding: 0 12px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
   box-sizing: border-box;
 }
 
@@ -321,7 +321,7 @@ button[type="submit"],
   font-size: 15px;
   font-weight: bold;
   padding: 0 16px;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -364,7 +364,7 @@ button[type="submit"]:hover {
   display: flex;
   background-color: #333;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   color: white;
   justify-content: center;
   align-items: center;

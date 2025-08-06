@@ -1,6 +1,6 @@
 <template>
-  <nav class="navbar" v-if="!isLoggedIn">
-    <!-- فقط برای مهمان‌ها نمایش داده شود -->
+  <nav class="navbar">
+    <!-- لوگو + متن -->
     <div class="left">
       <a @click.prevent="goToDashboard" class="logo" style="cursor: pointer">
         <img src="@/assets/logo-01.png" alt="Logo" class="logo-img" />
@@ -8,7 +8,8 @@
       </a>
     </div>
 
-    <div class="guest-buttons">
+    <!-- دکمه‌ها فقط وقتی مهمان هست و داخل login/signup نیست -->
+    <div class="guest-buttons" v-if="!isLoggedIn && !isAuthPage">
       <router-link to="/signup" class="btn-signup">Signup</router-link>
       <router-link to="/login" class="btn-login">Login</router-link>
     </div>
@@ -20,10 +21,13 @@ import { auth } from "../utils/auth";
 
 export default {
   name: "AppNavbar",
-
   computed: {
     isLoggedIn() {
       return auth.isLoggedIn;
+    },
+    isAuthPage() {
+      const path = this.$route.path;
+      return path === "/login" || path === "/signup";
     },
   },
   methods: {
@@ -80,9 +84,9 @@ export default {
 
 .btn-signup,
 .btn-login {
-  padding: 8px 24px;
+  padding: 8px 26px;
   border: 1.5px solid #2d53da;
-  border-radius: 20px;
+  border-radius: 8px;
   transition: all 0.3s ease;
   text-decoration: none;
   font-size: 14px;
@@ -109,6 +113,6 @@ export default {
 .guest-buttons {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0px;
 }
 </style>
