@@ -35,7 +35,6 @@
           class="form-textarea"
         ></textarea>
 
-        <!-- آیکون attach بالا سمت راست -->
         <label class="attach-icon">
           <span class="material-symbols-outlined">attach_file</span>
           <input type="file" hidden @change="handleFileUpload" />

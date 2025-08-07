@@ -80,12 +80,9 @@ this.draftMessages[conversationId] = message;
   width: 20%;
   background: #ffffff;
   overflow-y: auto;
-  padding-top: 8px;
-  padding-right: 0;
-  padding-left: 0;
-  padding-bottom: 8px;
+  padding: 0;
+  margin: 0;
 }
-
 
 .conversation-panel {
   flex: 1;

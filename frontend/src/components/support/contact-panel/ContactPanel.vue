@@ -52,6 +52,7 @@ export default {
 .contact-panel {
   flex-direction: column;
   box-sizing: border-box;
+  
 }
 
 .half-box {

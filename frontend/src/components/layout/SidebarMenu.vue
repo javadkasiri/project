@@ -23,6 +23,7 @@
         :class="{ active: $route.path === '/dashboard/workspace' }"
         >Workspace
       </router-link>
+      
       <router-link
         to="/dashboard/integration"
         :class="{ active: $route.path === '/dashboard/integration' }"

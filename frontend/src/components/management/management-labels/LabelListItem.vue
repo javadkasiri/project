@@ -54,6 +54,23 @@
       </div>
 
       <div class="cell icons">
+        <div class="file-icon-wrapper">
+          <span
+            class="material-symbols-outlined icon-button"
+            @click.stop="openFileModal(label.labelFiles)"
+          >
+            description
+          </span>
+          <span
+            v-if="
+              Array.isArray(label.labelFiles) && label.labelFiles.length > 0
+            "
+            class="file-count-badge"
+          >
+            {{ label.labelFiles.length }}
+          </span>
+        </div>
+
         <div class="image-icon-wrapper">
           <span
             class="material-symbols-outlined icon-button"
@@ -64,7 +81,9 @@
 
           <!-- اگر عکس داشت، تعداد را نمایش بده -->
           <span
-            v-if="label.labelImages && label.labelImages.length > 0"
+            v-if="
+              Array.isArray(label.labelImages) && label.labelImages.length > 0
+            "
             class="image-count-badge"
           >
             {{ label.labelImages.length }}
@@ -80,8 +99,17 @@
           edit
         </span>
         <span v-else class="material-symbols-outlined icon-button">
-          attach_file
+          <label for="labelFileInput" style="cursor: pointer; margin: 0">
+            attach_file
+          </label>
         </span>
+
+        <input
+          id="labelFileInput"
+          type="file"
+          style="display: none"
+          @change="handleDescFile"
+        />
 
         <span class="material-symbols-outlined icon-button"> delete </span>
       </div>
@@ -110,9 +138,19 @@
             rows="1"
           />
 
-          <span class="material-symbols-outlined attach-icon">
+          <label
+            for="noteFileInput"
+            class="material-symbols-outlined attach-icon"
+            style="cursor: pointer"
+          >
             attach_file
-          </span>
+          </label>
+          <input
+            id="noteFileInput"
+            type="file"
+            style="display: none"
+            @change="handleNoteFile"
+          />
 
           <div class="pending-buttons">
             <button class="btn-resolved" @click="markAsResolved">
@@ -155,6 +193,23 @@
 
             <!-- دکمه‌ها -->
             <div class="resolved-buttons">
+              <div class="file-icon-wrapper">
+                <span
+                  class="material-symbols-outlined icon-button"
+                  @click.stop="openFileModal(label.noteFiles)"
+                >
+                  description
+                </span>
+                <span
+                  v-if="
+                    Array.isArray(label.noteFiles) && label.noteFiles.length > 0
+                  "
+                  class="file-count-badge"
+                >
+                  {{ label.noteFiles.length }}
+                </span>
+              </div>
+
               <div class="image-icon-wrapper">
                 <span
                   class="material-symbols-outlined icon-button"
@@ -165,10 +220,13 @@
 
                 <!-- اگر عکس داشت، تعداد را نمایش بده -->
                 <span
-                  v-if="label.labelImages && label.noteImages.length > 0"
+                  v-if="
+                    Array.isArray(label.noteImages) &&
+                    label.noteImages.length > 0
+                  "
                   class="image-count-badge"
                 >
-                  {{ label.labelImages.length }}
+                  {{ label.noteImages.length }}
                 </span>
               </div>
 
@@ -181,8 +239,20 @@
               </span>
 
               <span v-else class="material-symbols-outlined icon-button">
-                attach_file
+                <label
+                  for="noteFileInputResolved"
+                  style="cursor: pointer; margin: 0"
+                >
+                  attach_file
+                </label>
               </span>
+
+              <input
+                id="noteFileInputResolved"
+                type="file"
+                style="display: none"
+                @change="handleNoteFile"
+              />
 
               <button class="btn-resolved" @click="markAsResolved">
                 Resolved
@@ -202,14 +272,22 @@
       :visible="showImageModal"
       @close="showImageModal = false"
     />
+
+    <FileModal
+      v-if="showFileModal"
+      :files="selectedFiles"
+      :visible="showFileModal"
+      @close="showFileModal = false"
+    />
   </div>
 </template>
 
 <script>
 import ImageModal from "../../layout/ImageModal.vue";
+import FileModal from "../../layout/FileModal.vue";
 
 export default {
-  components: { ImageModal },
+  components: { ImageModal, FileModal },
   props: {
     label: Object,
   },
@@ -227,6 +305,9 @@ export default {
 
       showImageModal: false,
       selectedImages: [],
+
+      showFileModal: false,
+      selectedFiles: [],
     };
   },
   mounted() {
@@ -276,6 +357,14 @@ export default {
         el.style.height = "auto";
         el.style.height = el.scrollHeight + "px";
       }
+    },
+    handleLabelFile(e) {
+      const file = e.target.files[0];
+      console.log("description file:", file);
+    },
+    handleNoteFile(e) {
+      const file = e.target.files[0];
+      console.log("note file:", file);
     },
     startNoteEdit() {
       this.isEditingNote = true;
@@ -334,6 +423,15 @@ export default {
       this.showImageModal = false;
       this.selectedImages = [];
     },
+    openFileModal(files) {
+      if (Array.isArray(files) && files.length > 0) {
+        this.selectedFiles = files;
+        this.showFileModal = true;
+      }
+    },
+    closeFileModal() {
+      this.showFileModal = false;
+    },
   },
 };
 </script>
@@ -348,7 +446,7 @@ export default {
     1fr /* Created By */
     1.2fr /* Created At */
     0.8fr /* Status */
-    0.8fr /* Actions */
+    0.8fr /* Options */
     0.8fr; /* Response */
   align-items: center;
   border-bottom: 1px solid #eee;
@@ -743,5 +841,25 @@ export default {
   pointer-events: none;
 }
 
+.file-icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
+.file-count-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #888; /* خاکستری */
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
 </style>

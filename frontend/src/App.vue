@@ -31,7 +31,6 @@ export default {
           throw new Error("Session invalid");
         }
 
-      
 
       } catch (err) {
         console.warn("Session expired or failed:", err);

@@ -41,12 +41,17 @@ export default {
   background-color: #f8f8f8;
   padding: 12px 16px;
   margin: 0px 15px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.2s;
   
 }
+
+.recent-list-item:last-child {
+  margin-bottom: 0;
+}
+
 .recent-list-item:hover {
   background-color: #eef1f5;
   

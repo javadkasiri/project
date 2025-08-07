@@ -111,12 +111,10 @@ Content-Type: application/json
     "reviewedBy": "user",
     "reviewedAt": "2025-07-23T13:00:00Z",
     "note": "Awaiting loyalty service team response.",
-    "labelImages": [
-    "004.jpg","006.jpg","007.jpg"
-    ],
-    "noteImages": [
-    "003.jpg6","005.jpg","008.jpg"
-    ]
+    "labelImages": ["004.jpg","006.jpg","007.jpg"],
+    "noteImages": ["003.jpg","005.jpg","008.jpg"],
+    "labelFiles": ["001.pdf","002.pdf"],
+    "noteFiles": ["003.pdf"]
   }
 }
 

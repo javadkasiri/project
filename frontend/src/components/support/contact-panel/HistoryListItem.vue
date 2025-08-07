@@ -34,7 +34,7 @@ export default {
   display: flex;
   background-color: #f8f8f8;
   padding: 12px 16px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -43,8 +43,8 @@ export default {
   max-width: 251px;
 }
 
-.history-list-item.active {
-  background-color: #e3f2fd; /* هم‌رنگ ChatList */
+.history-list-item:last-child {
+  margin-bottom: 0;
 }
 
 .history-list-item:hover {

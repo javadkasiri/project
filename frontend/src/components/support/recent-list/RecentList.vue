@@ -2,20 +2,20 @@
   <div class="recent-list-wrapper">
     <div class="header">Recent</div>
     <div class="recent-list" ref="recentListContainer">
-<RecentListItem
-  v-for="item in latestCustomerMessages"
-  :key="item.customerId + '_' + item.conversationId"
-  :sender="item.sender"
-  :customerId="item.customerId"
-  :agentId="item.agentId"
-  :conversationId="item.conversationId"
-  :text="item.text"
-  :time="item.time"
-  :isActive="item.conversationId === selectedConversationId"
-  @select="handleSelect"
-/>
+      <RecentListItem
+        v-for="item in latestCustomerMessages"
+        :key="item.customerId + '_' + item.conversationId"
+        :sender="item.sender"
+        :customerId="item.customerId"
+        :agentId="item.agentId"
+        :conversationId="item.conversationId"
+        :text="item.text"
+        :time="item.time"
+        :isActive="item.conversationId === selectedConversationId"
+        @select="handleSelect"
+      />
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -23,11 +23,11 @@ import RecentListItem from "./RecentListItem.vue";
 
 export default {
   components: { RecentListItem },
-  props: ['selectedConversationId'],
+  props: ["selectedConversationId"],
   data() {
     return {
       chats: [],
-      activeConversationId: null, 
+      activeConversationId: null,
     };
   },
   computed: {
@@ -55,11 +55,14 @@ export default {
     async fetchChats() {
       try {
         console.log("[ChatList] fetching...");
-        const res = await fetch("http://localhost:3000/api/dumdb/vueapp/chats", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "get", filter: {} }),
-        });
+        const res = await fetch(
+          "http://localhost:3000/api/dumdb/vueapp/chats",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "get", filter: {} }),
+          }
+        );
         const json = await res.json();
         this.chats = json.result;
         this.scrollToBottom(); // ✅ اسکرول به پایین
@@ -78,7 +81,7 @@ export default {
           container.scrollTop = container.scrollHeight;
         }
       });
-    }
+    },
   },
   mounted() {
     this.fetchChats();
@@ -100,11 +103,12 @@ export default {
   border-bottom: 2px solid #2196f3;
   width: fit-content;
   margin-left: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .recent-list {
   overflow-y: auto;
   max-height: 100%;
+  margin-bottom: 15px;
 }
 
 .recent-list::-webkit-scrollbar {

@@ -9,7 +9,7 @@
       <div>Created By</div>
       <div>Created At</div>
       <div>Status</div>
-      <div>Actions</div>
+      <div>Options</div>
       <div>Response</div>
     </div>
 
@@ -105,7 +105,7 @@ export default {
     1fr /* Created By */
     1.2fr /* Created At */
     0.8fr /* Status */
-    0.8fr /* Actions */
+    0.8fr /* Options */
     0.8fr; /* Response */
   font-weight: bold;
   color: #666;
