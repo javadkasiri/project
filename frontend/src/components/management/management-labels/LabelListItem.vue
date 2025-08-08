@@ -283,8 +283,8 @@
 </template>
 
 <script>
-import ImageModal from "../../layout/ImageModal.vue";
-import FileModal from "../../layout/FileModal.vue";
+import ImageModal from "../../layout/modals/ImageModal.vue";
+import FileModal from "../../layout/modals/FileModal.vue";
 
 export default {
   components: { ImageModal, FileModal },

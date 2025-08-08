@@ -14,9 +14,11 @@ const app = express(); // ایجاد اپلیکیشن
 app.use(
   cors({
     origin: [
+      "http://localhost:8080",
       "http://localhost:8081",
       "http://localhost:8082",
       "http://localhost:8083",
+      "http://localhost:8084",
     ],
     credentials: true,
   })
@@ -26,10 +28,21 @@ app.use(express.json()); // پارس کردن بدنه JSON
 app.use(cookieParser()); // خواندن کوکی‌ها
 
 // اتصال به MongoDB
-mongoose
-  .connect("mongodb://172.25.199.96:27017/vueapp")
-  .then(() => console.log("MongoDB connected (via mongoose)"));
+// mongoose
+//   .connect(
+//     "mongodb://admin:jk13676974@db1.timino.co:27017/vueapp/?authSource=admin&directConnection=true"
+//   )
+//   .then(() => console.log("MongoDB connected (via mongoose)"));
+const uri =
+  "mongodb://admin:jk13676974@db1.timino.co:27017/vueapp?authSource=admin&directConnection=true";
 
+mongoose
+  .connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log(" Connected to MongoDB"))
+  .catch((err) => console.error(" MongoDB connection error:", err));
 // مسیرهای API
 app.use("/api", authRoutes); // signup, login, logout
 app.use("/api", protectedRoutes); // مسیرهایی مثل /dashboard

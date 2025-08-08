@@ -33,8 +33,8 @@
 
 <script>
 import { auth } from "../../utils/auth";
-import UserProfile from "@/components/layout/UserProfile.vue";
-import UserSetting from "@/components/layout/UserSetting.vue";
+import UserProfile from "@/components/layout/modals/UserProfile.vue";
+import UserSetting from "@/components/layout/modals/UserSetting.vue";
 
 export default {
   name: "AppNavbar",

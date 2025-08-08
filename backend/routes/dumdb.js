@@ -3,7 +3,8 @@ const router = express.Router();
 const { MongoClient, ObjectId } = require("mongodb");
 
 // اتصال به MongoDB
-const uri = "mongodb://localhost:27017"; // آدرس MongoDB
+const uri =
+  "mongodb://admin:jk13676974@db1.timino.co:27017/vueapp?authSource=admin&directConnection=true"; // آدرس MongoDB
 const client = new MongoClient(uri);
 let mongo;
 
