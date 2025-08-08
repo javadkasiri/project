@@ -1,6 +1,18 @@
 <template>
   <div class="login-wrapper">
-    <div class="image-side"></div>
+    <div class="image-side">
+      <router-link to="/" class="logo-area">
+        <img src="@/assets/logo.png" alt="Logo" />
+        <span class="logo-text">CNP ONE</span>
+      </router-link>
+
+      <div class="welcome-box">
+        <h1>Hello, Friend!</h1>
+        <p>Enter your personal details<br />and start journey with us</p>
+        <router-link to="/signup" class="btn-signup">SIGN UP</router-link>
+      </div>
+    </div>
+
     <div class="login-container">
       <div class="login-form">
         <h2>Login</h2>
@@ -37,12 +49,8 @@
             </div>
           </div>
 
-          <!-- گزینه Keep me logged in و Forgot password جداگانه -->
+          <!-- گزینه Forgot password جداگانه -->
           <div class="login-options">
-            <label class="keep-logged-in">
-              <input type="checkbox" v-model="keepLoggedIn" />
-              <span>Keep me logged in</span>
-            </label>
             <a href="/forgot-password" class="forgot-password"
               >Forgot password?</a
             >
@@ -69,11 +77,6 @@
             />
             <span>Continue with Google</span>
           </button>
-
-          <div class="signup-link">
-            Don’t have an account?
-            <a href="/signup">Sign up now</a>
-          </div>
         </form>
       </div>
     </div>
@@ -91,7 +94,6 @@ export default {
       password: "",
       showPassword: false,
       loginError: false,
-      keepLoggedIn: false, // ← اضافه کن
     };
   },
   watch: {
@@ -117,7 +119,7 @@ export default {
           headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify({
-            username: this.email,
+            email: this.email,
             password: this.password,
           }),
         });
@@ -146,27 +148,120 @@ export default {
 <style scoped>
 .login-wrapper {
   display: flex;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .image-side {
-  flex: 1;
+  width: 40%;
+  height: 100%;
   background-color: #2d53da;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  color: white;
+  text-align: center;
+  position: relative;
+}
+
+.logo-top {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 36px;
+  display: block;
+  cursor: pointer;
+}
+
+.logo-top img {
+  width: 100%;
+}
+
+.logo-area {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-area img {
+  width: 36px;
+  height: auto;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 1px;
+}
+
+.welcome-box {
+  max-width: 90%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.welcome-box h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 63px;
+  font-weight: 500;
+  white-space: nowrap; /* از شکستن خط جلوگیری می‌کنه */
+  margin-bottom: 15px;
+}
+
+.welcome-box p {
+  font-family: "Inter", sans-serif;
+  font-size: 30px;
+  line-height: 1.5;
+  font-weight: 200;
+  margin-bottom: 35px;
+}
+
+.btn-signup {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 20px 75px; /* بزرگترش کردم */
+  color: white;
+  border: 1px solid white;
+  border-radius: 50px;
+  font-weight: 300;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-signup:hover {
+  background-color: white;
+  color: #2d53da;
 }
 
 .login-container {
-  flex: 1;
+  width: 60%;
+  height: 100%;
+  background-color: #ffffff;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: rgb(255, 255, 255);
+  align-items: center; /* این خط مهمه برای وسط‌چین عمودی */
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .login-form {
   width: 100%;
   max-width: 500px;
-  padding: 50px;
   background-color: #fff;
+  padding: 50px;
+  border-radius: 12px;
 }
 
 h2 {
@@ -327,30 +422,8 @@ button,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 25px 0 25px;
-}
-
-.keep-logged-in {
-  display: flex;
-  align-items: center;
-  margin-top: 7px;
-  gap: 6px;
-  font-size: 14px;
-  color: #2b3674;
-  cursor: pointer;
-  user-select: none;
-}
-
-.keep-logged-in input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: #2d53da;
-  margin: 0;
-}
-
-.keep-logged-in input[type="checkbox"]:focus {
-  outline: none;
-  box-shadow: none;
+  text-align: right;
+  margin: 20px 0 25px;
 }
 
 .forgot-password {

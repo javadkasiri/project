@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import AppNavbar from "./components/AppNavbar.vue";
-import { auth } from "./utils/auth"; // مطمئن شو مسیر درسته
+import AppNavbar from "./components/layout/AppNavbar.vue";
+import { auth } from "./utils/auth";
 
 export default {
   name: "App",
@@ -20,6 +20,31 @@ export default {
       return auth.isLoggedIn;
     },
   },
+  async mounted() {
+    const token = localStorage.getItem("token");
+    if (auth.isLoggedIn || token) {
+      try {
+        const res = await fetch("http://localhost:3000/api/check-session", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        });
+
+        if (!res.ok) {
+          throw new Error("Session invalid");
+        }
+
+        auth.isLoggedIn = true;
+      } catch (err) {
+        console.warn("Session expired or failed:", err);
+        auth.isLoggedIn = false;
+        localStorage.removeItem("token");
+        this.$router.push("/");
+      }
+    }
+  },
 };
 </script>
 
@@ -30,9 +55,11 @@ body {
   padding: 0;
   height: 100%;
   overflow: hidden;
+  font-family: "Inter", sans-serif;
 }
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  /*font-family: Avenir, Helvetica, Arial, sans-serif;*/
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

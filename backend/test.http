@@ -3,13 +3,9 @@ POST http://localhost:3000/api/signup
 Content-Type: application/json
 
 {
-  "username": "testuser1",
-  "password": "testpassword"
+  "email": "example@example.com",
+  "password": "Ts_12345678"
 }
-
-#input 1.username 2.password
-#returen null
-#function send input to database 
 
 
 ### Test Login
@@ -17,27 +13,117 @@ POST http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-  "username": "testuser",
+  "email": "example@example.com",
   "password": "testpassword"
 }
 
-#input 1.username 2.password
-#returen token
-#function send token to memcached
+
+### Create profile
+POST http://localhost:3000/api/dumdb/vueapp/profile
+Content-Type: application/json
+
+{
+  "action": "create",
+  "data": {
+    "email": "kasiri.javad@gmail.com",
+    "username": "123456789",
+    "name": "javad kasiri",
+    "phone": "+989123456789",
+    "role": "admin",
+    "address": {
+      "country": "United Arab Emirates",
+      "city": "Dubai",
+      "addressLine": "42 Green Street",
+      "buildingName": "Al Noor Tower",
+      "no": "12B"
+    }
+  }
+}
 
 
-### Test Profile (requires token)
-GET http://localhost:3000/api/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Mzc2MzY3MmM0MjRkMWM5MzM2NmQwNiIsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJpYXQiOjE3NDg0NjMxMTIsImV4cCI6MTc0ODQ2NjcxMn0.9FXPvRvGYW8BlCJivMk1VICf7klJLL7nVO5vwgQ7ZDQ
+### Get profile
+POST http://localhost:3000/api/dumdb/vueapp/profile
+Content-Type: application/json
 
-### Test Home (requires token)
-GET http://localhost:3000/api/home
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Mzc2MzY3MmM0MjRkMWM5MzM2NmQwNiIsImlhdCI6MTc0ODQ2MTE4OCwiZXhwIjoxNzQ4NDY0Nzg4fQ.LT9OOfYkJ8coR4XNEZlPR-ziUGzsL_-Ye0_LiDX4n8o
+{
+  "action": "get",
+  "filter": {
+    "username": "123456789"
+  }
+}
 
-### Test Setting (requires token)
-GET http://localhost:3000/api/setting
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Mzc2MzY3MmM0MjRkMWM5MzM2NmQwNiIsImlhdCI6MTc0ODQ2MTE4OCwiZXhwIjoxNzQ4NDY0Nzg4fQ.LT9OOfYkJ8coR4XNEZlPR-ziUGzsL_-Ye0_LiDX4n8o
+### Create custumer chat message
+POST http://localhost:3000/api/dumdb/vueapp/chats
+Content-Type: application/json
 
-### Test Logout
-POST http://localhost:3000/api/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Mzc2MzY3MmM0MjRkMWM5MzM2NmQwNiIsImlhdCI6MTc0ODQ2MTE4OCwiZXhwIjoxNzQ4NDY0Nzg4fQ.LT9OOfYkJ8coR4XNEZlPR-ziUGzsL_-Ye0_LiDX4n8o
+{
+  "action": "create",
+  "data": {
+    "conversationId": "conv_026",
+    "senderId": "customer_009",
+    "receiverId": "user_009",
+    "sender": "Emma Stone",
+    "text": "Perfect. I’ll visit tomorrow morning.",
+    "time": "3:43 PM",
+      "side": "left"
+  }
+}
+
+### Create user chat message
+POST http://localhost:3000/api/dumdb/vueapp/chats
+Content-Type: application/json
+
+{
+  "action": "create",
+  "data": {
+    "conversationId": "conv_026",
+    "senderId": "user_009",
+    "receiverId": "customer_009",
+    "sender": "Michael",
+    "text": "We’ll be ready to assist. Thanks for checking in!",
+    "time": "3:44 PM",
+    "side": "right"
+  }
+}
+
+### Get chat messages
+POST http://localhost:3000/api/dumdb/vueapp/chats
+Content-Type: application/json
+
+{
+  "action": "get",
+  "filter": {}
+}
+
+### Create a label
+POST http://localhost:3000/api/dumdb/vueapp/labels
+Content-Type: application/json
+
+{
+  "action": "create",
+  "data": {
+    "customerId": "customer_009",
+    "title": "Reward points not credited",
+    "description": "User claims reward points were missing after purchase.",
+    "status": "Resolved",
+    "createdBy": "Customer Support",
+    "createdAt": "2025-07-23T12:30:00Z",
+    "reviewedBy": "user",
+    "reviewedAt": "2025-07-23T13:00:00Z",
+    "note": "Awaiting loyalty service team response.",
+    "labelImages": ["004.jpg","006.jpg","007.jpg"],
+    "noteImages": ["003.jpg","005.jpg","008.jpg"],
+    "labelFiles": ["001.pdf","002.pdf"],
+    "noteFiles": ["003.pdf"]
+  }
+}
+
+### Get labels
+POST http://localhost:3000/api/dumdb/vueapp/labels
+Content-Type: application/json
+
+{
+  "action": "get",
+  "filter": {}
+}
+

@@ -1,7 +1,14 @@
 <template>
   <div class="signup-wrapper">
-    <div class="image-side"></div>
+    <!-- سمت چپ: فرم ثبت‌نام -->
     <div class="form-side">
+      <!-- لوگو -->
+      <router-link to="/" class="logo-area">
+        <img src="@/assets/logo-01.png" alt="Logo" />
+        <span class="logo-text">CNP ONE</span>
+      </router-link>
+
+      <!-- فرم ثبت‌نام -->
       <div class="signup-form">
         <h2>Signup</h2>
         <form @submit.prevent="handleSignup" novalidate>
@@ -39,7 +46,7 @@
             </p>
           </div>
 
-          <!-- تکرار رمز عبور -->
+          <!-- تکرار رمز -->
           <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
             <div class="input-wrapper">
@@ -61,7 +68,7 @@
             </p>
           </div>
 
-          <!-- شرایط رمز -->
+          <!-- شرایط رمز عبور -->
           <ul class="password-rules">
             <li :class="{ valid: passwordRules.minLength }">
               At least 8 characters
@@ -75,18 +82,13 @@
             <li :class="{ valid: passwordRules.number }">
               At least one number
             </li>
-            <li :class="{ valid: passwordRules.specialCharacter }">
-              At least one special character
-            </li>
           </ul>
 
           <!-- دکمه ثبت -->
           <button type="submit">Register</button>
 
-          <!-- or -->
+          <!-- یا با گوگل -->
           <div class="divider-with-text"><span>or</span></div>
-
-          <!-- گوگل -->
           <button type="button" class="google-button">
             <img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
@@ -95,17 +97,45 @@
             Sign up with Google
           </button>
 
-          <!-- لینک ورود -->
-          <p class="login-link">
-            Already have an account?
-            <router-link to="/Login">Log in now</router-link>
-          </p>
-
           <!-- پیام موفقیت -->
-          <p v-if="successMessage" class="success-message">
+          <!--  <p v-if="s/uccessMessage" class="success-message">
             Registration was successful
-          </p>
+          </p> -->
         </form>
+      </div>
+    </div>
+
+    <!-- سمت راست: خوش‌آمدگویی -->
+    <div class="image-side">
+      <div class="welcome-box">
+        <h1>Welcome Back!</h1>
+        <p>
+          To keep connected with us<br />
+          please log in with your personal info
+        </p>
+        <router-link to="/login" class="btn-login">LOG IN</router-link>
+      </div>
+    </div>
+
+    <!-- ✅ پاپ‌آپ تأیید ایمیل -->
+    <div v-if="showVerifyPopup" class="verify-popup-overlay">
+      <div class="verify-popup">
+        <h3>Verify your email</h3>
+        <p>
+          We've sent a verification link to your email. Please check your inbox
+          and enter the code below:
+        </p>
+
+        <!-- ✅ ورودی کد تأیید -->
+        <input
+          v-model="verificationCode"
+          type="text"
+          placeholder="Enter verification code"
+          class="verify-input"
+        />
+
+        <!-- ✅ دکمه تأیید -->
+        <button @click="submitVerificationCode">Submit</button>
       </div>
     </div>
   </div>
@@ -126,6 +156,8 @@ export default {
       confirmError: false,
       duplicateError: false,
       successMessage: false,
+      showVerifyPopup: false,
+      verificationCode: "", // 🔸 کد تأیید ایمیل
       submitted: false,
     };
   },
@@ -136,18 +168,11 @@ export default {
         uppercase: /[A-Z]/.test(this.password),
         lowercase: /[a-z]/.test(this.password),
         number: /[0-9]/.test(this.password),
-        specialCharacter: /[^a-zA-Z0-9]/.test(this.password),
       };
     },
     isPasswordValid() {
       const r = this.passwordRules;
-      return (
-        r.minLength &&
-        r.uppercase &&
-        r.lowercase &&
-        r.number &&
-        r.specialCharacter
-      );
+      return r.minLength && r.uppercase && r.lowercase && r.number;
     },
   },
   watch: {
@@ -185,7 +210,7 @@ export default {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            username: this.email,
+            email: this.email,
             password: this.password,
           }),
         });
@@ -198,14 +223,50 @@ export default {
         const data = await res.json();
 
         if (res.ok) {
+          console.log("✅ Signup successful. Showing popup...");
           this.successMessage = true;
-          setTimeout(() => this.$router.push("/Login"), 2000);
+          this.showVerifyPopup = true;
         } else {
           console.error("Signup failed:", data.error || "Unknown error");
         }
       } catch (err) {
         console.error("Network error:", err);
       }
+    },
+
+    async submitVerificationCode() {
+      if (!this.verificationCode.trim()) {
+        alert("Please enter the verification code.");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:3000/api/verify-code", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: this.email,
+            code: this.verificationCode,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("✅ Email verified successfully.");
+          this.showVerifyPopup = false;
+          this.$router.push("/login");
+        } else {
+          alert(data.error || "Verification failed.");
+        }
+      } catch (err) {
+        console.error("Verification request failed:", err);
+        alert("Server error during verification.");
+      }
+    },
+
+    closePopup() {
+      this.showVerifyPopup = false;
     },
   },
 };
@@ -218,8 +279,80 @@ export default {
 }
 
 .image-side {
-  flex: 1;
+  width: 40%;
+  height: 100vh;
   background-color: #2d53da;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  color: white;
+  text-align: center;
+  position: relative;
+}
+
+.logo-area {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-area img {
+  width: 36px;
+  height: auto;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0e3168;
+  letter-spacing: 1px;
+}
+
+.welcome-box {
+  max-width: 90%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.welcome-box h1 {
+  font-size: 63px;
+  font-weight: 500;
+  white-space: nowrap;
+  margin-bottom: 15px;
+}
+
+.welcome-box p {
+  font-size: 30px;
+  line-height: 1.5;
+  font-weight: 200;
+  margin-bottom: 35px;
+}
+
+.btn-login {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 20px 75px;
+  color: white;
+  border: 1px solid white;
+  border-radius: 50px;
+  font-weight: 300;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-login:hover {
+  background-color: white;
+  color: #2d53da;
 }
 
 .form-side {
@@ -228,6 +361,7 @@ export default {
   justify-content: center;
   align-items: center;
   background-color: white;
+  position: relative;
 }
 
 .signup-form {
@@ -296,16 +430,20 @@ input:focus {
 }
 
 .password-rules {
-  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 20px;
   padding-left: 0;
   margin-top: -5px;
   margin-bottom: 15px;
   font-size: 13px;
-  text-align: left;
   color: #a3aed0;
+  text-align: left;
 }
 
 .password-rules li {
+  flex: 0 0 48%; /* حدوداً نصف عرض - برای دو ستون */
+  list-style: none;
   margin: 4px 0;
 }
 
@@ -381,22 +519,6 @@ button[type="submit"]:hover {
   height: 18px;
 }
 
-.login-link {
-  text-align: center;
-  font-size: 14px;
-  margin-top: 30px;
-  color: #0e3168;
-}
-
-.login-link a {
-  color: #409bff;
-  text-decoration: none;
-}
-
-.login-link a:hover {
-  text-decoration: underline;
-}
-
 .error-message {
   color: red;
   font-size: 13px;
@@ -408,5 +530,65 @@ button[type="submit"]:hover {
   text-align: center;
   margin-top: 15px;
   font-weight: bold;
+}
+
+.verify-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.verify-popup {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.verify-popup h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #2d53da;
+}
+
+.verify-popup p {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.verify-popup button {
+  background-color: #2d53da;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.verify-popup button:hover {
+  background-color: #2544b3;
+}
+
+.verify-input {
+  width: 100%;
+  height: 40px;
+  margin: 15px 0;
+  padding: 0 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 </style>

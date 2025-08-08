@@ -5,14 +5,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Signup from "../views/Signup.vue";
 import Login from "../views/Login.vue";
-import Dashboard from "../views/Dashboard.vue";
-import DashboardSetting from "../views/DashboardSetting.vue";
-import DashboardProfile from "../views/DashboardProfile.vue";
-import DashboardManagement from "../views/DashboardManagement.vue";
-import DashboardChatTicket from "../views/DashboardChatTicket.vue";
-import DashboardCallCenter from "../views/DashboardCallCenter.vue";
-import DashboardMarketing from "../views/DashboardMarketing.vue";
-import DashboardDataGrabber from "../views/DashboardDataGrabber.vue";
+import Dashboard from "../views/dashboard/Dashboard.vue";
+import DashboardHome from "../views/dashboard/DashboardHome.vue";
+import DashboardManagement from "../views/dashboard/DashboardManagement.vue";
+import DashboardSupport from "../views/dashboard/DashboardSupport.vue";
+import DashboardWorkspace from "../views/dashboard/DashboardWorkspace.vue";
+import DashboardIntegration from "../views/dashboard/DashboardIntegration.vue";
 
 //تعریف مسیرها
 const routes = [
@@ -23,13 +21,11 @@ const routes = [
     path: "/dashboard", //مسیر /dashboard فقط برای کاربران لاگین شده است
     component: Dashboard,
     children: [
-      { path: "setting", component: DashboardSetting },
-      { path: "profile", component: DashboardProfile },
+      { path: "", component: DashboardHome },
       { path: "management", component: DashboardManagement },
-      { path: "chat-ticket", component: DashboardChatTicket },
-      { path: "call-center", component: DashboardCallCenter },
-      { path: "marketing", component: DashboardMarketing },
-      { path: "data-grabber", component: DashboardDataGrabber },
+      { path: "support", component: DashboardSupport },
+      { path: "workspace", component: DashboardWorkspace },
+      { path: "integration", component: DashboardIntegration },
     ],
     meta: { requiresAuth: true }, // برای فعال‌سازی گارد امنیتی استفاده می‌شود.
   },
